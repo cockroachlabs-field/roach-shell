@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.time.Instant;
 
-@JsonDeserialize(using = NodeStatusDeserializer.class)
+@JsonDeserialize(using = NodeDeserializer.class)
 public class Node {
 
     private int nodeId;

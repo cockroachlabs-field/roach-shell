@@ -1,0 +1,815 @@
+{
+  "nodeId": 1,
+  "hotRangesByNodeId": {
+    "1": {
+      "errorMessage": "",
+      "stores": [
+        {
+          "storeId": 1,
+          "hotRanges": [
+            {
+              "desc": {
+                "rangeId": "6",
+                "startKey": "iA==",
+                "endKey": "kw==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0.6555074283042183
+            },
+            {
+              "desc": {
+                "rangeId": "4",
+                "startKey": "BHRzZA==",
+                "endKey": "BHRzZBJjci5zdG9yZS52YWxjb3VudAABifgGr78z",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "7",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0.5996295801873434
+            },
+            {
+              "desc": {
+                "rangeId": "26",
+                "startKey": "BHRzZBJjci5zdG9yZS52YWxjb3VudAABifgGr78z",
+                "endKey": "BHRzZQ==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "7",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0.1158933954138712
+            },
+            {
+              "desc": {
+                "rangeId": "23",
+                "startKey": "ow==",
+                "endKey": "pA==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0.01436530844894456
+            },
+            {
+              "desc": {
+                "rangeId": "22",
+                "startKey": "og==",
+                "endKey": "ow==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0.009523097309500978
+            },
+            {
+              "desc": {
+                "rangeId": "1",
+                "startKey": "",
+                "endKey": "BABsaXZlbmVzcy0=",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0.003029875019140099
+            },
+            {
+              "desc": {
+                "rangeId": "2",
+                "startKey": "BABsaXZlbmVzcy0=",
+                "endKey": "BABsaXZlbmVzcy4=",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0.002458853250746435
+            },
+            {
+              "desc": {
+                "rangeId": "3",
+                "startKey": "BABsaXZlbmVzcy4=",
+                "endKey": "BHRzZA==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0.0019735787950609955
+            },
+            {
+              "desc": {
+                "rangeId": "11",
+                "startKey": "lw==",
+                "endKey": "mA==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0.0016126928999591096
+            },
+            {
+              "desc": {
+                "rangeId": "24",
+                "startKey": "pA==",
+                "endKey": "//8=",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0.0006578597224314998
+            },
+            {
+              "desc": {
+                "rangeId": "5",
+                "startKey": "BHRzZQ==",
+                "endKey": "iA==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            },
+            {
+              "desc": {
+                "rangeId": "20",
+                "startKey": "oA==",
+                "endKey": "oQ==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            },
+            {
+              "desc": {
+                "rangeId": "8",
+                "startKey": "lA==",
+                "endKey": "lQ==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            },
+            {
+              "desc": {
+                "rangeId": "16",
+                "startKey": "nA==",
+                "endKey": "nQ==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            },
+            {
+              "desc": {
+                "rangeId": "9",
+                "startKey": "lQ==",
+                "endKey": "lg==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            },
+            {
+              "desc": {
+                "rangeId": "13",
+                "startKey": "mQ==",
+                "endKey": "mg==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            },
+            {
+              "desc": {
+                "rangeId": "12",
+                "startKey": "mA==",
+                "endKey": "mQ==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            },
+            {
+              "desc": {
+                "rangeId": "10",
+                "startKey": "lg==",
+                "endKey": "lw==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            },
+            {
+              "desc": {
+                "rangeId": "19",
+                "startKey": "nw==",
+                "endKey": "oA==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            },
+            {
+              "desc": {
+                "rangeId": "17",
+                "startKey": "nQ==",
+                "endKey": "ng==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            },
+            {
+              "desc": {
+                "rangeId": "14",
+                "startKey": "mg==",
+                "endKey": "mw==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            },
+            {
+              "desc": {
+                "rangeId": "21",
+                "startKey": "oQ==",
+                "endKey": "og==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            },
+            {
+              "desc": {
+                "rangeId": "18",
+                "startKey": "ng==",
+                "endKey": "nw==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            },
+            {
+              "desc": {
+                "rangeId": "7",
+                "startKey": "kw==",
+                "endKey": "lA==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            },
+            {
+              "desc": {
+                "rangeId": "15",
+                "startKey": "mw==",
+                "endKey": "nA==",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "queriesPerSecond": 0
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 import java.time.Instant;
 
-public class NodeStatusDeserializer extends JsonDeserializer<Node> {
+public class NodeDeserializer extends JsonDeserializer<Node> {
 
 
     @Override
@@ -18,14 +18,11 @@ public class NodeStatusDeserializer extends JsonDeserializer<Node> {
 
         JsonNode descNode = jsonNode.get("desc");
 
-        Node node = new Node(descNode.get("nodeId").intValue(),
+        return new Node(descNode.get("nodeId").intValue(),
                 descNode.get("buildTag").asText(),
                 Instant.ofEpochMilli(Long.parseLong(jsonNode.get("startedAt").textValue())),
                 Long.parseLong(jsonNode.get("totalSystemMemory").textValue()),
                 jsonNode.get("numCpus").intValue()
-
         );
-
-        return node;
     }
 }
