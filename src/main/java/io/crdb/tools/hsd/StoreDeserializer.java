@@ -22,7 +22,6 @@ public class StoreDeserializer extends JsonDeserializer<Store> {
 
         Iterator<JsonNode> elements = jsonNode.get("hotRanges").elements();
 
-
         List<HotRange> hotRanges = new ArrayList<>();
         for (Iterator<JsonNode> it = elements; it.hasNext(); ) {
             JsonNode rangeNode = it.next();
