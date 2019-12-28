@@ -26,6 +26,7 @@ public class HotRangesDeserializer extends JsonDeserializer<HotRanges> {
         for (Iterator<JsonNode> it = elements; it.hasNext(); ) {
             JsonNode storeNode = it.next();
             Store store = storeNode.traverse(p.getCodec()).readValueAs(Store.class);
+            store.setNodeId(Integer.parseInt(nodeId));
             stores.add(store);
         }
 

@@ -6,11 +6,17 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.primitives.Floats;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 public class StoreDeserializer extends JsonDeserializer<Store> {
+    private static final Logger log = LoggerFactory.getLogger(HotspotDetectorApplication.class);
 
 
     @Override
@@ -24,7 +30,13 @@ public class StoreDeserializer extends JsonDeserializer<Store> {
         for (Iterator<JsonNode> it = elements; it.hasNext(); ) {
             JsonNode rangeNode = it.next();
             HotRange hotRange = rangeNode.traverse(p.getCodec()).readValueAs(HotRange.class);
-            hotRanges.add(hotRange);
+
+            // we don't need ranges with no activity
+            if (hotRange.getQueriesPerSecond() > 0) {
+                hotRanges.add(hotRange);
+            } else {
+                log.warn("not activity for range {}", hotRange.getRangeId());
+            }
         }
 
         hotRanges.sort((o1, o2) -> Floats.compare(o1.getQueriesPerSecond(), o2.getQueriesPerSecond()));
