@@ -65,8 +65,10 @@ public class HotspotDetectorApplication {
 
             List<HotRangeVO> hotRangeVOS = Ordering.natural().onResultOf(new CompareQPSFunction()).greatestOf(hotList, 10);
 
+            int i=1;
             for (HotRangeVO vo : hotRangeVOS) {
-                log.info(vo.toString());
+                log.info("#{} - {}", i, vo.toString());
+                i++;
             }
 
         };

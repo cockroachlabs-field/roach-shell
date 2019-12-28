@@ -1,0 +1,1014 @@
+{
+  "nodeId": 2,
+  "rangeId": "1",
+  "responsesByNodeId": {
+    "1": {
+      "response": true,
+      "errorMessage": "",
+      "infos": [
+        {
+          "span": {
+            "startKey": "/Min",
+            "endKey": "/System/NodeLiveness"
+          },
+          "raftState": {
+            "replicaId": "1",
+            "hardState": {
+              "term": "61",
+              "vote": "2",
+              "commit": "8133"
+            },
+            "lead": "2",
+            "state": "StateFollower",
+            "applied": "8133",
+            "progress": {
+            },
+            "leadTransferee": "0"
+          },
+          "state": {
+            "state": {
+              "raftAppliedIndex": "8133",
+              "leaseAppliedIndex": "292",
+              "desc": {
+                "rangeId": "1",
+                "startKey": "",
+                "endKey": "BABsaXZlbmVzcy0=",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "lease": {
+                "start": {
+                  "wallTime": "1577546302057032700",
+                  "logical": 0
+                },
+                "expiration": {
+                  "wallTime": "1577557150869762200",
+                  "logical": 0
+                },
+                "replica": {
+                  "nodeId": 2,
+                  "storeId": 2,
+                  "replicaId": 2,
+                  "type": null
+                },
+                "deprecatedStartStasis": {
+                  "wallTime": "1577557150869762200",
+                  "logical": 0
+                },
+                "proposedTs": {
+                  "wallTime": "1577557141869793700",
+                  "logical": 0
+                },
+                "epoch": "0",
+                "sequence": "56"
+              },
+              "truncatedState": {
+                "index": "8110",
+                "term": "61"
+              },
+              "gcThreshold": {
+                "wallTime": "1577469924621072200",
+                "logical": 0
+              },
+              "deprecatedTxnSpanGcThreshold": null,
+              "stats": {
+                "containsEstimates": false,
+                "lastUpdateNanos": "1577557146267550600",
+                "intentAge": "0",
+                "gcBytesAge": "16912198",
+                "liveBytes": "1786",
+                "liveCount": "26",
+                "keyBytes": "653",
+                "keyCount": "28",
+                "valBytes": "1838",
+                "valCount": "35",
+                "intentBytes": "0",
+                "intentCount": "0",
+                "sysBytes": "255",
+                "sysCount": "4"
+              },
+              "usingAppliedStateKey": true
+            },
+            "lastIndex": "8133",
+            "numPending": "0",
+            "numDropped": "0",
+            "raftLogSize": "3448",
+            "raftLogSizeTrusted": true,
+            "approximateProposalQuota": "0",
+            "proposalQuotaBaseIndex": "0",
+            "proposalQuotaReleaseQueue": [
+            ],
+            "rangeMaxBytes": "67108864",
+            "newestClosedTimestamp": {
+              "nodeId": 0,
+              "closedTimestamp": {
+                "wallTime": "0",
+                "logical": 0
+              },
+              "mlai": "0"
+            },
+            "activeClosedTimestamp": {
+              "wallTime": "1577546302057032700",
+              "logical": 0
+            },
+            "rangefeedRegistrations": "0"
+          },
+          "sourceNodeId": 1,
+          "sourceStoreId": 1,
+          "errorMessage": "",
+          "leaseHistory": [
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557123904085000",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557123904085000",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557114904108600",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557130653627900",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557130653627900",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557121653689600",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557137403255900",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557137403255900",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557128403291000",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557144152347300",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557144152347300",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557135152417500",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557150869762200",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557150869762200",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557141869793700",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            }
+          ],
+          "problems": {
+            "unavailable": false,
+            "leaderNotLeaseHolder": false,
+            "noRaftLeader": false,
+            "underreplicated": false,
+            "overreplicated": false,
+            "noLease": false,
+            "quiescentEqualsTicking": false,
+            "raftLogTooLarge": false
+          },
+          "stats": {
+            "queriesPerSecond": 0,
+            "writesPerSecond": 0.1705874110025106
+          },
+          "latchesLocal": {
+            "readCount": "0",
+            "writeCount": "0"
+          },
+          "latchesGlobal": {
+            "readCount": "0",
+            "writeCount": "0"
+          },
+          "leaseStatus": {
+            "lease": {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557150869762200",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557150869762200",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557141869793700",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            "timestamp": {
+              "wallTime": "1577557146269467600",
+              "logical": 0
+            },
+            "state": 1,
+            "liveness": null
+          },
+          "quiescent": true,
+          "ticking": false
+        }
+      ]
+    },
+    "2": {
+      "response": true,
+      "errorMessage": "",
+      "infos": [
+        {
+          "span": {
+            "startKey": "/Min",
+            "endKey": "/System/NodeLiveness"
+          },
+          "raftState": {
+            "replicaId": "2",
+            "hardState": {
+              "term": "61",
+              "vote": "2",
+              "commit": "8133"
+            },
+            "lead": "2",
+            "state": "StateLeader",
+            "applied": "8133",
+            "progress": {
+              "1": {
+                "match": "8133",
+                "next": "8134",
+                "state": "StateReplicate",
+                "paused": false,
+                "pendingSnapshot": "0"
+              },
+              "2": {
+                "match": "8133",
+                "next": "8134",
+                "state": "StateReplicate",
+                "paused": false,
+                "pendingSnapshot": "0"
+              },
+              "3": {
+                "match": "8133",
+                "next": "8134",
+                "state": "StateReplicate",
+                "paused": false,
+                "pendingSnapshot": "0"
+              }
+            },
+            "leadTransferee": "0"
+          },
+          "state": {
+            "state": {
+              "raftAppliedIndex": "8133",
+              "leaseAppliedIndex": "292",
+              "desc": {
+                "rangeId": "1",
+                "startKey": "",
+                "endKey": "BABsaXZlbmVzcy0=",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "lease": {
+                "start": {
+                  "wallTime": "1577546302057032700",
+                  "logical": 0
+                },
+                "expiration": {
+                  "wallTime": "1577557150869762200",
+                  "logical": 0
+                },
+                "replica": {
+                  "nodeId": 2,
+                  "storeId": 2,
+                  "replicaId": 2,
+                  "type": null
+                },
+                "deprecatedStartStasis": {
+                  "wallTime": "1577557150869762200",
+                  "logical": 0
+                },
+                "proposedTs": {
+                  "wallTime": "1577557141869793700",
+                  "logical": 0
+                },
+                "epoch": "0",
+                "sequence": "56"
+              },
+              "truncatedState": {
+                "index": "8110",
+                "term": "61"
+              },
+              "gcThreshold": {
+                "wallTime": "1577469924621072200",
+                "logical": 0
+              },
+              "deprecatedTxnSpanGcThreshold": null,
+              "stats": {
+                "containsEstimates": false,
+                "lastUpdateNanos": "1577557146267550600",
+                "intentAge": "0",
+                "gcBytesAge": "16912198",
+                "liveBytes": "1786",
+                "liveCount": "26",
+                "keyBytes": "653",
+                "keyCount": "28",
+                "valBytes": "1838",
+                "valCount": "35",
+                "intentBytes": "0",
+                "intentCount": "0",
+                "sysBytes": "255",
+                "sysCount": "4"
+              },
+              "usingAppliedStateKey": true
+            },
+            "lastIndex": "8133",
+            "numPending": "0",
+            "numDropped": "0",
+            "raftLogSize": "3448",
+            "raftLogSizeTrusted": true,
+            "approximateProposalQuota": "1048576",
+            "proposalQuotaBaseIndex": "8133",
+            "proposalQuotaReleaseQueue": [
+            ],
+            "rangeMaxBytes": "67108864",
+            "newestClosedTimestamp": {
+              "nodeId": 0,
+              "closedTimestamp": {
+                "wallTime": "0",
+                "logical": 0
+              },
+              "mlai": "0"
+            },
+            "activeClosedTimestamp": {
+              "wallTime": "1577546302057032700",
+              "logical": 0
+            },
+            "rangefeedRegistrations": "0"
+          },
+          "sourceNodeId": 2,
+          "sourceStoreId": 2,
+          "errorMessage": "",
+          "leaseHistory": [
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557123904085000",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557123904085000",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557114904108600",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557130653627900",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557130653627900",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557121653689600",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557137403255900",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557137403255900",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557128403291000",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557144152347300",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557144152347300",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557135152417500",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557150869762200",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557150869762200",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557141869793700",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            }
+          ],
+          "problems": {
+            "unavailable": false,
+            "leaderNotLeaseHolder": false,
+            "noRaftLeader": false,
+            "underreplicated": false,
+            "overreplicated": false,
+            "noLease": false,
+            "quiescentEqualsTicking": false,
+            "raftLogTooLarge": false
+          },
+          "stats": {
+            "queriesPerSecond": 0.021109781297310913,
+            "writesPerSecond": 0.1708582307511014
+          },
+          "latchesLocal": {
+            "readCount": "0",
+            "writeCount": "0"
+          },
+          "latchesGlobal": {
+            "readCount": "0",
+            "writeCount": "0"
+          },
+          "leaseStatus": {
+            "lease": {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557150869762200",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557150869762200",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557141869793700",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            "timestamp": {
+              "wallTime": "1577557146269579200",
+              "logical": 0
+            },
+            "state": 1,
+            "liveness": null
+          },
+          "quiescent": true,
+          "ticking": false
+        }
+      ]
+    },
+    "3": {
+      "response": true,
+      "errorMessage": "",
+      "infos": [
+        {
+          "span": {
+            "startKey": "/Min",
+            "endKey": "/System/NodeLiveness"
+          },
+          "raftState": {
+            "replicaId": "3",
+            "hardState": {
+              "term": "61",
+              "vote": "2",
+              "commit": "8133"
+            },
+            "lead": "2",
+            "state": "StateFollower",
+            "applied": "8133",
+            "progress": {
+            },
+            "leadTransferee": "0"
+          },
+          "state": {
+            "state": {
+              "raftAppliedIndex": "8133",
+              "leaseAppliedIndex": "292",
+              "desc": {
+                "rangeId": "1",
+                "startKey": "",
+                "endKey": "BABsaXZlbmVzcy0=",
+                "internalReplicas": [
+                  {
+                    "nodeId": 1,
+                    "storeId": 1,
+                    "replicaId": 1,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 2,
+                    "storeId": 2,
+                    "replicaId": 2,
+                    "type": null
+                  },
+                  {
+                    "nodeId": 3,
+                    "storeId": 3,
+                    "replicaId": 3,
+                    "type": null
+                  }
+                ],
+                "nextReplicaId": 4,
+                "generation": "4",
+                "generationComparable": true,
+                "stickyBit": null
+              },
+              "lease": {
+                "start": {
+                  "wallTime": "1577546302057032700",
+                  "logical": 0
+                },
+                "expiration": {
+                  "wallTime": "1577557150869762200",
+                  "logical": 0
+                },
+                "replica": {
+                  "nodeId": 2,
+                  "storeId": 2,
+                  "replicaId": 2,
+                  "type": null
+                },
+                "deprecatedStartStasis": {
+                  "wallTime": "1577557150869762200",
+                  "logical": 0
+                },
+                "proposedTs": {
+                  "wallTime": "1577557141869793700",
+                  "logical": 0
+                },
+                "epoch": "0",
+                "sequence": "56"
+              },
+              "truncatedState": {
+                "index": "8110",
+                "term": "61"
+              },
+              "gcThreshold": {
+                "wallTime": "1577469924621072200",
+                "logical": 0
+              },
+              "deprecatedTxnSpanGcThreshold": null,
+              "stats": {
+                "containsEstimates": false,
+                "lastUpdateNanos": "1577557146267550600",
+                "intentAge": "0",
+                "gcBytesAge": "16912198",
+                "liveBytes": "1786",
+                "liveCount": "26",
+                "keyBytes": "653",
+                "keyCount": "28",
+                "valBytes": "1838",
+                "valCount": "35",
+                "intentBytes": "0",
+                "intentCount": "0",
+                "sysBytes": "255",
+                "sysCount": "4"
+              },
+              "usingAppliedStateKey": true
+            },
+            "lastIndex": "8133",
+            "numPending": "0",
+            "numDropped": "0",
+            "raftLogSize": "3448",
+            "raftLogSizeTrusted": true,
+            "approximateProposalQuota": "0",
+            "proposalQuotaBaseIndex": "0",
+            "proposalQuotaReleaseQueue": [
+            ],
+            "rangeMaxBytes": "67108864",
+            "newestClosedTimestamp": {
+              "nodeId": 0,
+              "closedTimestamp": {
+                "wallTime": "0",
+                "logical": 0
+              },
+              "mlai": "0"
+            },
+            "activeClosedTimestamp": {
+              "wallTime": "1577546302057032700",
+              "logical": 0
+            },
+            "rangefeedRegistrations": "0"
+          },
+          "sourceNodeId": 3,
+          "sourceStoreId": 3,
+          "errorMessage": "",
+          "leaseHistory": [
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557123904085000",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557123904085000",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557114904108600",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557130653627900",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557130653627900",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557121653689600",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557137403255900",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557137403255900",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557128403291000",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557144152347300",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557144152347300",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557135152417500",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557150869762200",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557150869762200",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557141869793700",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            }
+          ],
+          "problems": {
+            "unavailable": false,
+            "leaderNotLeaseHolder": false,
+            "noRaftLeader": false,
+            "underreplicated": false,
+            "overreplicated": false,
+            "noLease": false,
+            "quiescentEqualsTicking": false,
+            "raftLogTooLarge": false
+          },
+          "stats": {
+            "queriesPerSecond": 0,
+            "writesPerSecond": 0.17048697265519228
+          },
+          "latchesLocal": {
+            "readCount": "0",
+            "writeCount": "0"
+          },
+          "latchesGlobal": {
+            "readCount": "0",
+            "writeCount": "0"
+          },
+          "leaseStatus": {
+            "lease": {
+              "start": {
+                "wallTime": "1577546302057032700",
+                "logical": 0
+              },
+              "expiration": {
+                "wallTime": "1577557150869762200",
+                "logical": 0
+              },
+              "replica": {
+                "nodeId": 2,
+                "storeId": 2,
+                "replicaId": 2,
+                "type": null
+              },
+              "deprecatedStartStasis": {
+                "wallTime": "1577557150869762200",
+                "logical": 0
+              },
+              "proposedTs": {
+                "wallTime": "1577557141869793700",
+                "logical": 0
+              },
+              "epoch": "0",
+              "sequence": "56"
+            },
+            "timestamp": {
+              "wallTime": "1577557146269402800",
+              "logical": 0
+            },
+            "state": 1,
+            "liveness": null
+          },
+          "quiescent": true,
+          "ticking": false
+        }
+      ]
+    }
+  }
+}
