@@ -12,24 +12,23 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.sql.DataSource;
 import java.net.URI;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
-public class HotspotDetectorApplication {
+public class HotSpotDetectorApplication {
 
-    private static final Logger log = LoggerFactory.getLogger(HotspotDetectorApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(HotSpotDetectorApplication.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(HotspotDetectorApplication.class, args);
+        SpringApplication.run(HotSpotDetectorApplication.class, args);
     }
 
     @Bean
@@ -39,65 +38,66 @@ public class HotspotDetectorApplication {
 
 
     @Bean
-    public CommandLineRunner run(RestTemplate restTemplate, Environment environment, JdbcTemplate jdbcTemplate) throws Exception {
+    public CommandLineRunner run(RestTemplate restTemplate, Environment environment, JdbcTemplate jdbcTemplate) {
         return args -> {
-            URI nodesUri = UriComponentsBuilder.fromUriString("http://localhost:8080/_status/nodes").build().toUri();
 
-            NodeStatusWrapper wrapper = restTemplate.getForObject(nodesUri, NodeStatusWrapper.class);
 
-            List<Node> nodes = wrapper.getNodes();
+            final String host = environment.getRequiredProperty("crdb.host");
+            final String httpPort = environment.getProperty("crdb.http.port");
+            final int maxHotRanges = environment.getProperty("crdb.hotranges.max", Integer.class, 10);
 
-            if (nodes == null || nodes.isEmpty()) {
-                log.warn("Unable to find nodes");
-                return;
-            } else {
-                log.debug("found {} nodes", nodes.size());
+            String httpHost = environment.getProperty("crdb.http.host");
+
+            if (StringUtils.isEmpty(httpHost)) {
+                httpHost = host;
             }
 
-            List<HotRangeVO> hotList = new ArrayList<>();
 
-            for (Node node : nodes) {
-                URI hotRangeUri = UriComponentsBuilder.fromUriString("http://localhost:8080/_status/hotranges")
+            final URI nodesUri = UriComponentsBuilder.fromUriString(String.format("http://%s:%s/_status/nodes", httpHost, httpPort))
+                    .build()
+                    .toUri();
+
+            final NodeStatusWrapper wrapper = restTemplate.getForObject(nodesUri, NodeStatusWrapper.class);
+
+            Assert.notNull(wrapper, "problem fetching nodes");
+
+            final List<HotRangeVO> hotList = new ArrayList<>();
+
+            for (Node node : wrapper.getNodes()) {
+                final URI hotRangeUri = UriComponentsBuilder.fromUriString(String.format("http://%s:%s/_status/hotranges", httpHost, httpPort))
                         .queryParam("node_id", node.getNodeId())
                         .build()
                         .toUri();
 
-                HotRanges hotRanges = restTemplate.getForObject(hotRangeUri, HotRanges.class);
+                final HotRanges hotRanges = restTemplate.getForObject(hotRangeUri, HotRanges.class);
+
+                Assert.notNull(hotRanges, "problem fetching hot ranges for node " + node.getNodeId());
 
                 for (Store store : hotRanges.getStores()) {
-
                     for (HotRange range : store.getHotRanges()) {
                         hotList.add(new HotRangeVO(node.getNodeId(), store.getStoreId(), range.getRangeId(), range.getStartKey(), range.getEndKey(), range.getQueriesPerSecond()));
                     }
                 }
-
-                log.debug("stop");
             }
 
-            List<HotRangeVO> hotRangeVOS = Ordering.natural().onResultOf(new CompareQPSFunction()).greatestOf(hotList, 10);
+            List<HotRangeVO> hotRangeVOS = Ordering.natural().onResultOf(new CompareQPSFunction()).greatestOf(hotList, maxHotRanges);
 
-
-            int i = 1;
             for (HotRangeVO vo : hotRangeVOS) {
 
-                RangeVO rangeVO = jdbcTemplate.queryForObject("select * from crdb_internal.ranges_no_leases where range_id=?", new RowMapper<RangeVO>() {
-                    @Override
-                    public RangeVO mapRow(ResultSet resultSet, int i) throws SQLException {
-
-                        return new RangeVO(resultSet.getInt("range_id"),
+                RangeVO rangeVO = jdbcTemplate.queryForObject("select * from crdb_internal.ranges_no_leases where range_id = ?",
+                        (resultSet, i) -> new RangeVO(resultSet.getInt("range_id"),
                                 resultSet.getString("start_pretty"),
                                 resultSet.getString("end_pretty"),
                                 resultSet.getString("database_name"),
                                 resultSet.getString("table_name"),
                                 resultSet.getString("index_name")
-                        );
-                    }
-                }, vo.getRangeId());
+                        ), vo.getRangeId());
 
+                Assert.notNull(rangeVO, "unable to find range for id " + vo.getRangeId());
 
-                log.info("#{} - {}, rangeVo {}", i, vo.toString(), rangeVO.toString());
-                i++;
+                log.info("{}, rangeVo {}", vo.toString(), rangeVO.toString());
             }
+
 
         };
     }
