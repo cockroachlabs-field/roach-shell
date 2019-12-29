@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = HotRangeDeserializer.class)
 public class HotRange {
 
-    private int rangeId;
-    private String startKey;
-    private String endKey;
-    private float queriesPerSecond;
+    private final int rangeId;
+    private final String startKey;
+    private final String endKey;
+    private final float queriesPerSecond;
 
     public HotRange(int rangeId, String startKey, String endKey, float queriesPerSecond) {
         this.rangeId = rangeId;

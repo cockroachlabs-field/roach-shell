@@ -1,7 +1,6 @@
 package io.crdb.tools.hsd;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -14,7 +13,7 @@ import java.util.List;
 public class HotRangesDeserializer extends JsonDeserializer<HotRanges> {
 
     @Override
-    public HotRanges deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public HotRanges deserialize(JsonParser p, DeserializationContext context) throws IOException {
         JsonNode jsonNode = p.getCodec().readTree(p);
 
         String nodeId = jsonNode.get("nodeId").asText();
@@ -23,8 +22,8 @@ public class HotRangesDeserializer extends JsonDeserializer<HotRanges> {
 
         List<Store> stores = new ArrayList<>();
 
-        for (Iterator<JsonNode> it = elements; it.hasNext(); ) {
-            JsonNode storeNode = it.next();
+        for (; elements.hasNext(); ) {
+            JsonNode storeNode = elements.next();
             Store store = storeNode.traverse(p.getCodec()).readValueAs(Store.class);
             store.setNodeId(Integer.parseInt(nodeId));
             stores.add(store);

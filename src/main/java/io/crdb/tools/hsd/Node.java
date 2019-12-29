@@ -7,15 +7,15 @@ import java.time.Instant;
 @JsonDeserialize(using = NodeDeserializer.class)
 public class Node {
 
-    private int nodeId;
+    private final int nodeId;
 
-    private String build;
+    private final String build;
 
-    private Instant startedAt;
+    private final Instant startedAt;
 
-    private long totalSystemMemory;
+    private final long totalSystemMemory;
 
-    private int cpus;
+    private final int cpus;
 
     public Node(int nodeId, String build, Instant startedAt, long totalSystemMemory, int cpus) {
         this.nodeId = nodeId;

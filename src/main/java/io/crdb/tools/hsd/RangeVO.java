@@ -1,34 +1,12 @@
 package io.crdb.tools.hsd;
 
 public class RangeVO {
-    /*
-    create table crdb_internal.ranges_no_leases
-(
-	range_id int8 not null,
-	start_key bytea not null,
-	start_pretty text not null,
-	end_key bytea not null,
-	end_pretty text not null,
-	database_name text not null,
-	table_name text not null,
-	index_name text not null,
-	replicas _int8(19) not null,
-	replica_localities _text not null,
-	learner_replicas _int8(19) not null,
-	split_enforced_until timestamp(6)
-);
-
-comment on table crdb_internal.ranges_no_leases is 'range metadata without leaseholder details (KV join; expensive!)';
-
-
-     */
-
-    private int rangeId;
-    private String startKey;
-    private String endKey;
-    private String databaseName;
-    private String tableName;
-    private String indexName;
+    private final int rangeId;
+    private final String startKey;
+    private final String endKey;
+    private final String databaseName;
+    private final String tableName;
+    private final String indexName;
 
     public RangeVO(int rangeId, String startKey, String endKey, String databaseName, String tableName, String indexName) {
         this.rangeId = rangeId;

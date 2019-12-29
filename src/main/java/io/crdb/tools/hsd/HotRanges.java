@@ -7,7 +7,7 @@ import java.util.List;
 @JsonDeserialize(using = HotRangesDeserializer.class)
 public class HotRanges {
 
-    private List<Store> stores;
+    private final List<Store> stores;
 
     public HotRanges(List<Store> stores) {
         this.stores = stores;

@@ -2,13 +2,13 @@ package io.crdb.tools.hsd;
 
 public class HotRangeVO {
 
-    private int nodeId;
-    private int storeId;
-    private int rangeId;
+    private final int nodeId;
+    private final int storeId;
+    private final int rangeId;
 
-    private String startKey;
-    private String endKey;
-    private float queriesPerSecond;
+    private final String startKey;
+    private final String endKey;
+    private final float queriesPerSecond;
 
     public HotRangeVO(int nodeId, int storeId, int rangeId, String startKey, String endKey, float queriesPerSecond) {
         this.nodeId = nodeId;

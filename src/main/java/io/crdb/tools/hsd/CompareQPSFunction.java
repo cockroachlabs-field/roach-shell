@@ -7,6 +7,10 @@ public class CompareQPSFunction implements Function<HotRangeVO, Float> {
     @Nullable
     @Override
     public Float apply(@Nullable HotRangeVO input) {
-        return input.getQueriesPerSecond();
+        if (input != null) {
+            return input.getQueriesPerSecond();
+        }
+
+        return 0.0f;
     }
 }

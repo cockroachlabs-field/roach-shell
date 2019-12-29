@@ -9,9 +9,9 @@ public class Store {
 
     private int nodeId;
 
-    private int storeId;
+    private final int storeId;
 
-    private List<HotRange> hotRanges;
+    private final List<HotRange> hotRanges;
 
     public Store(int storeId, List<HotRange> hotRanges) {
         this.storeId = storeId;
