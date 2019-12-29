@@ -1,0 +1,12 @@
+# =============================================================================
+#
+#   RRRRRR                        hh          SSSSS  hh             lll lll
+#   RR   RR  oooo    aa aa   cccc hh         SS      hh        eee  lll lll
+#   RRRRRR  oo  oo  aa aaa cc     hhhhhh      SSSSS  hhhhhh  ee   e lll lll
+#   RR  RR  oo  oo aa  aaa cc     hh   hh         SS hh   hh eeeee  lll lll
+#   RR   RR  oooo   aaa aa  ccccc hh   hh     SSSSS  hh   hh  eeeee lll lll
+#
+# :: roach-shell :: ${application.formatted-version}
+# :: Spring Boot :: ${spring-boot.formatted-version}
+#
+# =============================================================================

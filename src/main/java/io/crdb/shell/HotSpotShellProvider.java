@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class HotSpotShellProvider implements PromptProvider {
     @Override
     public AttributedString getPrompt() {
-        return new AttributedString("crdb-shell:>",
+        return new AttributedString("roach-shell:>",
                 AttributedStyle.DEFAULT.foreground(AttributedStyle.GREEN)
         );
     }

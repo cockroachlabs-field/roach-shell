@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>io.crdb.shell</groupId>
-    <artifactId>crdb-shell</artifactId>
+    <artifactId>roach-shell</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <name>CockroachDB Shell</name>
