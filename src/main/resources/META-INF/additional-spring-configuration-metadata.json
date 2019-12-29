@@ -1,0 +1,48 @@
+{
+  "properties": [
+    {
+      "name": "crdb.username",
+      "type": "java.lang.String",
+      "description": "CockroachDB username. Default root."
+    },
+    {
+      "name": "crdb.password",
+      "type": "java.lang.String",
+      "description": "CockroachDB password."
+    },
+    {
+      "name": "crdb.host",
+      "type": "java.lang.String",
+      "description": "CockroachDB server hostname."
+    },
+    {
+      "name": "crdb.port",
+      "type": "java.lang.String",
+      "description": "CockroachDB port. Default 26257."
+    },
+    {
+      "name": "crdb.database",
+      "type": "java.lang.String",
+      "description": "CockroachDB database name."
+    },
+    {
+      "name": "crdb.http.host",
+      "type": "java.lang.String",
+      "description": "CockroachDB http hostname. Will use crdb.host if not provided."
+    },
+    {
+      "name": "crdb.http.port",
+      "type": "java.lang.String",
+      "description": "CockroachDB http port. Default 8080."
+    },
+    {
+      "name": "crdb.ssl.mode",
+      "type": "java.lang.String",
+      "description": "CockroachDB ssl mode.  Default disable."
+    },
+    {
+      "name": "crdb.hotranges.max",
+      "type": "java.lang.String",
+      "description": "Maximum number of Hot Ranges to display."
+    }
+  ] }
