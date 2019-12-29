@@ -1,4 +1,4 @@
-package io.crdb.tools.hsd;
+package io.crdb.shell;
 
 import com.google.common.collect.Ordering;
 import com.google.common.collect.TreeBasedTable;

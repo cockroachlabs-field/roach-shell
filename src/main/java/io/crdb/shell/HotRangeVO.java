@@ -1,4 +1,4 @@
-package io.crdb.tools.hsd;
+package io.crdb.shell;
 
 public class HotRangeVO {
 

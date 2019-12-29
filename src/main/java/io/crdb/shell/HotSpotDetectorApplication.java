@@ -1,4 +1,4 @@
-package io.crdb.tools.hsd;
+package io.crdb.shell;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.jline.terminal.Terminal;

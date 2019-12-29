@@ -1,4 +1,4 @@
-package io.crdb.tools.hsd;
+package io.crdb.shell;
 
 import org.jline.terminal.Terminal;
 import org.jline.utils.AttributedStringBuilder;

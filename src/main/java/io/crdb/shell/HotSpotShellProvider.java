@@ -1,4 +1,4 @@
-package io.crdb.tools.hsd;
+package io.crdb.shell;
 
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStyle;

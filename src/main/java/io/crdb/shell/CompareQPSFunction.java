@@ -1,4 +1,4 @@
-package io.crdb.tools.hsd;
+package io.crdb.shell;
 
 import com.google.common.base.Function;
 import org.checkerframework.checker.nullness.qual.Nullable;
