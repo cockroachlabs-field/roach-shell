@@ -10,12 +10,12 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>io.crdb.tools</groupId>
-    <artifactId>hotspot-detector</artifactId>
+    <groupId>io.crdb.shell</groupId>
+    <artifactId>crdb-shell</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>hotspot-detector</name>
-    <description>CockroachDB Hot Spot Detector</description>
+    <name>CockroachDB Shell</name>
+    <description>CockroachDB Shell</description>
 
     <properties>
         <java.version>11</java.version>
