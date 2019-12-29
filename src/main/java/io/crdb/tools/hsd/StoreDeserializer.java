@@ -33,8 +33,6 @@ public class StoreDeserializer extends JsonDeserializer<Store> {
             // we don't need ranges with no activity
             if (hotRange.getQueriesPerSecond() > 0) {
                 hotRanges.add(hotRange);
-            } else {
-                log.warn("not activity for range {}", hotRange.getRangeId());
             }
         }
 
