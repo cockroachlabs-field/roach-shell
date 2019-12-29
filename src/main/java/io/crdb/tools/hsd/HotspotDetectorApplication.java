@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.sql.DataSource;
+import java.net.URI;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,7 +41,9 @@ public class HotspotDetectorApplication {
     @Bean
     public CommandLineRunner run(RestTemplate restTemplate, Environment environment, JdbcTemplate jdbcTemplate) throws Exception {
         return args -> {
-            NodeStatusWrapper wrapper = restTemplate.getForObject("http://localhost:8080/_status/nodes", NodeStatusWrapper.class);
+            URI nodesUri = UriComponentsBuilder.fromUriString("http://localhost:8080/_status/nodes").build().toUri();
+
+            NodeStatusWrapper wrapper = restTemplate.getForObject(nodesUri, NodeStatusWrapper.class);
 
             List<Node> nodes = wrapper.getNodes();
 
@@ -54,10 +57,12 @@ public class HotspotDetectorApplication {
             List<HotRangeVO> hotList = new ArrayList<>();
 
             for (Node node : nodes) {
-                UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8080/_status/hotranges")
-                        .queryParam("node_id", node.getNodeId());
+                URI hotRangeUri = UriComponentsBuilder.fromUriString("http://localhost:8080/_status/hotranges")
+                        .queryParam("node_id", node.getNodeId())
+                        .build()
+                        .toUri();
 
-                HotRanges hotRanges = restTemplate.getForObject(builder.toUriString(), HotRanges.class);
+                HotRanges hotRanges = restTemplate.getForObject(hotRangeUri, HotRanges.class);
 
                 for (Store store : hotRanges.getStores()) {
 
