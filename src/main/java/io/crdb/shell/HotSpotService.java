@@ -63,6 +63,9 @@ public class HotSpotService {
         final List<HotRangeVO> hotList = new ArrayList<>();
 
         for (Node node : wrapper.getNodes()) {
+
+            shellHelper.printInfo("Found CockroachDB Node with id [" + node.getNodeId() + "], address [" + node.getAddress() + "] and build [" + node.getBuild() + "]");
+
             final URI hotRangeUri = UriComponentsBuilder.fromUriString(String.format("http://%s:%s/_status/hotranges", httpHost, httpPort))
                     .queryParam("node_id", node.getNodeId())
                     .build()
