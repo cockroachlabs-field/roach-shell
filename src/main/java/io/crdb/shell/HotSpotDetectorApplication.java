@@ -43,7 +43,7 @@ public class HotSpotDetectorApplication {
     }
 
     @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
 
         Supplier<ClientHttpRequestFactory> supplier = () -> {
             try {
@@ -81,6 +81,7 @@ public class HotSpotDetectorApplication {
                 environment.getProperty("crdb.ssl.mode"));
 
         if (secure) {
+            //todo: need to pass ssl
             url += String.format("&sslcert=%s&sslkey=%s", "/Users/tv/dev/projects/docker-examples/example-secure/client.root.crt", "/Users/tv/dev/projects/docker-examples/example-secure/client.root.key.pk8");
         }
 

@@ -59,15 +59,16 @@ public class HotSpotService {
             httpHost = host;
         }
 
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
 
         if (secure) {
+            //todo: need to pass credentials
             String loginCookie = login(httpPort, httpScheme, httpHost, "test", "password");
 
             headers.add("Cookie", loginCookie);
         }
 
-        List<Node> nodes = getNodes(httpPort, httpScheme, httpHost, headers);
+        final List<Node> nodes = getNodes(httpPort, httpScheme, httpHost, headers);
 
         final List<HotRangeVO> hotList = new ArrayList<>();
 
