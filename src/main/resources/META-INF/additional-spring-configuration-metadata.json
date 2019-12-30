@@ -44,5 +44,25 @@
       "name": "crdb.hotranges.max",
       "type": "java.lang.String",
       "description": "Maximum number of Hot Ranges to display. Default '10'."
+    },
+    {
+      "name": "shell.out.info",
+      "type": "io.crdb.shell.PromptColor",
+      "description": "Description for shell.out.info."
+    },
+    {
+      "name": "shell.out.success",
+      "type": "io.crdb.shell.PromptColor",
+      "description": "Description for shell.out.success."
+    },
+    {
+      "name": "shell.out.warning",
+      "type": "io.crdb.shell.PromptColor",
+      "description": "Description for shell.out.warning."
+    },
+    {
+      "name": "shell.out.error",
+      "type": "io.crdb.shell.PromptColor",
+      "description": "Description for shell.out.error."
     }
   ] }
