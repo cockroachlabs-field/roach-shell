@@ -21,7 +21,8 @@ public class NodeDeserializer extends JsonDeserializer<Node> {
                 descNode.get("buildTag").asText(),
                 Instant.ofEpochMilli(Long.parseLong(jsonNode.get("startedAt").textValue())),
                 Long.parseLong(jsonNode.get("totalSystemMemory").textValue()),
-                jsonNode.get("numCpus").intValue()
+                jsonNode.get("numCpus").intValue(),
+                descNode.get("address").get("addressField").textValue()
         );
     }
 }

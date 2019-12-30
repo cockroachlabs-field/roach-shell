@@ -30,11 +30,13 @@ public class HotSpotService {
     private final RestTemplate restTemplate;
     private final Environment environment;
     private final JdbcTemplate jdbcTemplate;
+    private final ShellHelper shellHelper;
 
-    public HotSpotService(RestTemplate restTemplate, Environment environment, JdbcTemplate jdbcTemplate) {
+    public HotSpotService(RestTemplate restTemplate, Environment environment, JdbcTemplate jdbcTemplate, ShellHelper shellHelper) {
         this.restTemplate = restTemplate;
         this.environment = environment;
         this.jdbcTemplate = jdbcTemplate;
+        this.shellHelper = shellHelper;
     }
 
     public Table getHotSpots() {
@@ -49,7 +51,6 @@ public class HotSpotService {
         if (StringUtils.isEmpty(httpHost)) {
             httpHost = host;
         }
-
 
         final URI nodesUri = UriComponentsBuilder.fromUriString(String.format("http://%s:%s/_status/nodes", httpHost, httpPort))
                 .build()
@@ -73,7 +74,7 @@ public class HotSpotService {
 
             for (Store store : hotRanges.getStores()) {
                 for (HotRange range : store.getHotRanges()) {
-                    hotList.add(new HotRangeVO(node.getNodeId(), store.getStoreId(), range.getRangeId(), range.getStartKey(), range.getEndKey(), range.getQueriesPerSecond()));
+                    hotList.add(new HotRangeVO(node.getNodeId(), node.getAddress(), store.getStoreId(), range.getRangeId(), range.getStartKey(), range.getEndKey(), range.getQueriesPerSecond()));
                 }
             }
         }
@@ -84,7 +85,7 @@ public class HotSpotService {
 
         treeBasedTable.put(0, 0, "Rank");
         treeBasedTable.put(0, 1, "QPS");
-        treeBasedTable.put(0, 2, "Node ID");
+        treeBasedTable.put(0, 2, "Node ID/Address");
         treeBasedTable.put(0, 3, "Store ID");
         treeBasedTable.put(0, 4, "Database");
         treeBasedTable.put(0, 5, "Table");
@@ -108,7 +109,7 @@ public class HotSpotService {
 
             treeBasedTable.put(rowCount, 0, Integer.toString(rowCount));
             treeBasedTable.put(rowCount, 1, Float.toString(vo.getQueriesPerSecond()));
-            treeBasedTable.put(rowCount, 2, Integer.toString(vo.getNodeId()));
+            treeBasedTable.put(rowCount, 2, vo.getNodeId() + "/" + vo.getNodeAddress());
             treeBasedTable.put(rowCount, 3, Integer.toString(vo.getStoreId()));
             treeBasedTable.put(rowCount, 4, rangeVO.getDatabaseName());
             treeBasedTable.put(rowCount, 5, rangeVO.getTableName());

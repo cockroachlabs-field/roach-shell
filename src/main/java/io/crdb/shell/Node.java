@@ -17,12 +17,15 @@ public class Node {
 
     private final int cpus;
 
-    public Node(int nodeId, String build, Instant startedAt, long totalSystemMemory, int cpus) {
+    private final String address;
+
+    public Node(int nodeId, String build, Instant startedAt, long totalSystemMemory, int cpus, String address) {
         this.nodeId = nodeId;
         this.build = build;
         this.startedAt = startedAt;
         this.totalSystemMemory = totalSystemMemory;
         this.cpus = cpus;
+        this.address = address;
     }
 
     public int getNodeId() {
@@ -45,4 +48,7 @@ public class Node {
         return cpus;
     }
 
+    public String getAddress() {
+        return address;
+    }
 }
