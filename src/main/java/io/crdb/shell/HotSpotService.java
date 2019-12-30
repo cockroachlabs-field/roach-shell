@@ -82,13 +82,14 @@ public class HotSpotService {
 
         TreeBasedTable<Integer, Integer, String> treeBasedTable = TreeBasedTable.create();
 
-            treeBasedTable.put(0, 0, "QPS");
-            treeBasedTable.put(0, 1, "Node");
-            treeBasedTable.put(0, 2, "Store");
-            treeBasedTable.put(0, 3, "Range");
-            treeBasedTable.put(0, 4, "Database");
-            treeBasedTable.put(0, 5, "Table");
-            treeBasedTable.put(0, 6, "Index");
+        treeBasedTable.put(0, 0, "Rank");
+        treeBasedTable.put(0, 1, "QPS");
+        treeBasedTable.put(0, 2, "Node ID");
+        treeBasedTable.put(0, 3, "Store ID");
+        treeBasedTable.put(0, 4, "Database");
+        treeBasedTable.put(0, 5, "Table");
+        treeBasedTable.put(0, 6, "Index");
+        treeBasedTable.put(0, 7, "Range");
 
         int rowCount = 1;
 
@@ -105,13 +106,14 @@ public class HotSpotService {
 
             Assert.notNull(rangeVO, "unable to find range for id " + vo.getRangeId());
 
-            treeBasedTable.put(rowCount, 0, Float.toString(vo.getQueriesPerSecond()));
-            treeBasedTable.put(rowCount, 1, Integer.toString(vo.getNodeId()));
-            treeBasedTable.put(rowCount, 2, Integer.toString(vo.getStoreId()));
-            treeBasedTable.put(rowCount, 3, rangeVO.getStartKey() + " - " + rangeVO.getEndKey());
+            treeBasedTable.put(rowCount, 0, Integer.toString(rowCount));
+            treeBasedTable.put(rowCount, 1, Float.toString(vo.getQueriesPerSecond()));
+            treeBasedTable.put(rowCount, 2, Integer.toString(vo.getNodeId()));
+            treeBasedTable.put(rowCount, 3, Integer.toString(vo.getStoreId()));
             treeBasedTable.put(rowCount, 4, rangeVO.getDatabaseName());
             treeBasedTable.put(rowCount, 5, rangeVO.getTableName());
             treeBasedTable.put(rowCount, 6, rangeVO.getIndexName());
+            treeBasedTable.put(rowCount, 7, rangeVO.getStartKey() + " - " + rangeVO.getEndKey());
 
             rowCount++;
 
@@ -120,7 +122,7 @@ public class HotSpotService {
         SortedSet<Integer> rowKeys = treeBasedTable.rowKeySet();
         int rowKeySize = rowKeys.size();
 
-        String[][] data = new String[rowKeySize][7];
+        String[][] data = new String[rowKeySize][8];
 
         for (Integer rowKey : rowKeys) {
             SortedMap<Integer, String> row = treeBasedTable.row(rowKey);
@@ -131,7 +133,7 @@ public class HotSpotService {
         }
 
         TableBuilder tableBuilder = new TableBuilder(new ArrayTableModel(data));
-        return tableBuilder.addFullBorder(BorderStyle.oldschool).build();
+        return tableBuilder.addFullBorder(BorderStyle.fancy_heavy).build();
 
     }
 }

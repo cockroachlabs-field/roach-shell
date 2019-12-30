@@ -20,6 +20,7 @@
     <properties>
         <java.version>11</java.version>
         <skipTests>true</skipTests>
+        <!--<jline.version>3.13.2</jline.version>-->
     </properties>
 
     <dependencies>
