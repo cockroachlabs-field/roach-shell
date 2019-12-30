@@ -64,5 +64,15 @@
       "name": "shell.out.error",
       "type": "io.crdb.shell.PromptColor",
       "description": "Description for shell.out.error."
+    },
+    {
+      "name": "crdb.http.scheme",
+      "type": "java.lang.String",
+      "description": "Http or Https."
+    },
+    {
+      "name": "crdb.secure.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Is this a secure CockroachDB cluster?."
     }
   ] }

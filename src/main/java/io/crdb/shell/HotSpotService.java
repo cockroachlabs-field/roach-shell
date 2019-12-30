@@ -5,6 +5,10 @@ import com.google.common.collect.TreeBasedTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.shell.table.ArrayTableModel;
 import org.springframework.shell.table.BorderStyle;
@@ -44,6 +48,7 @@ public class HotSpotService {
 
         final String host = environment.getRequiredProperty("crdb.host");
         final String httpPort = environment.getProperty("crdb.http.port");
+        final String httpScheme = environment.getProperty("crdb.http.scheme");
         final int maxHotRanges = environment.getProperty("crdb.hotranges.max", Integer.class, 10);
 
         String httpHost = environment.getProperty("crdb.http.host");
@@ -52,30 +57,49 @@ public class HotSpotService {
             httpHost = host;
         }
 
-        final URI nodesUri = UriComponentsBuilder.fromUriString(String.format("http://%s:%s/_status/nodes", httpHost, httpPort))
+        final URI loginUri = UriComponentsBuilder.fromUriString(String.format("%s://%s:%s/login", httpScheme, httpHost, httpPort))
                 .build()
                 .toUri();
 
-        final NodeStatusWrapper wrapper = restTemplate.getForObject(nodesUri, NodeStatusWrapper.class);
+        RequestEntity<String> httpEntity = RequestEntity.post(loginUri).contentType(MediaType.APPLICATION_JSON).body("{\"username\":\"test\", \"password\":\"password\"}");
 
-        Assert.notNull(wrapper, "problem fetching nodes");
+        final ResponseEntity<String> loginEntity = restTemplate.exchange(httpEntity, String.class);
+        String loginCookie = loginEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
+
+        final URI nodesUri = UriComponentsBuilder.fromUriString(String.format("%s://%s:%s/_status/nodes", httpScheme, httpHost, httpPort))
+                .build()
+                .toUri();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", loginCookie );
+
+        RequestEntity<Void> requestEntity = RequestEntity.get(nodesUri).headers(headers).accept(MediaType.APPLICATION_JSON).build();
+
+        final ResponseEntity<NodeStatusWrapper> statusEntity = restTemplate.exchange(requestEntity, NodeStatusWrapper.class);
+
+        Assert.notNull(statusEntity, "problem fetching nodes");
 
         final List<HotRangeVO> hotList = new ArrayList<>();
 
-        for (Node node : wrapper.getNodes()) {
+        Assert.notNull(statusEntity.getBody(), "problem getting body from node status");
+
+        for (Node node : statusEntity.getBody().getNodes()) {
 
             shellHelper.printInfo("Found CockroachDB Node with id [" + node.getNodeId() + "], address [" + node.getAddress() + "] and build [" + node.getBuild() + "]");
 
-            final URI hotRangeUri = UriComponentsBuilder.fromUriString(String.format("http://%s:%s/_status/hotranges", httpHost, httpPort))
+            final URI hotRangeUri = UriComponentsBuilder.fromUriString(String.format("%s://%s:%s/_status/hotranges", httpScheme, httpHost, httpPort))
                     .queryParam("node_id", node.getNodeId())
                     .build()
                     .toUri();
 
-            final HotRanges hotRanges = restTemplate.getForObject(hotRangeUri, HotRanges.class);
+            RequestEntity<Void> rangesRequestEntit = RequestEntity.get(hotRangeUri).headers(headers).accept(MediaType.APPLICATION_JSON).build();
 
-            Assert.notNull(hotRanges, "problem fetching hot ranges for node " + node.getNodeId());
+            final ResponseEntity<HotRanges> rangesEntity = restTemplate.exchange(rangesRequestEntit, HotRanges.class);
 
-            for (Store store : hotRanges.getStores()) {
+            Assert.notNull(rangesEntity, "problem fetching hot ranges for node " + node.getNodeId());
+            Assert.notNull(rangesEntity.getBody(), "problem getting body from ranges");
+
+            for (Store store : rangesEntity.getBody().getStores()) {
                 for (HotRange range : store.getHotRanges()) {
                     hotList.add(new HotRangeVO(node.getNodeId(), node.getAddress(), store.getStoreId(), range.getRangeId(), range.getStartKey(), range.getEndKey(), range.getQueriesPerSecond()));
                 }
@@ -122,6 +146,17 @@ public class HotSpotService {
             rowCount++;
 
         }
+
+
+        final URI logoutUri = UriComponentsBuilder.fromUriString(String.format("%s://%s:%s/logout", httpScheme, httpHost, httpPort))
+                .build()
+                .toUri();
+
+        RequestEntity<Void> logoutEntity = RequestEntity.get(logoutUri).headers(headers).build();
+
+        final ResponseEntity<String> logoutResponse = restTemplate.exchange(logoutEntity, String.class);
+
+
 
         SortedSet<Integer> rowKeys = treeBasedTable.rowKeySet();
         int rowKeySize = rowKeys.size();
