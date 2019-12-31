@@ -85,7 +85,7 @@ public class HotSpotService {
 
         for (Node node : nodes) {
 
-            shellHelper.printInfo("Found Node with id [" + node.getNodeId() + "], address [" + node.getAddress() + "] and build [" + node.getBuild() + "].");
+            shellHelper.print("Found Node with id [" + node.getNodeId() + "], address [" + node.getAddress() + "] and build [" + node.getBuild() + "].");
 
             List<Store> stores = getHotRangesForNode(httpPort, httpScheme, httpHost, headers, node);
 
