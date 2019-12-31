@@ -72,9 +72,9 @@ public class HotSpotService {
 
         final List<HotRangeVO> hotList = new ArrayList<>();
 
-        for (Node node :nodes) {
+        for (Node node : nodes) {
 
-            shellHelper.printInfo("Found CockroachDB Node with id [" + node.getNodeId() + "], address [" + node.getAddress() + "] and build [" + node.getBuild() + "]");
+            shellHelper.printInfo("Found Node with id [" + node.getNodeId() + "], address [" + node.getAddress() + "] and build [" + node.getBuild() + "].");
 
             List<Store> stores = getHotRangesForNode(httpPort, httpScheme, httpHost, headers, node);
 
@@ -151,23 +151,32 @@ public class HotSpotService {
     }
 
     private List<Store> getHotRangesForNode(String httpPort, String httpScheme, String httpHost, HttpHeaders headers, Node node) {
-        final URI hotRangeUri = UriComponentsBuilder
-                .fromUriString(String.format("%s://%s:%s/_status/hotranges", httpScheme, httpHost, httpPort))
-                .queryParam("node_id", node.getNodeId())
-                .build()
-                .toUri();
 
-        final RequestEntity<Void> requestEntity = RequestEntity.get(hotRangeUri).headers(headers).accept(MediaType.APPLICATION_JSON).build();
+        try {
+            final URI hotRangeUri = UriComponentsBuilder
+                    .fromUriString(String.format("%s://%s:%s/_status/hotranges", httpScheme, httpHost, httpPort))
+                    .queryParam("node_id", node.getNodeId())
+                    .build()
+                    .toUri();
 
-        final ResponseEntity<HotRanges> responseEntity = restTemplate.exchange(requestEntity, HotRanges.class);
+            final RequestEntity<Void> requestEntity = RequestEntity.get(hotRangeUri).headers(headers).accept(MediaType.APPLICATION_JSON).build();
 
-        Assert.notNull(responseEntity, "getHotRangesForNode() ResponseEntity is null");
+            final ResponseEntity<HotRanges> responseEntity = restTemplate.exchange(requestEntity, HotRanges.class);
 
-        final HotRanges body = responseEntity.getBody();
+            Assert.notNull(responseEntity, "getHotRangesForNode() ResponseEntity is null");
 
-        Assert.notNull(body, "getHotRangesForNode() body is null");
+            final HotRanges body = responseEntity.getBody();
 
-        return body.getStores();
+            Assert.notNull(body, "getHotRangesForNode() body is null");
+
+            return body.getStores();
+        } catch (Exception e) {
+            shellHelper.printError("Unable to load Hot Ranges for Node " +  node.getNodeId() +  ".  Node may be down.");
+
+            log.debug("error getting hot ranges for node " + node.getNodeId() + ": " + e.getMessage(), e);
+        }
+
+        return new ArrayList<>();
     }
 
     private List<Node> getNodes(String httpPort, String httpScheme, String httpHost, HttpHeaders headers) {
