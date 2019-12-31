@@ -32,9 +32,6 @@ public class HotSpotCommands {
                          @ShellOption(help = "port used for Admin UI REST calls", defaultValue = "8080") int httpPort,
                          @ShellOption(value = {"--max-ranges", "-m"}, help = "max number of hot ranges returned", defaultValue = "10") int maxRanges) {
 
-        // todo: print collected values
-        // todo: print wanrings when combinations don't make sense
-
         HotSpotOptions hotSpotOptions = new HotSpotOptions();
         hotSpotOptions.setHost(host);
         hotSpotOptions.setPort(port);
