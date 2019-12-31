@@ -15,22 +15,22 @@ public class HotSpotCommands {
         this.shellHelper = shellHelper;
     }
 
-    @ShellMethod("Find range Hot Spots")
-    public void hotspots(@ShellOption(value = {"--host", "-h"}, help = "hostname of crdb node") String host,
-                         @ShellOption(value = {"--port", "-p"}, help = "", defaultValue = "26257") int port,
-                         @ShellOption(value = {"--database", "-d"}, help = "", defaultValue = "system") String database,
-                         @ShellOption(value = {"--username", "-u"}, help = "", defaultValue = "root") String username,
-                         @ShellOption(help = "", defaultValue = "") String password,
-                         @ShellOption(help = "", defaultValue = "disable") String sslMode,
-                         @ShellOption(help = "", defaultValue = "") String sslCrtPath,
-                         @ShellOption(help = "", defaultValue = "") String sslKeyPath,
-                         @ShellOption(help = "", defaultValue = "http") String httpScheme,
-                         @ShellOption(help = "", defaultValue = "") String httpUsername,
-                         @ShellOption(help = "", defaultValue = "") String httpPassword,
-                         @ShellOption(help = "", defaultValue = "") String httpHost,
-                         @ShellOption(help = "", defaultValue = "8080") int httpPort,
-                         @ShellOption(help = "", defaultValue = "false") boolean sslEnabled,
-                         @ShellOption(value = {"--maxRanges", "-m"}, help = "", defaultValue = "10") int maxRanges) {
+    @ShellMethod("Find range hot spots in a CockroachDB (CRDB) cluster.")
+    public void hotspots(@ShellOption(value = {"--host", "-h"}, help = "hostname of a CRDB node") String host,
+                         @ShellOption(value = {"--port", "-p"}, help = "port of a CRDB node", defaultValue = "26257") int port,
+                         @ShellOption(value = {"--database", "-d"}, help = "CRDB database name", defaultValue = "system") String database,
+                         @ShellOption(value = {"--username", "-u"}, help = "username used to connect to database", defaultValue = "root") String username,
+                         @ShellOption(help = "password used to connect to database", defaultValue = "") String password,
+                         @ShellOption(help = "SSL mode for database connection", defaultValue = "disable") String sslMode,
+                         @ShellOption(help = "is SSL enabled?", defaultValue = "false") boolean sslEnabled,
+                         @ShellOption(help = "path to SSL Cert file when SSL is enabled", defaultValue = "") String sslCrtPath,
+                         @ShellOption(help = "path to SSL Key file when SSL is enabled", defaultValue = "") String sslKeyPath,
+                         @ShellOption(help = "HTTP scheme for Admin UI REST calls", defaultValue = "http") String httpScheme,
+                         @ShellOption(help = "username used for Admin UI REST calls", defaultValue = "") String httpUsername,
+                         @ShellOption(help = "password used for Admin UI REST calls", defaultValue = "") String httpPassword,
+                         @ShellOption(help = "host used for Admin UI REST calls", defaultValue = "") String httpHost,
+                         @ShellOption(help = "port used for Admin UI REST calls", defaultValue = "8080") int httpPort,
+                         @ShellOption(value = {"--maxRanges", "-m"}, help = "max number of hot ranges returned", defaultValue = "10") int maxRanges) {
 
         // todo: print collected values
         // todo: print wanrings when combinations don't make sense
