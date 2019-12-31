@@ -4,5 +4,6 @@ ${AnsiColor.CYAN}    RRRRRR                        hh          SSSSS  hh        
     RRRRRR  oo  oo  aa aaa cc     hhhhhh      SSSSS  hhhhhh  ee   e lll lll
     RR  RR  oo  oo aa  aaa cc     hh   hh         SS hh   hh eeeee  lll lll
     RR   RR  oooo   aaa aa  ccccc hh   hh     SSSSS  hh   hh  eeeee lll lll${AnsiColor.DEFAULT}
-            roach-shell: ${application.version}, Java: ${java.version}, Spring Boot: ${spring-boot.version}
+
+    roach-shell: ${application.version}, Java: ${java.version}, Spring Boot: ${spring-boot.version}
 =============================================================================
