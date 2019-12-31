@@ -30,7 +30,7 @@ public class HotSpotCommands {
                          @ShellOption(help = "password used for Admin UI REST calls", defaultValue = "") String httpPassword,
                          @ShellOption(help = "host used for Admin UI REST calls", defaultValue = "") String httpHost,
                          @ShellOption(help = "port used for Admin UI REST calls", defaultValue = "8080") int httpPort,
-                         @ShellOption(value = {"--maxRanges", "-m"}, help = "max number of hot ranges returned", defaultValue = "10") int maxRanges) {
+                         @ShellOption(value = {"--max-ranges", "-m"}, help = "max number of hot ranges returned", defaultValue = "10") int maxRanges) {
 
         // todo: print collected values
         // todo: print wanrings when combinations don't make sense

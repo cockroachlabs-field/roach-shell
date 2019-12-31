@@ -89,7 +89,7 @@ OPTIONS
 		port used for Admin UI REST calls
 		[Optional, default = 8080]
 
-	--maxRanges or -m  int
+	--max-ranges or -m  int
 		max number of hot ranges returned
 		[Optional, default = 10]
 ```
