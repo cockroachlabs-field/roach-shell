@@ -1,51 +1,6 @@
 {
   "properties": [
     {
-      "name": "crdb.username",
-      "type": "java.lang.String",
-      "description": "CockroachDB username. Default 'root'."
-    },
-    {
-      "name": "crdb.password",
-      "type": "java.lang.String",
-      "description": "CockroachDB password."
-    },
-    {
-      "name": "crdb.host",
-      "type": "java.lang.String",
-      "description": "CockroachDB server hostname."
-    },
-    {
-      "name": "crdb.port",
-      "type": "java.lang.Integer",
-      "description": "CockroachDB port. Default '26257'."
-    },
-    {
-      "name": "crdb.database",
-      "type": "java.lang.String",
-      "description": "CockroachDB database name."
-    },
-    {
-      "name": "crdb.http.host",
-      "type": "java.lang.String",
-      "description": "CockroachDB http hostname. Will use 'crdb.host' if not provided."
-    },
-    {
-      "name": "crdb.http.port",
-      "type": "java.lang.Integer",
-      "description": "CockroachDB http port. Default '8080'."
-    },
-    {
-      "name": "crdb.ssl.mode",
-      "type": "java.lang.String",
-      "description": "CockroachDB ssl mode.  Default 'disable'."
-    },
-    {
-      "name": "crdb.hotranges.max",
-      "type": "java.lang.Integer",
-      "description": "Maximum number of Hot Ranges to display. Default '10'."
-    },
-    {
       "name": "shell.out.info",
       "type": "io.crdb.shell.PromptColor",
       "description": "Description for shell.out.info."
@@ -64,35 +19,6 @@
       "name": "shell.out.error",
       "type": "io.crdb.shell.PromptColor",
       "description": "Description for shell.out.error."
-    },
-    {
-      "name": "crdb.http.scheme",
-      "type": "java.lang.String",
-      "description": "Http or Https."
-    },
-    {
-      "name": "crdb.secure.enabled",
-      "type": "java.lang.Boolean",
-      "description": "Is this a secure CockroachDB cluster?."
-    },
-    {
-      "name": "crdb.http.username",
-      "type": "java.lang.String",
-      "description": "Username used to authenticate Admin UI."
-    },
-    {
-      "name": "crdb.http.password",
-      "type": "java.lang.String",
-      "description": "Password used to authenticate Admin UI."
-    },
-    {
-      "name": "crdb.ssl.crt",
-      "type": "java.lang.String",
-      "description": "Description for crdb.ssl.cert."
-    },
-    {
-      "name": "crdb.ssl.key",
-      "type": "java.lang.String",
-      "description": "Description for crdb.ssl.key."
     }
-  ] }
+  ]
+}

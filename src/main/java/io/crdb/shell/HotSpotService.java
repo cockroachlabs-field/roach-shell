@@ -5,7 +5,6 @@ import com.google.common.collect.TreeBasedTable;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -16,7 +15,6 @@ import org.springframework.shell.table.Table;
 import org.springframework.shell.table.TableBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -37,43 +35,34 @@ public class HotSpotService {
     private static final Logger log = LoggerFactory.getLogger(HotSpotDetectorApplication.class);
 
     private final RestTemplate restTemplate;
-    private final Environment environment;
     private final ShellHelper shellHelper;
 
-    public HotSpotService(RestTemplate restTemplate, Environment environment, ShellHelper shellHelper) {
+    public HotSpotService(RestTemplate restTemplate, ShellHelper shellHelper) {
         this.restTemplate = restTemplate;
-        this.environment = environment;
         this.shellHelper = shellHelper;
     }
 
-    public Table getHotSpots() {
+    public Table getHotSpots(HotSpotOptions options) {
 
-        final String host = environment.getRequiredProperty("crdb.host");
-        final int port = environment.getProperty("crdb.port", Integer.class, 26257);
-        final String database = environment.getProperty("crdb.database", "system");
-        final String username = environment.getProperty("crdb.username", "root");
-        final String password = environment.getProperty("crdb.password");
-        final String sslMode = environment.getProperty("crdb.ssl.mode", "disable");
-        final String crtPath = environment.getProperty("crdb.ssl.crt");
-        final String keyPath = environment.getProperty("crdb.ssl.key");
-        final String httpScheme = environment.getProperty("crdb.http.scheme");
-        final String httpUsername = environment.getProperty("crdb.http.username");
-        final String httpPassword = environment.getProperty("crdb.http.password");
-        final int httpPort = environment.getProperty("crdb.http.port", Integer.class, 8080);
-
-        final boolean secure = environment.getProperty("crdb.secure.enabled", Boolean.class, Boolean.FALSE);
-        final int maxHotRanges = environment.getProperty("crdb.hotranges.max", Integer.class, 10);
-
-
-        String httpHost = environment.getProperty("crdb.http.host");
-
-        if (StringUtils.isEmpty(httpHost)) {
-            httpHost = host;
-        }
+        final String host = options.getHost();
+        final int port = options.getPort();
+        final String database = options.getDatabase();
+        final String username = options.getUsername();
+        final String password = options.getPassword();
+        final boolean sslEnabled = options.isSslEnabled();
+        final String sslMode = options.getSslMode();
+        final String sslCrtPath = options.getSslCrtPath();
+        final String sslKeyPath = options.getSslKeyPath();
+        final String httpScheme = options.getHttpScheme();
+        final String httpHost = options.getHttpHost();
+        final int httpPort = options.getHttpPort();
+        final String httpUsername = options.getHttpUsername();
+        final String httpPassword = options.getHttpPassword();
+        final int maxHotRanges = options.getMaxHotRanges();
 
         final HttpHeaders headers = new HttpHeaders();
 
-        if (secure) {
+        if (sslEnabled) {
             String loginCookie = login(httpPort, httpScheme, httpHost, httpUsername, httpPassword);
 
             headers.add("Cookie", loginCookie);
@@ -111,7 +100,7 @@ public class HotSpotService {
 
         int rowCount = 1;
 
-        DataSource dataSource = getDataSource(host, port, database, username, password, secure, sslMode, crtPath, keyPath);
+        DataSource dataSource = getDataSource(host, port, database, username, password, sslEnabled, sslMode, sslCrtPath, sslKeyPath);
 
         for (HotRangeVO vo : hotRangeVOS) {
 
@@ -156,7 +145,7 @@ public class HotSpotService {
         }
 
 
-        if (secure) {
+        if (sslEnabled) {
             logout(httpPort, httpScheme, httpHost, headers);
         }
 
