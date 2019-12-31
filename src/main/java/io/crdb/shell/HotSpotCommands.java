@@ -45,17 +45,24 @@ public class HotSpotCommands {
             hotSpotOptions.setPassword(password);
         }
 
-        hotSpotOptions.setSslMode(sslMode);
-
-        if (!sslCrtPath.isBlank()) {
-            hotSpotOptions.setSslCrtPath(sslCrtPath);
-        }
-
-        if (!sslKeyPath.isBlank()) {
-            hotSpotOptions.setSslKeyPath(sslKeyPath);
-        }
+        hotSpotOptions.setSslEnabled(sslEnabled);
 
         if (sslEnabled) {
+
+            hotSpotOptions.setSslMode(sslMode);
+
+            if (sslCrtPath.isBlank()) {
+                shellHelper.printError("SSL is enabled but \"sslCrtPath\" is empty.  Please provide a valid \"sslCrtPath\".");
+            }
+
+            hotSpotOptions.setSslCrtPath(sslCrtPath);
+
+            if (sslKeyPath.isBlank()) {
+                shellHelper.printError("SSL is enabled but \"sslKeyPath\" is empty.  Please provide a valid \"sslKeyPath\".");
+            }
+
+            hotSpotOptions.setSslKeyPath(sslKeyPath);
+
             httpScheme = "https";
         }
 
@@ -76,7 +83,6 @@ public class HotSpotCommands {
 
         hotSpotOptions.setHttpHost(httpHost);
         hotSpotOptions.setHttpPort(httpPort);
-        hotSpotOptions.setSslEnabled(sslEnabled);
         hotSpotOptions.setMaxHotRanges(maxRanges);
 
         shellHelper.print(service.getHotSpots(hotSpotOptions).render(120));

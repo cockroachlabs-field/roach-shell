@@ -139,7 +139,7 @@ public class HotSpotService {
 
             } catch (SQLException e) {
                 shellHelper.printError("Unable to load Ranges details from \"crdb_internal.ranges_no_leases\" for Range " + vo.getRangeId() + ".");
-                log.warn(e.getMessage(), e);
+                log.debug(e.getMessage(), e);
             }
 
         }
