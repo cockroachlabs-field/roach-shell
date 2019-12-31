@@ -2,6 +2,7 @@ package io.crdb.shell;
 
 import com.google.common.collect.Ordering;
 import com.google.common.collect.TreeBasedTable;
+import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -9,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.shell.table.ArrayTableModel;
 import org.springframework.shell.table.BorderStyle;
 import org.springframework.shell.table.Table;
@@ -20,7 +20,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.sql.DataSource;
 import java.net.URI;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
@@ -33,24 +38,28 @@ public class HotSpotService {
 
     private final RestTemplate restTemplate;
     private final Environment environment;
-    private final JdbcTemplate jdbcTemplate;
     private final ShellHelper shellHelper;
 
-    public HotSpotService(RestTemplate restTemplate, Environment environment, JdbcTemplate jdbcTemplate, ShellHelper shellHelper) {
+    public HotSpotService(RestTemplate restTemplate, Environment environment, ShellHelper shellHelper) {
         this.restTemplate = restTemplate;
         this.environment = environment;
-        this.jdbcTemplate = jdbcTemplate;
         this.shellHelper = shellHelper;
     }
 
     public Table getHotSpots() {
 
-
         final String host = environment.getRequiredProperty("crdb.host");
-        final String httpPort = environment.getProperty("crdb.http.port");
+        final int httpPort = environment.getProperty("crdb.http.port", Integer.class, 8080);
+        final int port = environment.getProperty("crdb.port", Integer.class, 26257);
+        final String database = environment.getProperty("crdb.database", "system");
+        final String username = environment.getProperty("crdb.username", "root");
+        final String password = environment.getProperty("crdb.password", "");
         final String httpScheme = environment.getProperty("crdb.http.scheme");
-        final int maxHotRanges = environment.getProperty("crdb.hotranges.max", Integer.class, 10);
+        final String sslMode = environment.getProperty("crdb.ssl.mode", "disable");
+        final String crtPath = environment.getProperty("crdb.ssl.crt");
+        final String keyPath = environment.getProperty("crdb.ssl.key");
         final boolean secure = environment.getProperty("crdb.secure.enabled", Boolean.class, Boolean.FALSE);
+        final int maxHotRanges = environment.getProperty("crdb.hotranges.max", Integer.class, 10);
 
 
         String httpHost = environment.getProperty("crdb.http.host");
@@ -100,29 +109,47 @@ public class HotSpotService {
 
         int rowCount = 1;
 
+        DataSource dataSource = getDataSource(host, port, database, username, password, secure, sslMode, crtPath, keyPath);
+
         for (HotRangeVO vo : hotRangeVOS) {
 
-            RangeVO rangeVO = jdbcTemplate.queryForObject("select * from crdb_internal.ranges_no_leases where range_id = ?",
-                    (resultSet, i) -> new RangeVO(resultSet.getInt("range_id"),
-                            resultSet.getString("start_pretty"),
-                            resultSet.getString("end_pretty"),
-                            resultSet.getString("database_name"),
-                            resultSet.getString("table_name"),
-                            resultSet.getString("index_name")
-                    ), vo.getRangeId());
+            try (Connection connection = dataSource.getConnection();
+                 PreparedStatement statement = connection.prepareStatement("select * from crdb_internal.ranges_no_leases where range_id = ?")
+            ) {
 
-            Assert.notNull(rangeVO, "unable to find range for id " + vo.getRangeId());
+                statement.setInt(1, vo.getRangeId());
 
-            treeBasedTable.put(rowCount, 0, Integer.toString(rowCount));
-            treeBasedTable.put(rowCount, 1, Float.toString(vo.getQueriesPerSecond()));
-            treeBasedTable.put(rowCount, 2, vo.getNodeId() + "/" + vo.getNodeAddress());
-            treeBasedTable.put(rowCount, 3, Integer.toString(vo.getStoreId()));
-            treeBasedTable.put(rowCount, 4, rangeVO.getDatabaseName());
-            treeBasedTable.put(rowCount, 5, rangeVO.getTableName());
-            treeBasedTable.put(rowCount, 6, rangeVO.getIndexName());
-            treeBasedTable.put(rowCount, 7, rangeVO.getStartKey() + " - " + rangeVO.getEndKey());
+                try (ResultSet resultSet = statement.executeQuery()) {
 
-            rowCount++;
+                    if (resultSet.next()) {
+
+                        RangeVO rangeVO = new RangeVO(resultSet.getInt("range_id"),
+                                resultSet.getString("start_pretty"),
+                                resultSet.getString("end_pretty"),
+                                resultSet.getString("database_name"),
+                                resultSet.getString("table_name"),
+                                resultSet.getString("index_name"));
+
+
+                        Assert.notNull(rangeVO, "unable to find range for id " + vo.getRangeId());
+
+                        treeBasedTable.put(rowCount, 0, Integer.toString(rowCount));
+                        treeBasedTable.put(rowCount, 1, Float.toString(vo.getQueriesPerSecond()));
+                        treeBasedTable.put(rowCount, 2, vo.getNodeId() + "/" + vo.getNodeAddress());
+                        treeBasedTable.put(rowCount, 3, Integer.toString(vo.getStoreId()));
+                        treeBasedTable.put(rowCount, 4, rangeVO.getDatabaseName());
+                        treeBasedTable.put(rowCount, 5, rangeVO.getTableName());
+                        treeBasedTable.put(rowCount, 6, rangeVO.getIndexName());
+                        treeBasedTable.put(rowCount, 7, rangeVO.getStartKey() + " - " + rangeVO.getEndKey());
+
+                        rowCount++;
+                    }
+                }
+
+            } catch (SQLException e) {
+                shellHelper.printError("Unable to load Ranges details from \"crdb_internal.ranges_no_leases\" for Range " + vo.getRangeId() + ".");
+                log.warn(e.getMessage(), e);
+            }
 
         }
 
@@ -150,7 +177,36 @@ public class HotSpotService {
 
     }
 
-    private List<Store> getHotRangesForNode(String httpPort, String httpScheme, String httpHost, HttpHeaders headers, Node node) {
+    private DataSource getDataSource(String host,
+                                     int port,
+                                     String database,
+                                     String user,
+                                     String password,
+                                     boolean sslEnabled,
+                                     String sslMode,
+                                     String crtPath,
+                                     String keyPath) {
+        PGSimpleDataSource ds = new PGSimpleDataSource();
+        ds.setServerName(host);
+        ds.setPortNumber(port);
+        ds.setDatabaseName(database);
+        ds.setUser(user);
+        ds.setPassword(password);
+        ds.setSslMode(sslMode);
+        ds.setSsl(sslEnabled);
+
+        if (sslEnabled) {
+            ds.setSslCert(crtPath);
+            ds.setSslKey(keyPath);
+        }
+
+        ds.setReWriteBatchedInserts(true);
+        ds.setApplicationName("HotSpotDetector");
+
+        return ds;
+    }
+
+    private List<Store> getHotRangesForNode(int httpPort, String httpScheme, String httpHost, HttpHeaders headers, Node node) {
 
         try {
             final URI hotRangeUri = UriComponentsBuilder
@@ -171,15 +227,15 @@ public class HotSpotService {
 
             return body.getStores();
         } catch (Exception e) {
-            shellHelper.printError("Unable to load Hot Ranges for Node " +  node.getNodeId() +  ".  Node may be down.");
+            shellHelper.printError("Unable to load Hot Ranges for Node " + node.getNodeId() + ".  Node may be down.");
 
-            log.debug("error getting hot ranges for node " + node.getNodeId() + ": " + e.getMessage(), e);
+            log.debug(e.getMessage(), e);
         }
 
         return new ArrayList<>();
     }
 
-    private List<Node> getNodes(String httpPort, String httpScheme, String httpHost, HttpHeaders headers) {
+    private List<Node> getNodes(int httpPort, String httpScheme, String httpHost, HttpHeaders headers) {
 
         final URI nodesUri = UriComponentsBuilder
                 .fromUriString(String.format("%s://%s:%s/_status/nodes", httpScheme, httpHost, httpPort))
@@ -200,7 +256,7 @@ public class HotSpotService {
 
     }
 
-    private String login(String httpPort, String httpScheme, String httpHost, String username, String password) {
+    private String login(int httpPort, String httpScheme, String httpHost, String username, String password) {
         final URI uri = UriComponentsBuilder
                 .fromUriString(String.format("%s://%s:%s/login", httpScheme, httpHost, httpPort))
                 .build()
@@ -215,7 +271,7 @@ public class HotSpotService {
         return responseEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
     }
 
-    private void logout(String httpPort, String httpScheme, String httpHost, HttpHeaders headers) {
+    private void logout(int httpPort, String httpScheme, String httpHost, HttpHeaders headers) {
         final URI uri = UriComponentsBuilder
                 .fromUriString(String.format("%s://%s:%s/logout", httpScheme, httpHost, httpPort))
                 .build()
