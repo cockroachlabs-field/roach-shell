@@ -12,7 +12,7 @@ Command line utility for CockroachDB written using [Spring Shell](https://projec
 ```shell script
 ./mvnw clean package
 ```
-This command will create an executable jar named `roach-shell-0.0.1-SNAPSHOT.jar` in the projects `target` directory.
+This command will create an executable `jar` named `roach-shell-0.0.1-SNAPSHOT.jar` in the projects `target` directory.
 
 ## To Run
 With Maven
@@ -20,7 +20,7 @@ With Maven
 ./mvnw spring-boot:run
 ```
 
-With Java using the binary built above.
+With Java using the executable `jar` built above.
 ```shell script
 java -jar roach-shell-0.0.1-SNAPSHOT.jar
 ````
