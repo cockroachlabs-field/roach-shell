@@ -141,6 +141,7 @@ public class HotSpotOptions {
     }
 
     public void print(ShellHelper shellHelper) {
+        shellHelper.print("");
         shellHelper.printInfo("---------------------------------------------");
         shellHelper.printInfo("The following configuration parameters will be used:");
         shellHelper.print("\t" + "host" + ": " + host);
@@ -158,5 +159,6 @@ public class HotSpotOptions {
         shellHelper.print("\t" + "httpUsername" + ": " + httpUsername);
         shellHelper.print("\t" + "httpPassword" + ": " + httpPassword);
         shellHelper.printInfo("---------------------------------------------");
+        shellHelper.print("");
     }
 }
