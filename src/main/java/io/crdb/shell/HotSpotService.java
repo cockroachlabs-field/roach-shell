@@ -49,15 +49,18 @@ public class HotSpotService {
     public Table getHotSpots() {
 
         final String host = environment.getRequiredProperty("crdb.host");
-        final int httpPort = environment.getProperty("crdb.http.port", Integer.class, 8080);
         final int port = environment.getProperty("crdb.port", Integer.class, 26257);
         final String database = environment.getProperty("crdb.database", "system");
         final String username = environment.getProperty("crdb.username", "root");
-        final String password = environment.getProperty("crdb.password", "");
-        final String httpScheme = environment.getProperty("crdb.http.scheme");
+        final String password = environment.getProperty("crdb.password");
         final String sslMode = environment.getProperty("crdb.ssl.mode", "disable");
         final String crtPath = environment.getProperty("crdb.ssl.crt");
         final String keyPath = environment.getProperty("crdb.ssl.key");
+        final String httpScheme = environment.getProperty("crdb.http.scheme");
+        final String httpUsername = environment.getProperty("crdb.http.username");
+        final String httpPassword = environment.getProperty("crdb.http.password");
+        final int httpPort = environment.getProperty("crdb.http.port", Integer.class, 8080);
+
         final boolean secure = environment.getProperty("crdb.secure.enabled", Boolean.class, Boolean.FALSE);
         final int maxHotRanges = environment.getProperty("crdb.hotranges.max", Integer.class, 10);
 
@@ -71,8 +74,7 @@ public class HotSpotService {
         final HttpHeaders headers = new HttpHeaders();
 
         if (secure) {
-            //todo: need to pass credentials
-            String loginCookie = login(httpPort, httpScheme, httpHost, "test", "password");
+            String loginCookie = login(httpPort, httpScheme, httpHost, httpUsername, httpPassword);
 
             headers.add("Cookie", loginCookie);
         }
@@ -191,7 +193,9 @@ public class HotSpotService {
         ds.setPortNumber(port);
         ds.setDatabaseName(database);
         ds.setUser(user);
-        ds.setPassword(password);
+        if (password != null && !password.isBlank()) {
+            ds.setPassword(password);
+        }
         ds.setSslMode(sslMode);
         ds.setSsl(sslEnabled);
 

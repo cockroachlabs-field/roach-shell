@@ -74,5 +74,25 @@
       "name": "crdb.secure.enabled",
       "type": "java.lang.Boolean",
       "description": "Is this a secure CockroachDB cluster?."
+    },
+    {
+      "name": "crdb.http.username",
+      "type": "java.lang.String",
+      "description": "Username used to authenticate Admin UI."
+    },
+    {
+      "name": "crdb.http.password",
+      "type": "java.lang.String",
+      "description": "Password used to authenticate Admin UI."
+    },
+    {
+      "name": "crdb.ssl.crt",
+      "type": "java.lang.String",
+      "description": "Description for crdb.ssl.cert."
+    },
+    {
+      "name": "crdb.ssl.key",
+      "type": "java.lang.String",
+      "description": "Description for crdb.ssl.key."
     }
   ] }
