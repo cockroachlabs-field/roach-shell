@@ -16,10 +16,10 @@ public class HotSpotCommands {
     }
 
     @ShellMethod("Find range Hot Spots")
-    public void hotspots(@ShellOption(help = "hostname of crdb node") String host,
-                         @ShellOption(help = "", defaultValue = "26257") int port,
-                         @ShellOption(help = "", defaultValue = "system") String database,
-                         @ShellOption(help = "", defaultValue = "root") String username,
+    public void hotspots(@ShellOption(value = {"--host", "-h"}, help = "hostname of crdb node") String host,
+                         @ShellOption(value = {"--port", "-p"}, help = "", defaultValue = "26257") int port,
+                         @ShellOption(value = {"--database", "-d"}, help = "", defaultValue = "system") String database,
+                         @ShellOption(value = {"--username", "-u"}, help = "", defaultValue = "root") String username,
                          @ShellOption(help = "", defaultValue = "") String password,
                          @ShellOption(help = "", defaultValue = "disable") String sslMode,
                          @ShellOption(help = "", defaultValue = "") String sslCrtPath,
@@ -30,7 +30,7 @@ public class HotSpotCommands {
                          @ShellOption(help = "", defaultValue = "") String httpHost,
                          @ShellOption(help = "", defaultValue = "8080") int httpPort,
                          @ShellOption(help = "", defaultValue = "false") boolean sslEnabled,
-                         @ShellOption(help = "", defaultValue = "10") int maxRanges) {
+                         @ShellOption(value = {"--maxRanges", "-m"}, help = "", defaultValue = "10") int maxRanges) {
 
         // todo: print collected values
         // todo: print wanrings when combinations don't make sense
