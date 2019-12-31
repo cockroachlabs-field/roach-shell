@@ -46,10 +46,13 @@ public class HotSpotCommands {
         }
 
         hotSpotOptions.setSslEnabled(sslEnabled);
+        hotSpotOptions.setSslMode(sslMode);
 
         if (sslEnabled) {
 
-            hotSpotOptions.setSslMode(sslMode);
+            if (sslMode.equals("disable")) {
+                shellHelper.printError("SSL is enabled but \"sslMode\" is set to \"disable\".  Please provide a valid \"sslMode\" or set \"sslEnabled\" to \"false\".");
+            }
 
             if (sslCrtPath.isBlank()) {
                 shellHelper.printError("SSL is enabled but \"sslCrtPath\" is empty.  Please provide a valid \"sslCrtPath\".");
@@ -85,6 +88,8 @@ public class HotSpotCommands {
         hotSpotOptions.setHttpPort(httpPort);
         hotSpotOptions.setMaxHotRanges(maxRanges);
 
-        shellHelper.print(service.getHotSpots(hotSpotOptions).render(120));
+        hotSpotOptions.print(shellHelper);
+
+        shellHelper.print(service.getHotSpots(hotSpotOptions).render(200));
     }
 }

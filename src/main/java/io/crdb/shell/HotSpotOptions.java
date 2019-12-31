@@ -139,4 +139,24 @@ public class HotSpotOptions {
     public void setHttpHost(String httpHost) {
         this.httpHost = httpHost;
     }
+
+    public void print(ShellHelper shellHelper) {
+        shellHelper.printInfo("---------------------------------------------");
+        shellHelper.printInfo("The following configuration parameters will be used:");
+        shellHelper.print("\t" + "host" + ": " + host);
+        shellHelper.print("\t" + "port" + ": " + port);
+        shellHelper.print("\t" + "database" + ": " + database);
+        shellHelper.print("\t" + "username" + ": " + username);
+        shellHelper.print("\t" + "password" + ": " + password);
+        shellHelper.print("\t" + "sslEnabled" + ": " + sslEnabled);
+        shellHelper.print("\t" + "sslMode" + ": " + sslMode);
+        shellHelper.print("\t" + "sslCrtPath" + ": " + sslCrtPath);
+        shellHelper.print("\t" + "sslKeyPath" + ": " + sslKeyPath);
+        shellHelper.print("\t" + "httpScheme" + ": " + httpScheme);
+        shellHelper.print("\t" + "httpHost" + ": " + httpHost);
+        shellHelper.print("\t" + "httpPort" + ": " + httpPort);
+        shellHelper.print("\t" + "httpUsername" + ": " + httpUsername);
+        shellHelper.print("\t" + "httpPassword" + ": " + httpPassword);
+        shellHelper.printInfo("---------------------------------------------");
+    }
 }
