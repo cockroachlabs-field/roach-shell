@@ -94,14 +94,6 @@ OPTIONS
 		[Optional, default = 10]
 ```
 
-## Example Commands
-```
-hotspots --host localhost --port 5432
-```
-```
-hotspots -h localhost -p 5432
-```
-
 ## Example Command and Output
 ```shell script
 roach-shell:>hotspots -h localhost -p 5432
