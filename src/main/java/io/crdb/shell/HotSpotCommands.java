@@ -33,6 +33,7 @@ public class HotSpotCommands {
                          @ShellOption(help = "", defaultValue = "10") int maxRanges) {
 
         // todo: print collected values
+        // todo: print wanrings when combinations don't make sense
 
         HotSpotOptions hotSpotOptions = new HotSpotOptions();
         hotSpotOptions.setHost(host);
