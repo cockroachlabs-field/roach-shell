@@ -14,7 +14,7 @@
     <artifactId>roach-shell</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>CockroachDB Shell</name>
+    <name>Roach Shell</name>
     <description>CockroachDB Shell</description>
 
     <properties>
