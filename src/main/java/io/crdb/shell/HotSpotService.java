@@ -178,8 +178,8 @@ public class HotSpotService {
                                      String crtPath,
                                      String keyPath) {
         PGSimpleDataSource ds = new PGSimpleDataSource();
-        ds.setServerName(host);
-        ds.setPortNumber(port);
+        ds.setServerNames(new String[] {host});
+        ds.setPortNumbers(new int[] {port});
         ds.setDatabaseName(database);
         ds.setUser(user);
         if (password != null && !password.isBlank()) {
