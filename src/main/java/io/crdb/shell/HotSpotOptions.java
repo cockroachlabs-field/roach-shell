@@ -161,7 +161,7 @@ public class HotSpotOptions {
         if (password != null && !password.isBlank()) {
             shellHelper.print("\t" + "password" + ": (password provided but not shown)");
         } else {
-            shellHelper.print("\t" + "password" + ": (password not provided)");
+            shellHelper.print("\t" + "password" + ": (password is null or blank)");
         }
 
         shellHelper.print("\t" + "ssl-enabled" + ": " + sslEnabled);
@@ -176,7 +176,7 @@ public class HotSpotOptions {
         if (httpPassword != null && !httpPassword.isBlank()) {
             shellHelper.print("\t" + "http-password" + ": (password provided but not shown)");
         } else {
-            shellHelper.print("\t" + "http-password" + ": (password not provided)");
+            shellHelper.print("\t" + "http-password" + ": (password is null or blank)");
         }
 
         shellHelper.print("\t" + "verbose" + ": " + verbose);
