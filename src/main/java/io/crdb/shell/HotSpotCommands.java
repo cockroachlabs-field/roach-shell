@@ -21,17 +21,17 @@ public class HotSpotCommands {
                          @ShellOption(value = {"--database", "-d"}, help = "CRDB database name", defaultValue = "system") String database,
                          @ShellOption(value = {"--username", "-u"}, help = "username used to connect to database", defaultValue = "root") String username,
                          @ShellOption(help = "password used to connect to database", defaultValue = "") String password,
-                         @ShellOption(help = "SSL mode for database connection", defaultValue = "disable") String sslMode,
-                         @ShellOption(help = "is SSL enabled?", defaultValue = "false") boolean sslEnabled,
+                         @ShellOption(help = "SSL mode for database connection.  disable, allow, prefer, require, verify-ca or verify-full.", defaultValue = "disable") String sslMode,
+                         @ShellOption(help = "is SSL enabled? true or false.", defaultValue = "false") boolean sslEnabled,
                          @ShellOption(help = "path to SSL Cert file when SSL is enabled", defaultValue = "") String sslCrtPath,
                          @ShellOption(help = "path to SSL Key file when SSL is enabled", defaultValue = "") String sslKeyPath,
-                         @ShellOption(help = "HTTP scheme for Admin UI REST calls", defaultValue = "http") String httpScheme,
+                         @ShellOption(help = "HTTP scheme for Admin UI REST calls.  http or https.", defaultValue = "http") String httpScheme,
                          @ShellOption(help = "username used for Admin UI REST calls", defaultValue = "") String httpUsername,
                          @ShellOption(help = "password used for Admin UI REST calls", defaultValue = "") String httpPassword,
                          @ShellOption(help = "host used for Admin UI REST calls", defaultValue = "") String httpHost,
                          @ShellOption(help = "port used for Admin UI REST calls", defaultValue = "8080") int httpPort,
                          @ShellOption(value = {"--max-ranges", "-m"}, help = "max number of hot ranges returned", defaultValue = "10") int maxRanges,
-                         @ShellOption(help = "include verbose output", defaultValue = "false") boolean verbose) {
+                         @ShellOption(help = "include verbose output.  true or false", defaultValue = "false") boolean verbose) {
 
         HotSpotOptions hotSpotOptions = new HotSpotOptions();
         hotSpotOptions.setHost(host);
@@ -50,17 +50,17 @@ public class HotSpotCommands {
         if (sslEnabled) {
 
             if (sslMode.equals("disable")) {
-                shellHelper.printError("SSL is enabled but \"sslMode\" is set to \"disable\".  Please provide a valid \"sslMode\" or set \"sslEnabled\" to \"false\".");
+                shellHelper.printError("SSL is enabled but \"ssl-mode\" is set to \"disable\".  Please provide a valid \"ssl-mode\" or set \"ssl-enabled\" to \"false\".");
             }
 
             if (sslCrtPath.isBlank()) {
-                shellHelper.printError("SSL is enabled but \"sslCrtPath\" is empty.  Please provide a valid \"sslCrtPath\".");
+                shellHelper.printError("SSL is enabled but \"ssl-crt-path\" is empty.  Please provide a valid \"ssl-crt-path\".");
             }
 
             hotSpotOptions.setSslCrtPath(sslCrtPath);
 
             if (sslKeyPath.isBlank()) {
-                shellHelper.printError("SSL is enabled but \"sslKeyPath\" is empty.  Please provide a valid \"sslKeyPath\".");
+                shellHelper.printError("SSL is enabled but \"ssl-key-path\" is empty.  Please provide a valid \"ssl-key-path\".");
             }
 
             hotSpotOptions.setSslKeyPath(sslKeyPath);
