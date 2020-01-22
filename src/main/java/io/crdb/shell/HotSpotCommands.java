@@ -30,13 +30,15 @@ public class HotSpotCommands {
                          @ShellOption(help = "password used for Admin UI REST calls", defaultValue = "") String httpPassword,
                          @ShellOption(help = "host used for Admin UI REST calls", defaultValue = "") String httpHost,
                          @ShellOption(help = "port used for Admin UI REST calls", defaultValue = "8080") int httpPort,
-                         @ShellOption(value = {"--max-ranges", "-m"}, help = "max number of hot ranges returned", defaultValue = "10") int maxRanges) {
+                         @ShellOption(value = {"--max-ranges", "-m"}, help = "max number of hot ranges returned", defaultValue = "10") int maxRanges,
+                         @ShellOption(help = "include verbose output", defaultValue = "false") boolean verbose) {
 
         HotSpotOptions hotSpotOptions = new HotSpotOptions();
         hotSpotOptions.setHost(host);
         hotSpotOptions.setPort(port);
         hotSpotOptions.setDatabase(database);
         hotSpotOptions.setUsername(username);
+        hotSpotOptions.setVerbose(verbose);
 
         if (!password.isBlank()) {
             hotSpotOptions.setPassword(password);

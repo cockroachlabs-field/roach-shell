@@ -4,21 +4,22 @@ public class HotSpotOptions {
 
     private String host;
     private int port;
-    private String database ;
-    private String username ;
-    private String password ;
+    private String database;
+    private String username;
+    private String password;
     private boolean sslEnabled;
-    private String sslMode ;
+    private String sslMode;
     private String sslCrtPath;
     private String sslKeyPath;
-    private String httpScheme ;
-    private String httpUsername ;
-    private String httpPassword ;
-    private String httpHost ;
-    private int httpPort ;
+    private String httpScheme;
+    private String httpUsername;
+    private String httpPassword;
+    private String httpHost;
+    private int httpPort;
+    private boolean verbose;
 
 
-    private int maxHotRanges ;
+    private int maxHotRanges;
 
     public String getHost() {
         return host;
@@ -140,6 +141,14 @@ public class HotSpotOptions {
         this.httpHost = httpHost;
     }
 
+    public boolean isVerbose() {
+        return verbose;
+    }
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
+
     public void print(ShellHelper shellHelper) {
         shellHelper.print("");
         shellHelper.printInfo("---------------------------------------------");
@@ -158,6 +167,7 @@ public class HotSpotOptions {
         shellHelper.print("\t" + "httpPort" + ": " + httpPort);
         shellHelper.print("\t" + "httpUsername" + ": " + httpUsername);
         shellHelper.print("\t" + "httpPassword" + ": " + httpPassword);
+        shellHelper.print("\t" + "verbose" + ": " + verbose);
         shellHelper.printInfo("---------------------------------------------");
         shellHelper.print("");
     }

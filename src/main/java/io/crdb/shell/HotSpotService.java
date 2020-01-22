@@ -19,6 +19,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.sql.DataSource;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URI;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -59,6 +61,7 @@ public class HotSpotService {
         final String httpUsername = options.getHttpUsername();
         final String httpPassword = options.getHttpPassword();
         final int maxHotRanges = options.getMaxHotRanges();
+        final boolean verbose = options.isVerbose();
 
         final HttpHeaders headers = new HttpHeaders();
 
@@ -76,7 +79,7 @@ public class HotSpotService {
 
             shellHelper.print("Found Node with id [" + node.getNodeId() + "], address [" + node.getAddress() + "] and build [" + node.getBuild() + "].");
 
-            List<Store> stores = getHotRangesForNode(httpPort, httpScheme, httpHost, headers, node);
+            List<Store> stores = getHotRangesForNode(httpPort, httpScheme, httpHost, headers, node, verbose);
 
             for (Store store : stores) {
                 for (HotRange range : store.getHotRanges()) {
@@ -139,6 +142,9 @@ public class HotSpotService {
 
             } catch (SQLException e) {
                 shellHelper.printError("Unable to load Ranges details from \"crdb_internal.ranges_no_leases\" for Range " + vo.getRangeId() + ".");
+
+                printException(verbose, e);
+
                 log.debug(e.getMessage(), e);
             }
 
@@ -168,6 +174,18 @@ public class HotSpotService {
 
     }
 
+    private void printException(boolean verbose, Exception e) {
+        if (verbose) {
+            shellHelper.printInfo("the following error occurred: " + e.getMessage());
+
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+
+            shellHelper.printInfo("stacktrace: " + sw.toString());
+        }
+    }
+
     private DataSource getDataSource(String host,
                                      int port,
                                      String database,
@@ -178,8 +196,8 @@ public class HotSpotService {
                                      String crtPath,
                                      String keyPath) {
         PGSimpleDataSource ds = new PGSimpleDataSource();
-        ds.setServerNames(new String[] {host});
-        ds.setPortNumbers(new int[] {port});
+        ds.setServerNames(new String[]{host});
+        ds.setPortNumbers(new int[]{port});
         ds.setDatabaseName(database);
         ds.setUser(user);
         if (password != null && !password.isBlank()) {
@@ -199,7 +217,7 @@ public class HotSpotService {
         return ds;
     }
 
-    private List<Store> getHotRangesForNode(int httpPort, String httpScheme, String httpHost, HttpHeaders headers, Node node) {
+    private List<Store> getHotRangesForNode(int httpPort, String httpScheme, String httpHost, HttpHeaders headers, Node node, boolean verbose) {
 
         try {
             final URI hotRangeUri = UriComponentsBuilder
@@ -221,6 +239,8 @@ public class HotSpotService {
             return body.getStores();
         } catch (Exception e) {
             shellHelper.printError("Unable to load Hot Ranges for Node " + node.getNodeId() + ".  Node may be down.");
+
+            printException(verbose, e);
 
             log.debug(e.getMessage(), e);
         }
