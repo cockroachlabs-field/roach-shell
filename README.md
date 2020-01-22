@@ -100,7 +100,7 @@ OPTIONS
 ```
 
 ## Example Command and Output
-```shell script
+```text
 roach-shell:>hotspots -h localhost -p 5432
 ---------------------------------------------
 The following configuration parameters will be used:
@@ -108,16 +108,17 @@ The following configuration parameters will be used:
 	port: 5432
 	database: system
 	username: root
-	password: null
-	sslEnabled: false
-	sslMode: disable
-	sslCrtPath: null
-	sslKeyPath: null
-	httpScheme: http
-	httpHost: localhost
-	httpPort: 8080
-	httpUsername: null
-	httpPassword: null
+	password: (password is null or blank)
+	ssl-enabled: false
+	ssl-mode: disable
+	ssl-crt-path: null
+	ssl-key-path: null
+	http-scheme: http
+	http-host: localhost
+	http-port: 8080
+	http-username: null
+	http-password: (password is null or blank)
+	verbose: false
 ---------------------------------------------
 Found Node with id [1], address [crdb-0:26257] and build [v19.2.2].
 Found Node with id [2], address [crdb-2:26257] and build [v19.2.2].
