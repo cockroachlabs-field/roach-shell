@@ -17,8 +17,6 @@ public class HotSpotOptions {
     private String httpHost;
     private int httpPort;
     private boolean verbose;
-
-
     private int maxHotRanges;
 
     public String getHost() {
