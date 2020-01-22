@@ -124,7 +124,6 @@ public class HotSpotService {
                                 resultSet.getString("table_name"),
                                 resultSet.getString("index_name"));
 
-
                         Assert.notNull(rangeVO, "unable to find range for id " + vo.getRangeId());
 
                         treeBasedTable.put(rowCount, 0, Integer.toString(rowCount));
