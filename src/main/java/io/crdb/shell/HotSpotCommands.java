@@ -31,7 +31,7 @@ public class HotSpotCommands {
                          @ShellOption(help = "host used for Admin UI REST calls", defaultValue = "") String httpHost,
                          @ShellOption(help = "port used for Admin UI REST calls", defaultValue = "8080") int httpPort,
                          @ShellOption(value = {"--max-ranges", "-m"}, help = "max number of hot ranges returned", defaultValue = "10") int maxRanges,
-                         @ShellOption(help = "include verbose output.  true or false", defaultValue = "false") boolean verbose) {
+                         @ShellOption(help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose) {
 
         HotSpotOptions hotSpotOptions = new HotSpotOptions();
         hotSpotOptions.setHost(host);

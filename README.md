@@ -26,12 +26,14 @@ java -jar roach-shell-0.0.1-SNAPSHOT.jar
 ````
 
 ## Command Help
+To see the following content run `help hotspots`.
+
 ```text
 NAME
 	hotspots - Find range hot spots in a CockroachDB (CRDB) cluster.
 
 SYNOPSYS
-	hotspots [--host] string  [[--port] int]  [[--database] string]  [[--username] string]  [[--password] string]  [[--ssl-mode] string]  [--ssl-enabled]  [[--ssl-crt-path] string]  [[--ssl-key-path] string]  [[--http-scheme] string]  [[--http-username] string]  [[--http-password] string]  [[--http-host] string]  [[--http-port] int]  [[--maxRanges] int]  
+	hotspots [--host] string  [[--port] int]  [[--database] string]  [[--username] string]  [[--password] string]  [[--ssl-mode] string]  [--ssl-enabled]  [[--ssl-crt-path] string]  [[--ssl-key-path] string]  [[--http-scheme] string]  [[--http-username] string]  [[--http-password] string]  [[--http-host] string]  [[--http-port] int]  [[--max-ranges] int]  [--verbose]  
 
 OPTIONS
 	--host or -h  string
@@ -55,10 +57,10 @@ OPTIONS
 		[Optional, default = ]
 
 	--ssl-mode  string
-		SSL mode for database connection
+		SSL mode for database connection.  disable, allow, prefer, require, verify-ca or verify-full.
 		[Optional, default = disable]
 
-	--ssl-enabled	is SSL enabled?
+	--ssl-enabled	is SSL enabled? true or false.
 		[Optional, default = false]
 
 	--ssl-crt-path  string
@@ -70,7 +72,7 @@ OPTIONS
 		[Optional, default = ]
 
 	--http-scheme  string
-		HTTP scheme for Admin UI REST calls
+		HTTP scheme for Admin UI REST calls.  http or https.
 		[Optional, default = http]
 
 	--http-username  string
@@ -92,6 +94,9 @@ OPTIONS
 	--max-ranges or -m  int
 		max number of hot ranges returned
 		[Optional, default = 10]
+
+	--verbose	include verbose output.  true or false.
+		[Optional, default = false]
 ```
 
 ## Example Command and Output
