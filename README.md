@@ -101,7 +101,7 @@ OPTIONS
 
 ## Example Commands and Output
 
-### Insecure Cluster - minimum configuration
+### Insecure Cluster
 ```text
 roach-shell:>hotspots -h localhost -p 5432
 ---------------------------------------------
