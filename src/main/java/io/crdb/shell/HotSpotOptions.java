@@ -179,6 +179,7 @@ public class HotSpotOptions {
             shellHelper.print("\t" + "http-password" + ": (password is null or blank)");
         }
 
+        shellHelper.print("\t" + "max-ranges" + ": " + maxHotRanges);
         shellHelper.print("\t" + "verbose" + ": " + verbose);
         shellHelper.printInfo("---------------------------------------------");
         shellHelper.print("");
