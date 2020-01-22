@@ -157,16 +157,28 @@ public class HotSpotOptions {
         shellHelper.print("\t" + "port" + ": " + port);
         shellHelper.print("\t" + "database" + ": " + database);
         shellHelper.print("\t" + "username" + ": " + username);
-        shellHelper.print("\t" + "password" + ": " + password);
-        shellHelper.print("\t" + "sslEnabled" + ": " + sslEnabled);
-        shellHelper.print("\t" + "sslMode" + ": " + sslMode);
-        shellHelper.print("\t" + "sslCrtPath" + ": " + sslCrtPath);
-        shellHelper.print("\t" + "sslKeyPath" + ": " + sslKeyPath);
-        shellHelper.print("\t" + "httpScheme" + ": " + httpScheme);
-        shellHelper.print("\t" + "httpHost" + ": " + httpHost);
-        shellHelper.print("\t" + "httpPort" + ": " + httpPort);
-        shellHelper.print("\t" + "httpUsername" + ": " + httpUsername);
-        shellHelper.print("\t" + "httpPassword" + ": " + httpPassword);
+
+        if (password != null && !password.isBlank()) {
+            shellHelper.print("\t" + "password" + ": (password provided but not shown)");
+        } else {
+            shellHelper.print("\t" + "password" + ": (password not provided)");
+        }
+
+        shellHelper.print("\t" + "ssl-enabled" + ": " + sslEnabled);
+        shellHelper.print("\t" + "ssl-mode" + ": " + sslMode);
+        shellHelper.print("\t" + "ssl-crt-path" + ": " + sslCrtPath);
+        shellHelper.print("\t" + "ssl-key-path" + ": " + sslKeyPath);
+        shellHelper.print("\t" + "http-scheme" + ": " + httpScheme);
+        shellHelper.print("\t" + "http-host" + ": " + httpHost);
+        shellHelper.print("\t" + "http-port" + ": " + httpPort);
+        shellHelper.print("\t" + "http-username" + ": " + httpUsername);
+
+        if (httpPassword != null && !httpPassword.isBlank()) {
+            shellHelper.print("\t" + "http-password" + ": (password provided but not shown)");
+        } else {
+            shellHelper.print("\t" + "http-password" + ": (password not provided)");
+        }
+
         shellHelper.print("\t" + "verbose" + ": " + verbose);
         shellHelper.printInfo("---------------------------------------------");
         shellHelper.print("");
