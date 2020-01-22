@@ -176,13 +176,13 @@ public class HotSpotService {
 
     private void printException(boolean verbose, Exception e) {
         if (verbose) {
-            shellHelper.printInfo("the following error occurred: " + e.getMessage());
+            shellHelper.printError("the following error occurred: " + e.getMessage());
 
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
 
-            shellHelper.printInfo("stacktrace: " + sw.toString());
+            shellHelper.printError("with stacktrace: " + sw.toString());
         }
     }
 
