@@ -3,7 +3,7 @@ Command line utility for CockroachDB written using [Spring Shell](https://projec
 * `hotspots` - detects range hot spots in a CockroachDB cluster often caused by poor primary key selection as described [here](https://www.cockroachlabs.com/docs/v19.2/performance-best-practices-overview.html#unique-id-best-practices)
 
 ## Prerequisites
-* Java 11 - `brew cask install adoptopenjdk11`
+* Java 11 - `brew cask install adoptopenjdk11`.  You may need to run this first `brew tap AdoptOpenJDK/openjdk`.
 * CockroachDB with the following:
     * a database `user` with the `admin` role assigned
     * `--listen-addr` and `--http-addr` accessible from machine running `roach-shell`
