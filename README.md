@@ -99,7 +99,9 @@ OPTIONS
 		[Optional, default = false]
 ```
 
-## Example Command and Output
+## Example Commands and Output
+
+### Insecure Cluster - minimum configuration
 ```text
 roach-shell:>hotspots -h localhost -p 5432
 ---------------------------------------------
@@ -118,6 +120,7 @@ The following configuration parameters will be used:
 	http-port: 8080
 	http-username: null
 	http-password: (password is null or blank)
+	max-ranges: 10
 	verbose: false
 ---------------------------------------------
 Found Node with id [1], address [crdb-0:26257] and build [v19.2.2].
