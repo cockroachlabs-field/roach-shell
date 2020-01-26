@@ -44,6 +44,14 @@
         </dependencies>
     </dependencyManagement>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub timveil-cockroach/roach-shell Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/timveil-cockroach/roach-shell</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
