@@ -24,9 +24,9 @@
     </properties>
 
     <scm>
-        <connection>scm:git:https://github.com/timveil-cockroach/roach-shell.git</connection>
+        <connection>scm:git:git@github.com:timveil-cockroach/roach-shell.git</connection>
         <url>https://github.com/timveil-cockroach/roach-shell</url>
-        <developerConnection>scm:git:https://github.com/timveil-cockroach/roach-shell.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:timveil-cockroach/roach-shell.git</developerConnection>
     </scm>
 
     <dependencyManagement>
