@@ -1,6 +1,8 @@
 package io.crdb.shell;
 
 import org.postgresql.ds.PGSimpleDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,6 +25,8 @@ import java.sql.SQLException;
 
 @ShellComponent
 public class ShellCommands {
+
+    private static final Logger log = LoggerFactory.getLogger(ShellCommands.class);
 
     private final HotSpotService service;
     private final ShellHelper shellHelper;
@@ -54,7 +58,7 @@ public class ShellCommands {
                         @ShellOption(help = "username used for Admin UI REST calls", defaultValue = "") String httpUsername,
                         @ShellOption(help = "password used for Admin UI REST calls", defaultValue = "") String httpPassword,
                         @ShellOption(help = "host used for Admin UI REST calls", defaultValue = "") String httpHost,
-                        @ShellOption(help = "port used for Admin UI REST calls", defaultValue = "8080") int httpPort) throws SQLException {
+                        @ShellOption(help = "port used for Admin UI REST calls", defaultValue = "8080") int httpPort)  {
 
 
         ConnectionOptions connectionOptions = new ConnectionOptions(host, port, database, username, password, sslEnabled, sslMode, sslCrtPath, sslKeyPath, httpScheme, httpUsername, httpPassword, httpHost, httpPort);
@@ -70,12 +74,18 @@ public class ShellCommands {
 
         connectionOptions.print(shellHelper);
 
-        connections = new ShellConnections(connectionOptions, getDataSource(connectionOptions), loginRest(connectionOptions));
+        try {
+            connections = new ShellConnections(connectionOptions, getDataSource(connectionOptions), loginRest(connectionOptions));
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+
+            shellHelper.printError("Unable to establish connection to CockroachDB.");
+        }
 
     }
 
     @ShellMethod("Disconnect from CockroachDB")
-    public void disconnect() throws SQLException {
+    public void disconnect() {
         closeConnections();
     }
 
