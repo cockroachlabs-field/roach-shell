@@ -31,14 +31,14 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 
 @Service
-public class HotSpotService {
+public class ShellService {
 
     private static final Logger log = LoggerFactory.getLogger(ShellApplication.class);
 
     private final RestTemplate restTemplate;
     private final ShellHelper shellHelper;
 
-    public HotSpotService(RestTemplate restTemplate, ShellHelper shellHelper) {
+    public ShellService(RestTemplate restTemplate, ShellHelper shellHelper) {
         this.restTemplate = restTemplate;
         this.shellHelper = shellHelper;
     }
@@ -87,8 +87,10 @@ public class HotSpotService {
 
             DataSource dataSource = connections.getDataSource();
 
+            String sql = "select * from crdb_internal.ranges_no_leases where range_id = ?";
+
             try (Connection connection = dataSource.getConnection();
-                 PreparedStatement statement = connection.prepareStatement("select * from crdb_internal.ranges_no_leases where range_id = ?")
+                 PreparedStatement statement = connection.prepareStatement(sql)
             ) {
 
                 statement.setInt(1, vo.getRangeId());
@@ -129,10 +131,15 @@ public class HotSpotService {
 
         }
 
+        return buildTable(treeBasedTable, 8);
+
+    }
+
+    private Table buildTable(TreeBasedTable<Integer, Integer, String> treeBasedTable, int columnCount) {
         SortedSet<Integer> rowKeys = treeBasedTable.rowKeySet();
         int rowKeySize = rowKeys.size();
 
-        String[][] data = new String[rowKeySize][8];
+        String[][] data = new String[rowKeySize][columnCount];
 
         for (Integer rowKey : rowKeys) {
             SortedMap<Integer, String> row = treeBasedTable.row(rowKey);
@@ -144,7 +151,6 @@ public class HotSpotService {
 
         TableBuilder tableBuilder = new TableBuilder(new ArrayTableModel(data));
         return tableBuilder.addFullBorder(BorderStyle.fancy_heavy).build();
-
     }
 
     private void printException(boolean verbose, Exception e) {
@@ -214,4 +220,54 @@ public class HotSpotService {
     }
 
 
+    public Table getClients(ClientsOptions options, ShellConnections connections) {
+
+        DataSource dataSource = connections.getDataSource();
+
+        TreeBasedTable<Integer, Integer, String> treeBasedTable = TreeBasedTable.create();
+
+        treeBasedTable.put(0, 0, "Username");
+        treeBasedTable.put(0, 1, "Client Address");
+        treeBasedTable.put(0, 2, "Application Name");
+        treeBasedTable.put(0, 3, "Session Start");
+        treeBasedTable.put(0, 4, "Oldest Query Start");
+        treeBasedTable.put(0, 5, "Last Active Query");
+
+        String sql = "select * from crdb_internal.cluster_sessions order by session_start desc";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery();
+        ) {
+
+            int rowCount = 1;
+            while (resultSet.next()) {
+
+                String userName = resultSet.getString("user_name");
+                String clientAddress = resultSet.getString("client_address");
+                String applicationName = resultSet.getString("application_name");
+                String sessionStart = resultSet.getString("session_start");
+                String oldestQueryStart = resultSet.getString("oldest_query_start");
+                String lastActiveQuery = resultSet.getString("last_active_query");
+
+                treeBasedTable.put(rowCount, 0, userName != null ? userName : "");
+                treeBasedTable.put(rowCount, 1, clientAddress != null ? clientAddress : "");
+                treeBasedTable.put(rowCount, 2, applicationName != null ? applicationName : "");
+                treeBasedTable.put(rowCount, 3, sessionStart != null ? sessionStart : "");
+                treeBasedTable.put(rowCount, 4, oldestQueryStart != null ? oldestQueryStart : "");
+                treeBasedTable.put(rowCount, 5, lastActiveQuery != null ? lastActiveQuery : "");
+
+                rowCount++;
+
+            }
+        } catch (SQLException e) {
+            shellHelper.printError("Unable to get clients from \"crdb_internal.cluster_sessions\".");
+
+            printException(options.isVerbose(), e);
+
+            log.debug(e.getMessage(), e);
+        }
+
+        return buildTable(treeBasedTable, 6);
+    }
 }

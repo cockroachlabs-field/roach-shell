@@ -28,7 +28,7 @@ public class ShellCommands {
 
     private static final Logger log = LoggerFactory.getLogger(ShellCommands.class);
 
-    private final HotSpotService service;
+    private final ShellService service;
     private final ShellHelper shellHelper;
     private final ApplicationEventPublisher eventPublisher;
     private final RestTemplate restTemplate;
@@ -37,14 +37,14 @@ public class ShellCommands {
     private ShellConnections connections = null;
 
 
-    public ShellCommands(HotSpotService service, ShellHelper shellHelper, ApplicationEventPublisher eventPublisher, RestTemplate restTemplate) {
+    public ShellCommands(ShellService service, ShellHelper shellHelper, ApplicationEventPublisher eventPublisher, RestTemplate restTemplate) {
         this.service = service;
         this.shellHelper = shellHelper;
         this.eventPublisher = eventPublisher;
         this.restTemplate = restTemplate;
     }
 
-    @ShellMethod("Connect to CockroachDB")
+    @ShellMethod("Connect to a CockroachDB cluster")
     public void connect(@ShellOption(value = {"--host", "-h"}, help = "hostname of a CRDB node") String host,
                         @ShellOption(value = {"--port", "-p"}, help = "port of a CRDB node", defaultValue = "26257") int port,
                         @ShellOption(value = {"--database", "-d"}, help = "CRDB database name", defaultValue = "system") String database,
@@ -84,7 +84,7 @@ public class ShellCommands {
 
     }
 
-    @ShellMethod("Disconnect from CockroachDB")
+    @ShellMethod("Disconnect from a CockroachDB cluster")
     public void disconnect() {
         closeConnections();
     }
@@ -94,10 +94,20 @@ public class ShellCommands {
             @ShellOption(value = {"--max-ranges", "-m"}, help = "max number of hot ranges returned", defaultValue = "10") int maxRanges,
             @ShellOption(help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose) {
 
-        HotSpotOptions hotSpotOptions = new HotSpotOptions(verbose, maxRanges);
-        hotSpotOptions.print(shellHelper);
+        HotSpotOptions options = new HotSpotOptions(verbose, maxRanges);
+        options.print(shellHelper);
 
-        shellHelper.print(service.getHotSpots(hotSpotOptions, connections).render(200));
+        shellHelper.print(service.getHotSpots(options, connections).render(200));
+    }
+
+    @ShellMethod("List active client connections")
+    public void clients(
+            @ShellOption(help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose) {
+
+        ClientsOptions options = new ClientsOptions(verbose);
+        options.print(shellHelper);
+
+        shellHelper.print(service.getClients(options, connections).render(200));
     }
 
     @ShellMethodAvailability({"hotspots", "disconnect"})
