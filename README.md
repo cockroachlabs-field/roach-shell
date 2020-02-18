@@ -1,5 +1,7 @@
 # Roach Shell
 Command line utility for CockroachDB written using [Spring Shell](https://projects.spring.io/spring-shell/).  Commands include:
+* `connect` - connects to a CockroachDB cluster
+* `disconnect` - disconnects from a CockroachDB cluster
 * `hotspots` - detects range hot spots in a CockroachDB cluster often caused by poor primary key selection as described [here](https://www.cockroachlabs.com/docs/v19.2/performance-best-practices-overview.html#unique-id-best-practices)
 
 ## Prerequisites
@@ -25,15 +27,45 @@ With Java using the executable `jar` built above.
 java -jar roach-shell-0.0.1-SNAPSHOT.jar
 ````
 
+To establish a connection to a CockroachDB cluster first run the `connect` command.  For example...
+
+```shell script
+roach-shell:>connect -h localhost
+
+---------------------------------------------
+The following configuration parameters will be used:
+	host: localhost
+	port: 26257
+	database: system
+	username: root
+	password: (password is null or blank)
+	ssl-enabled: false
+	ssl-mode: disable
+	ssl-crt-path:
+	ssl-key-path:
+	http-scheme: http
+	http-host: localhost
+	http-port: 8080
+	http-username:
+	http-password: (password is null or blank)
+---------------------------------------------
+
+Connection to CockroachDB successful.  URL is jdbc:postgresql://localhost:26257/system?ApplicationName=HotSpotDetector&reWriteBatchedInserts=true&ssl=false&sslmode=disable
+````
+
+Once you are connected you can run other commands like `hotspots`.
+
 ## Command Help
-To see the following content run `help hotspots`.
+
+### connect
+To see the following content run `help connnect`.
 
 ```text
 NAME
-	hotspots - Find range hot spots in a CockroachDB (CRDB) cluster.
+	connect - Connect to CockroachDB
 
 SYNOPSYS
-	hotspots [--host] string  [[--port] int]  [[--database] string]  [[--username] string]  [[--password] string]  [[--ssl-mode] string]  [--ssl-enabled]  [[--ssl-crt-path] string]  [[--ssl-key-path] string]  [[--http-scheme] string]  [[--http-username] string]  [[--http-password] string]  [[--http-host] string]  [[--http-port] int]  [[--max-ranges] int]  [--verbose]  
+	connect [--host] string  [[--port] int]  [[--database] string]  [[--username] string]  [[--password] string]  [[--ssl-mode] string]  [--ssl-enabled]  [[--ssl-crt-path] string]  [[--ssl-key-path] string]  [[--http-scheme] string]  [[--http-username] string]  [[--http-password] string]  [[--http-host] string]  [[--http-port] int]
 
 OPTIONS
 	--host or -h  string
@@ -90,7 +122,18 @@ OPTIONS
 	--http-port  int
 		port used for Admin UI REST calls
 		[Optional, default = 8080]
+```
+### hotspots
+To see the following content run `help hotspots`.
 
+```text
+NAME
+	hotspots - Find range hot spots in a CockroachDB (CRDB) cluster.
+
+SYNOPSYS
+	hotspots [[--max-ranges] int]  [--verbose]
+
+OPTIONS
 	--max-ranges or -m  int
 		max number of hot ranges returned
 		[Optional, default = 10]
