@@ -44,7 +44,7 @@ public class ShellCommands {
         this.restTemplate = restTemplate;
     }
 
-    @ShellMethod("Connect to a CockroachDB cluster")
+    @ShellMethod("Connect to a CockroachDB cluster.")
     public void connect(@ShellOption(value = {"--host", "-h"}, help = "hostname of a CRDB node") String host,
                         @ShellOption(value = {"--port", "-p"}, help = "port of a CRDB node", defaultValue = "26257") int port,
                         @ShellOption(value = {"--database", "-d"}, help = "CRDB database name", defaultValue = "system") String database,
@@ -84,12 +84,12 @@ public class ShellCommands {
 
     }
 
-    @ShellMethod("Disconnect from a CockroachDB cluster")
+    @ShellMethod("Disconnect from the CockroachDB cluster.")
     public void disconnect() {
         closeConnections();
     }
 
-    @ShellMethod("Find range hot spots in a CockroachDB (CRDB) cluster.")
+    @ShellMethod("Find range hot spots in the CockroachDB cluster.")
     public void hotspots(
             @ShellOption(value = {"--max-ranges", "-m"}, help = "max number of hot ranges returned", defaultValue = "10") int maxRanges,
             @ShellOption(help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose) {
@@ -100,7 +100,7 @@ public class ShellCommands {
         shellHelper.print(service.getHotSpots(options, connections).render(200));
     }
 
-    @ShellMethod("List active client connections")
+    @ShellMethod("List active client connections to the CockroachDB cluster.")
     public void clients(
             @ShellOption(help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose) {
 
@@ -110,7 +110,7 @@ public class ShellCommands {
         shellHelper.print(service.getClients(options, connections).render(200));
     }
 
-    @ShellMethodAvailability({"hotspots", "disconnect"})
+    @ShellMethodAvailability({"hotspots", "disconnect", "clients"})
     public Availability connectionAvailability() {
         return connections != null ? Availability.available() : Availability.unavailable("No connection has been established.  Please run 'connect' first.");
     }
