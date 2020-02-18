@@ -20,11 +20,11 @@ public class HotSpotOptions extends AbstractOptions {
 
     public void print(ShellHelper shellHelper) {
         shellHelper.print("");
-        shellHelper.printInfo("---------------------------------------------");
-        shellHelper.printInfo("The following configuration parameters will be used:");
+        shellHelper.print("---------------------------------------------");
+        shellHelper.print("The following configuration parameters will be used:");
         shellHelper.print("\t" + "max-ranges" + ": " + maxHotRanges);
         shellHelper.print("\t" + "verbose" + ": " + verbose);
-        shellHelper.printInfo("---------------------------------------------");
+        shellHelper.print("---------------------------------------------");
         shellHelper.print("");
     }
 

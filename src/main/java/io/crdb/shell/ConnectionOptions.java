@@ -97,8 +97,8 @@ public class ConnectionOptions extends AbstractOptions {
 
     public void print(ShellHelper shellHelper) {
         shellHelper.print("");
-        shellHelper.printInfo("---------------------------------------------");
-        shellHelper.printInfo("The following configuration parameters will be used:");
+        shellHelper.print("---------------------------------------------");
+        shellHelper.print("The following configuration parameters will be used:");
         shellHelper.print("\t" + "host" + ": " + host);
         shellHelper.print("\t" + "port" + ": " + port);
         shellHelper.print("\t" + "database" + ": " + database);
@@ -125,7 +125,7 @@ public class ConnectionOptions extends AbstractOptions {
             shellHelper.print("\t" + "http-password" + ": (password is null or blank)");
         }
 
-        shellHelper.printInfo("---------------------------------------------");
+        shellHelper.print("---------------------------------------------");
         shellHelper.print("");
     }
 
