@@ -25,12 +25,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.function.Supplier;
 
 @SpringBootApplication
-public class HotSpotDetectorApplication {
+public class ShellApplication {
 
-    private static final Logger log = LoggerFactory.getLogger(HotSpotDetectorApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(ShellApplication.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(HotSpotDetectorApplication.class, args);
+        SpringApplication.run(ShellApplication.class, args);
     }
 
     @Bean

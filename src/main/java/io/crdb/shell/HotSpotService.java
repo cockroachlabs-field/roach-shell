@@ -2,7 +2,6 @@ package io.crdb.shell;
 
 import com.google.common.collect.Ordering;
 import com.google.common.collect.TreeBasedTable;
-import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -34,7 +33,7 @@ import java.util.SortedSet;
 @Service
 public class HotSpotService {
 
-    private static final Logger log = LoggerFactory.getLogger(HotSpotDetectorApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(ShellApplication.class);
 
     private final RestTemplate restTemplate;
     private final ShellHelper shellHelper;
@@ -44,34 +43,14 @@ public class HotSpotService {
         this.shellHelper = shellHelper;
     }
 
-    public Table getHotSpots(HotSpotOptions options) {
+    public Table getHotSpots(HotSpotOptions options, ShellConnections connections) {
 
-        final String host = options.getHost();
-        final int port = options.getPort();
-        final String database = options.getDatabase();
-        final String username = options.getUsername();
-        final String password = options.getPassword();
-        final boolean sslEnabled = options.isSslEnabled();
-        final String sslMode = options.getSslMode();
-        final String sslCrtPath = options.getSslCrtPath();
-        final String sslKeyPath = options.getSslKeyPath();
-        final String httpScheme = options.getHttpScheme();
-        final String httpHost = options.getHttpHost();
-        final int httpPort = options.getHttpPort();
-        final String httpUsername = options.getHttpUsername();
-        final String httpPassword = options.getHttpPassword();
         final int maxHotRanges = options.getMaxHotRanges();
         final boolean verbose = options.isVerbose();
 
-        final HttpHeaders headers = new HttpHeaders();
+        final ConnectionOptions connectionOptions = connections.getConnectionOptions();
 
-        if (sslEnabled) {
-            String loginCookie = login(httpPort, httpScheme, httpHost, httpUsername, httpPassword);
-
-            headers.add("Cookie", loginCookie);
-        }
-
-        final List<Node> nodes = getNodes(httpPort, httpScheme, httpHost, headers);
+        final List<Node> nodes = getNodes(connectionOptions.getHttpPort(), connectionOptions.getHttpScheme(), connectionOptions.getHttpHost(), connections.getHeaders());
 
         final List<HotRangeVO> hotList = new ArrayList<>();
 
@@ -79,7 +58,7 @@ public class HotSpotService {
 
             shellHelper.print("Found Node with id [" + node.getNodeId() + "], address [" + node.getAddress() + "] and build [" + node.getBuild() + "].");
 
-            List<Store> stores = getHotRangesForNode(httpPort, httpScheme, httpHost, headers, node, verbose);
+            List<Store> stores = getHotRangesForNode(connectionOptions.getHttpPort(), connectionOptions.getHttpScheme(), connectionOptions.getHttpHost(), connections.getHeaders(), node, verbose);
 
             for (Store store : stores) {
                 for (HotRange range : store.getHotRanges()) {
@@ -103,9 +82,10 @@ public class HotSpotService {
 
         int rowCount = 1;
 
-        DataSource dataSource = getDataSource(host, port, database, username, password, sslEnabled, sslMode, sslCrtPath, sslKeyPath);
 
         for (HotRangeVO vo : hotRangeVOS) {
+
+            DataSource dataSource = connections.getDataSource();
 
             try (Connection connection = dataSource.getConnection();
                  PreparedStatement statement = connection.prepareStatement("select * from crdb_internal.ranges_no_leases where range_id = ?")
@@ -149,12 +129,6 @@ public class HotSpotService {
 
         }
 
-
-        if (sslEnabled) {
-            logout(httpPort, httpScheme, httpHost, headers);
-        }
-
-
         SortedSet<Integer> rowKeys = treeBasedTable.rowKeySet();
         int rowKeySize = rowKeys.size();
 
@@ -185,36 +159,7 @@ public class HotSpotService {
         }
     }
 
-    private DataSource getDataSource(String host,
-                                     int port,
-                                     String database,
-                                     String user,
-                                     String password,
-                                     boolean sslEnabled,
-                                     String sslMode,
-                                     String crtPath,
-                                     String keyPath) {
-        PGSimpleDataSource ds = new PGSimpleDataSource();
-        ds.setServerNames(new String[]{host});
-        ds.setPortNumbers(new int[]{port});
-        ds.setDatabaseName(database);
-        ds.setUser(user);
-        if (password != null && !password.isBlank()) {
-            ds.setPassword(password);
-        }
-        ds.setSslMode(sslMode);
-        ds.setSsl(sslEnabled);
 
-        if (sslEnabled) {
-            ds.setSslCert(crtPath);
-            ds.setSslKey(keyPath);
-        }
-
-        ds.setReWriteBatchedInserts(true);
-        ds.setApplicationName("HotSpotDetector");
-
-        return ds;
-    }
 
     private List<Store> getHotRangesForNode(int httpPort, String httpScheme, String httpHost, HttpHeaders headers, Node node, boolean verbose) {
 
@@ -268,29 +213,5 @@ public class HotSpotService {
 
     }
 
-    private String login(int httpPort, String httpScheme, String httpHost, String username, String password) {
-        final URI uri = UriComponentsBuilder
-                .fromUriString(String.format("%s://%s:%s/login", httpScheme, httpHost, httpPort))
-                .build()
-                .toUri();
 
-        final String body = String.format("{\"username\":\"%s\", \"password\":\"%s\"}", username, password);
-
-        final RequestEntity<String> requestEntity = RequestEntity.post(uri).contentType(MediaType.APPLICATION_JSON).body(body);
-
-        final ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
-
-        return responseEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
-    }
-
-    private void logout(int httpPort, String httpScheme, String httpHost, HttpHeaders headers) {
-        final URI uri = UriComponentsBuilder
-                .fromUriString(String.format("%s://%s:%s/logout", httpScheme, httpHost, httpPort))
-                .build()
-                .toUri();
-
-        final RequestEntity<Void> requestEntity = RequestEntity.get(uri).headers(headers).build();
-
-        restTemplate.exchange(requestEntity, String.class);
-    }
 }
