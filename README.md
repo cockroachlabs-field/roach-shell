@@ -144,7 +144,9 @@ OPTIONS
 
 ## Example Commands and Output
 
-### Insecure Cluster
+### hotspots
+
+#### Insecure Cluster
 ```text
 roach-shell:>hotspots -h localhost -p 5432
 ---------------------------------------------
