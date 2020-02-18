@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class StoreDeserializer extends JsonDeserializer<Store> {
-    private static final Logger log = LoggerFactory.getLogger(HotSpotDetectorApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(ShellApplication.class);
 
 
     @Override
