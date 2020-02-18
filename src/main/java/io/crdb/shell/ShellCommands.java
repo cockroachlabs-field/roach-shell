@@ -17,6 +17,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 import java.net.URI;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
 @ShellComponent
@@ -62,16 +64,13 @@ public class ShellCommands {
         }
 
         if (connections != null) {
+            shellHelper.printWarning("Connections already exist and will be disconnected.");
             disconnect();
         }
 
         connectionOptions.print(shellHelper);
 
-        DataSource dataSource = getDataSource(connectionOptions);
-
-
-
-        connections = new ShellConnections(connectionOptions, dataSource, loginRest(connectionOptions));
+        connections = new ShellConnections(connectionOptions, getDataSource(connectionOptions), loginRest(connectionOptions));
 
     }
 
@@ -105,13 +104,14 @@ public class ShellCommands {
 
         if (connections != null) {
             logoutRest(connections);
-
             connections = null;
+
+            shellHelper.printSuccess("Existing connections have been closed!");
         }
 
     }
 
-    private DataSource getDataSource(ConnectionOptions connectionOptions) {
+    private DataSource getDataSource(ConnectionOptions connectionOptions) throws SQLException {
         PGSimpleDataSource ds = new PGSimpleDataSource();
         ds.setServerNames(new String[]{connectionOptions.getHost()});
         ds.setPortNumbers(new int[]{connectionOptions.getPort()});
@@ -140,6 +140,13 @@ public class ShellCommands {
         ds.setReWriteBatchedInserts(true);
         ds.setApplicationName("HotSpotDetector");
 
+        try (Connection connection = ds.getConnection()) {
+
+            DatabaseMetaData metaData = connection.getMetaData();
+
+            shellHelper.printSuccess(String.format("Connection to CockroachDB successful.  URL is %s", metaData.getURL()));
+        }
+
         return ds;
     }
 
@@ -158,7 +165,11 @@ public class ShellCommands {
 
             final ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
 
-            return responseEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
+            String cookie = responseEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
+
+            shellHelper.printSuccess("Login successful for secure HTTP connection.");
+
+            return cookie;
         }
 
         return null;
@@ -178,6 +189,8 @@ public class ShellCommands {
             final RequestEntity<Void> requestEntity = RequestEntity.get(uri).headers(connections.getHeaders()).build();
 
             restTemplate.exchange(requestEntity, String.class);
+
+            shellHelper.printSuccess("Logout complete from secure HTTP connection.");
         }
     }
 
