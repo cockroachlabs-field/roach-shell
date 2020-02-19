@@ -353,6 +353,8 @@ public class ShellService {
 
         shellHelper.printSuccess(String.format("Returned %d total statements, %d unique.  Showing %d after applying filters.", statements.size(), deduped.size(), filtered.size()));
 
+        List<Statement> sorted = Ordering.natural().reverse().onResultOf(new CompareExecutionCount()).sortedCopy(filtered);
+
         TreeBasedTable<Integer, Integer, String> treeBasedTable = TreeBasedTable.create();
 
         treeBasedTable.put(0, 0, "Node");
@@ -362,7 +364,7 @@ public class ShellService {
         treeBasedTable.put(0, 4, "Statement");
 
         int rowCount = 1;
-        for (Statement statement : filtered) {
+        for (Statement statement : sorted) {
             String node = Integer.toString(statement.getKey().getNodeId());
             String appName = statement.getKey().getKeyData().getApp();
             String count = Integer.toString(statement.getStats().getCount());
