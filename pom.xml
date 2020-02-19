@@ -6,12 +6,12 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.4.RELEASE</version>
-        <relativePath/>
+        <relativePath />
     </parent>
 
     <groupId>io.crdb.shell</groupId>
     <artifactId>roach-shell</artifactId>
-    <version>20.0.1-SNAPSHOT</version>
+    <version>20.0.1</version>
 
     <name>Roach Shell</name>
     <description>CockroachDB Shell</description>
@@ -26,7 +26,7 @@
         <connection>scm:git:git@github.com:timveil-cockroach/roach-shell.git</connection>
         <url>https://github.com/timveil-cockroach/roach-shell</url>
         <developerConnection>scm:git:git@github.com:timveil-cockroach/roach-shell.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v20.0.1</tag>
     </scm>
 
     <dependencyManagement>
