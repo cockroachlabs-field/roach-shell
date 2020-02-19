@@ -140,7 +140,8 @@ OPTIONS
 		max number of hot ranges returned
 		[Optional, default = 10]
 
-	--verbose	include verbose output.  true or false.
+	--verbose or -v
+		include verbose output.  true or false.
 		[Optional, default = false]
 ```
 
@@ -155,7 +156,8 @@ SYNOPSYS
 	clients [--verbose]  
 
 OPTIONS
-	--verbose	include verbose output.  true or false.
+	--verbose or -v
+		include verbose output.  true or false.
 		[Optional, default = false]
 ```
 
@@ -173,21 +175,25 @@ OPTIONS
 	--dist-only	include only dist sql statements.  true or false.
 		[Optional, default = <none>]
 
-	--exclude-ddl	exclude DDL statements.  true or false.
+	--exclude-ddl or -xd
+		exclude DDL statements.  true or false.
 		[Optional, default = <none>]
 
-	--exclude-internal	exclude statements from CockroachDB internals.  true or false.
+	--exclude-internal or -xi
+		exclude statements from CockroachDB internals.  true or false.
 		[Optional, default = <none>]
 
 	--has-span-all	include statements with "span = ALL".  true or false.
 		[Optional, default = <none>]
 
-	--verbose	include verbose output.  true or false.
+	--verbose or -v
+		include verbose output.  true or false.
 		[Optional, default = false]
 
 	--app or -a  string
 		only include statements from this application
 		[Optional, default = <none>]
+
 ```
 
 ## Example Commands and Output

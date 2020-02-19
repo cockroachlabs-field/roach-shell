@@ -113,8 +113,8 @@ public class ShellCommands {
     @ShellMethod("List recent statements against the CockroachDB cluster.")
     public void statements(
             @ShellOption(help = "include only dist sql statements.  true or false.", defaultValue = ShellOption.NULL) Boolean distOnly,
-            @ShellOption(help = "exclude DDL statements.  true or false.", defaultValue = ShellOption.NULL) Boolean excludeDDL,
-            @ShellOption(help = "exclude statements from CockroachDB internals.  true or false.", defaultValue = ShellOption.NULL) Boolean excludeInternal,
+            @ShellOption(value = {"--exclude-ddl", "-xd"}, help = "exclude DDL statements.  true or false.", defaultValue = ShellOption.NULL) Boolean excludeDDL,
+            @ShellOption(value = {"--exclude-internal", "-xi"}, help = "exclude statements from CockroachDB internals.  true or false.", defaultValue = ShellOption.NULL) Boolean excludeInternal,
             @ShellOption(help = "include statements with \"span = ALL\".  true or false.", defaultValue = ShellOption.NULL) Boolean hasSpanAll,
             @ShellOption(value = {"--verbose", "-v"}, help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose,
             @ShellOption(value = {"--app", "-a"}, help = "only include statements from this application", defaultValue = ShellOption.NULL) String applicationName) {
