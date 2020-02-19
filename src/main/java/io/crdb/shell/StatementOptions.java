@@ -4,15 +4,17 @@ public class StatementOptions extends AbstractOptions {
 
     private final boolean verbose;
     private final String applicationName;
-    private final boolean excludeDDL;
+    private final Boolean excludeDDL;
+    private final Boolean excludeInternal;
     private final Boolean hasSpanAll;
     private final Boolean distOnly;
 
 
-    public StatementOptions(boolean verbose, String applicationName, boolean excludeDDL, Boolean hasSpanAll, Boolean distOnly) {
+    public StatementOptions(boolean verbose, String applicationName, Boolean excludeDDL, Boolean excludeInternal, Boolean hasSpanAll, Boolean distOnly) {
         this.verbose = verbose;
         this.applicationName = applicationName;
         this.excludeDDL = excludeDDL;
+        this.excludeInternal = excludeInternal;
         this.hasSpanAll = hasSpanAll;
         this.distOnly = distOnly;
     }
@@ -25,8 +27,12 @@ public class StatementOptions extends AbstractOptions {
         return applicationName;
     }
 
-    public boolean isExcludeDDL() {
+    public Boolean getExcludeDDL() {
         return excludeDDL;
+    }
+
+    public Boolean getExcludeInternal() {
+        return excludeInternal;
     }
 
     public Boolean getHasSpanAll() {
@@ -44,6 +50,7 @@ public class StatementOptions extends AbstractOptions {
         shellHelper.print("The following configuration parameters will be used:");
         shellHelper.print("\t" + "application-name" + ": " + applicationName);
         shellHelper.print("\t" + "exclude-ddl" + ": " + excludeDDL);
+        shellHelper.print("\t" + "exclude-internal" + ": " + excludeInternal);
         shellHelper.print("\t" + "dist-only" + ": " + distOnly);
         shellHelper.print("\t" + "has-span-all" + ": " + hasSpanAll);
         shellHelper.print("\t" + "verbose" + ": " + verbose);

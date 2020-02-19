@@ -281,6 +281,8 @@ public class ShellService {
             StatementKeyData keyData = statement.getKey().getKeyData();
 
             String query = keyData.getQuery().toUpperCase();
+            String appName = keyData.getApp().toUpperCase();
+            String plan = statement.getStats().getSensitiveInfo().getMostRecentPlanDescription().toString().toUpperCase();
 
             if (filtered.containsKey(query)) {
                 continue;
@@ -295,21 +297,24 @@ public class ShellService {
             }
 
             if (include && filterByApp) {
-                String appName = keyData.getApp().toUpperCase();
                 if (!appName.equals(options.getApplicationName().toUpperCase())) {
                     include = false;
                 }
             }
 
-            if (include && options.isExcludeDDL()) {
+            if (include && (options.getExcludeInternal() != null && options.getExcludeInternal())) {
+                if (appName.contains("INTERNAL" )) {
+                    include = false;
+                }
+            }
+
+            if (include && (options.getExcludeDDL() != null && options.getExcludeDDL())) {
                 if (query.startsWith("CREATE") || query.startsWith("ALTER") || query.startsWith("DROP") || query.startsWith("SET")) {
                     include = false;
                 }
             }
 
             if (include && (options.getHasSpanAll() != null && options.getHasSpanAll())) {
-                String plan = statement.getStats().getSensitiveInfo().getMostRecentPlanDescription().toString().toUpperCase();
-
                 if (!plan.contains("\"KEY\":\"SPANS\",\"VALUE\":\"ALL\"")) {
                     include = false;
                 }
