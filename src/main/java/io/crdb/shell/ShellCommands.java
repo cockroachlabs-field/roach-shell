@@ -28,7 +28,7 @@ public class ShellCommands {
 
     private static final Logger log = LoggerFactory.getLogger(ShellCommands.class);
 
-    private final HotSpotService service;
+    private final ShellService service;
     private final ShellHelper shellHelper;
     private final ApplicationEventPublisher eventPublisher;
     private final RestTemplate restTemplate;
@@ -37,27 +37,27 @@ public class ShellCommands {
     private ShellConnections connections = null;
 
 
-    public ShellCommands(HotSpotService service, ShellHelper shellHelper, ApplicationEventPublisher eventPublisher, RestTemplate restTemplate) {
+    public ShellCommands(ShellService service, ShellHelper shellHelper, ApplicationEventPublisher eventPublisher, RestTemplate restTemplate) {
         this.service = service;
         this.shellHelper = shellHelper;
         this.eventPublisher = eventPublisher;
         this.restTemplate = restTemplate;
     }
 
-    @ShellMethod("Connect to CockroachDB")
+    @ShellMethod("Connect to a CockroachDB cluster.")
     public void connect(@ShellOption(value = {"--host", "-h"}, help = "hostname of a CRDB node") String host,
                         @ShellOption(value = {"--port", "-p"}, help = "port of a CRDB node", defaultValue = "26257") int port,
                         @ShellOption(value = {"--database", "-d"}, help = "CRDB database name", defaultValue = "system") String database,
                         @ShellOption(value = {"--username", "-u"}, help = "username used to connect to database", defaultValue = "root") String username,
-                        @ShellOption(help = "password used to connect to database", defaultValue = "") String password,
+                        @ShellOption(help = "password used to connect to database", defaultValue = ShellOption.NULL) String password,
                         @ShellOption(help = "SSL mode for database connection.  disable, allow, prefer, require, verify-ca or verify-full.", defaultValue = "disable") String sslMode,
                         @ShellOption(help = "is SSL enabled? true or false.", defaultValue = "false") boolean sslEnabled,
-                        @ShellOption(help = "path to SSL Cert file when SSL is enabled", defaultValue = "") String sslCrtPath,
-                        @ShellOption(help = "path to SSL Key file when SSL is enabled", defaultValue = "") String sslKeyPath,
+                        @ShellOption(help = "path to SSL Cert file when SSL is enabled", defaultValue = ShellOption.NULL) String sslCrtPath,
+                        @ShellOption(help = "path to SSL Key file when SSL is enabled", defaultValue = ShellOption.NULL) String sslKeyPath,
                         @ShellOption(help = "HTTP scheme for Admin UI REST calls.  http or https.", defaultValue = "http") String httpScheme,
-                        @ShellOption(help = "username used for Admin UI REST calls", defaultValue = "") String httpUsername,
-                        @ShellOption(help = "password used for Admin UI REST calls", defaultValue = "") String httpPassword,
-                        @ShellOption(help = "host used for Admin UI REST calls", defaultValue = "") String httpHost,
+                        @ShellOption(help = "username used for Admin UI REST calls", defaultValue = ShellOption.NULL) String httpUsername,
+                        @ShellOption(help = "password used for Admin UI REST calls", defaultValue = ShellOption.NULL) String httpPassword,
+                        @ShellOption(help = "host used for Admin UI REST calls", defaultValue = ShellOption.NULL) String httpHost,
                         @ShellOption(help = "port used for Admin UI REST calls", defaultValue = "8080") int httpPort)  {
 
 
@@ -84,23 +84,49 @@ public class ShellCommands {
 
     }
 
-    @ShellMethod("Disconnect from CockroachDB")
+    @ShellMethod("Disconnect from the CockroachDB cluster.")
     public void disconnect() {
         closeConnections();
     }
 
-    @ShellMethod("Find range hot spots in a CockroachDB (CRDB) cluster.")
+    @ShellMethod("Find range hot spots in the CockroachDB cluster.")
     public void hotspots(
             @ShellOption(value = {"--max-ranges", "-m"}, help = "max number of hot ranges returned", defaultValue = "10") int maxRanges,
             @ShellOption(help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose) {
 
-        HotSpotOptions hotSpotOptions = new HotSpotOptions(verbose, maxRanges);
-        hotSpotOptions.print(shellHelper);
+        HotSpotOptions options = new HotSpotOptions(verbose, maxRanges);
+        options.print(shellHelper);
 
-        shellHelper.print(service.getHotSpots(hotSpotOptions, connections).render(200));
+        shellHelper.print(service.getHotSpots(options, connections).render(200));
     }
 
-    @ShellMethodAvailability({"hotspots", "disconnect"})
+    @ShellMethod("List active client connections to the CockroachDB cluster.")
+    public void clients(
+            @ShellOption(help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose) {
+
+        ClientsOptions options = new ClientsOptions(verbose);
+        options.print(shellHelper);
+
+        shellHelper.print(service.getClients(options, connections).render(200));
+    }
+
+    @ShellMethod("List recent statements against the CockroachDB cluster.")
+    public void statements(
+            @ShellOption(help = "include only dist sql statements.  true or false.", defaultValue = ShellOption.NULL) Boolean distOnly,
+            @ShellOption(help = "exclude DDL statements.  true or false.", defaultValue = ShellOption.NULL) Boolean excludeDDL,
+            @ShellOption(help = "exclude statements from CockroachDB internals.  true or false.", defaultValue = ShellOption.NULL) Boolean excludeInternal,
+            @ShellOption(help = "include statements with \"span = ALL\".  true or false.", defaultValue = ShellOption.NULL) Boolean hasSpanAll,
+            @ShellOption(help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose,
+            @ShellOption(value = {"--app", "-a"}, help = "only include statements from this application", defaultValue = ShellOption.NULL) String applicationName) {
+
+
+        StatementOptions options = new StatementOptions(verbose, applicationName, excludeDDL, excludeInternal, hasSpanAll, distOnly);
+        options.print(shellHelper);
+
+        shellHelper.print(service.getStatements(options, connections).render(200));
+    }
+
+    @ShellMethodAvailability({"hotspots", "disconnect", "clients"})
     public Availability connectionAvailability() {
         return connections != null ? Availability.available() : Availability.unavailable("No connection has been established.  Please run 'connect' first.");
     }

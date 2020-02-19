@@ -25,20 +25,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.SortedSet;
+import java.util.*;
 
 @Service
-public class HotSpotService {
+public class ShellService {
 
     private static final Logger log = LoggerFactory.getLogger(ShellApplication.class);
 
     private final RestTemplate restTemplate;
     private final ShellHelper shellHelper;
 
-    public HotSpotService(RestTemplate restTemplate, ShellHelper shellHelper) {
+    public ShellService(RestTemplate restTemplate, ShellHelper shellHelper) {
         this.restTemplate = restTemplate;
         this.shellHelper = shellHelper;
     }
@@ -87,8 +84,10 @@ public class HotSpotService {
 
             DataSource dataSource = connections.getDataSource();
 
+            String sql = "select * from crdb_internal.ranges_no_leases where range_id = ?";
+
             try (Connection connection = dataSource.getConnection();
-                 PreparedStatement statement = connection.prepareStatement("select * from crdb_internal.ranges_no_leases where range_id = ?")
+                 PreparedStatement statement = connection.prepareStatement(sql)
             ) {
 
                 statement.setInt(1, vo.getRangeId());
@@ -129,10 +128,15 @@ public class HotSpotService {
 
         }
 
+        return buildTable(treeBasedTable, 8);
+
+    }
+
+    private Table buildTable(TreeBasedTable<Integer, Integer, String> treeBasedTable, int columnCount) {
         SortedSet<Integer> rowKeys = treeBasedTable.rowKeySet();
         int rowKeySize = rowKeys.size();
 
-        String[][] data = new String[rowKeySize][8];
+        String[][] data = new String[rowKeySize][columnCount];
 
         for (Integer rowKey : rowKeys) {
             SortedMap<Integer, String> row = treeBasedTable.row(rowKey);
@@ -144,7 +148,6 @@ public class HotSpotService {
 
         TableBuilder tableBuilder = new TableBuilder(new ArrayTableModel(data));
         return tableBuilder.addFullBorder(BorderStyle.fancy_heavy).build();
-
     }
 
     private void printException(boolean verbose, Exception e) {
@@ -214,4 +217,165 @@ public class HotSpotService {
     }
 
 
+    public Table getClients(ClientsOptions options, ShellConnections connections) {
+
+        DataSource dataSource = connections.getDataSource();
+
+        TreeBasedTable<Integer, Integer, String> treeBasedTable = TreeBasedTable.create();
+
+        treeBasedTable.put(0, 0, "Username");
+        treeBasedTable.put(0, 1, "Client Address");
+        treeBasedTable.put(0, 2, "Application Name");
+        treeBasedTable.put(0, 3, "Session Start");
+        treeBasedTable.put(0, 4, "Oldest Query Start");
+        treeBasedTable.put(0, 5, "Last Active Query");
+
+        String sql = "select * from crdb_internal.cluster_sessions order by session_start desc";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery();
+        ) {
+
+            int rowCount = 1;
+            while (resultSet.next()) {
+
+                String userName = resultSet.getString("user_name");
+                String clientAddress = resultSet.getString("client_address");
+                String applicationName = resultSet.getString("application_name");
+                String sessionStart = resultSet.getString("session_start");
+                String oldestQueryStart = resultSet.getString("oldest_query_start");
+                String lastActiveQuery = resultSet.getString("last_active_query");
+
+                treeBasedTable.put(rowCount, 0, userName != null ? userName : "");
+                treeBasedTable.put(rowCount, 1, clientAddress != null ? clientAddress : "");
+                treeBasedTable.put(rowCount, 2, applicationName != null ? applicationName : "");
+                treeBasedTable.put(rowCount, 3, sessionStart != null ? sessionStart : "");
+                treeBasedTable.put(rowCount, 4, oldestQueryStart != null ? oldestQueryStart : "");
+                treeBasedTable.put(rowCount, 5, lastActiveQuery != null ? lastActiveQuery : "");
+
+                rowCount++;
+
+            }
+        } catch (SQLException e) {
+            shellHelper.printError("Unable to get clients from \"crdb_internal.cluster_sessions\".");
+
+            printException(options.isVerbose(), e);
+
+            log.debug(e.getMessage(), e);
+        }
+
+        return buildTable(treeBasedTable, 6);
+    }
+
+    public Table getStatements(StatementOptions options, ShellConnections connections) {
+
+        List<Statement> statements = getAllStatements(connections);
+
+        Map<String, Statement> filtered = new HashMap<>();
+
+        boolean filterByApp = options.getApplicationName() != null && !options.getApplicationName().isEmpty();
+
+        for (Statement statement : statements) {
+
+            StatementKeyData keyData = statement.getKey().getKeyData();
+
+            String query = keyData.getQuery().toUpperCase();
+            String appName = keyData.getApp().toUpperCase();
+            String plan = statement.getStats().getSensitiveInfo().getMostRecentPlanDescription().toString().toUpperCase();
+
+            if (filtered.containsKey(query)) {
+                continue;
+            }
+
+            boolean include = true;
+
+            if (options.getDistOnly() != null && options.getDistOnly()) {
+                if (!keyData.isDistSQL())  {
+                    include = false;
+                }
+            }
+
+            if (include && filterByApp) {
+                if (!appName.equals(options.getApplicationName().toUpperCase())) {
+                    include = false;
+                }
+            }
+
+            if (include && (options.getExcludeInternal() != null && options.getExcludeInternal())) {
+                if (appName.contains("INTERNAL" )) {
+                    include = false;
+                }
+            }
+
+            if (include && (options.getExcludeDDL() != null && options.getExcludeDDL())) {
+                if (query.startsWith("CREATE") || query.startsWith("ALTER") || query.startsWith("DROP") || query.startsWith("SET")) {
+                    include = false;
+                }
+            }
+
+            if (include && (options.getHasSpanAll() != null && options.getHasSpanAll())) {
+                if (!plan.contains("\"KEY\":\"SPANS\",\"VALUE\":\"ALL\"")) {
+                    include = false;
+                }
+            }
+
+            if (include) {
+                filtered.put(query, statement);
+            } else {
+                log.debug("this statement was excluded [{}]", statement.toString());
+            }
+        }
+
+        shellHelper.printSuccess(String.format("Returned %d total statements.  Showing %d after applying filters.", statements.size(), filtered.size()));
+
+        TreeBasedTable<Integer, Integer, String> treeBasedTable = TreeBasedTable.create();
+
+        treeBasedTable.put(0, 0, "Node");
+        treeBasedTable.put(0, 1, "Application Name");
+        treeBasedTable.put(0, 2, "Count");
+        treeBasedTable.put(0, 3, "Last Plan Timestamp");
+        treeBasedTable.put(0, 4, "Statement");
+
+        int rowCount = 1;
+        for (Statement statement : filtered.values()) {
+            String node = Integer.toString(statement.getKey().getNodeId());
+            String appName = statement.getKey().getKeyData().getApp();
+            String count = Integer.toString(statement.getStats().getCount());
+            String timestamp = statement.getStats().getSensitiveInfo().getMostRecentPlanTimestamp();
+            String query = statement.getKey().getKeyData().getQuery();
+
+            treeBasedTable.put(rowCount, 0, node != null ? node : "");
+            treeBasedTable.put(rowCount, 1, appName != null ? appName : "");
+            treeBasedTable.put(rowCount, 2, count != null ? count : "");
+            treeBasedTable.put(rowCount, 3, timestamp != null ? timestamp : "");
+            treeBasedTable.put(rowCount, 4, query != null ? query : "");
+
+            rowCount++;
+        }
+
+
+        return buildTable(treeBasedTable, 5);
+    }
+
+    private List<Statement> getAllStatements(ShellConnections connections) {
+        ConnectionOptions connectionOptions = connections.getConnectionOptions();
+
+        final URI uri = UriComponentsBuilder
+                .fromUriString(String.format("%s://%s:%s/_status/statements", connectionOptions.getHttpScheme(), connectionOptions.getHttpHost(), connectionOptions.getHttpPort()))
+                .build()
+                .toUri();
+
+        final RequestEntity<Void> requestEntity = RequestEntity.get(uri).headers(connections.getHeaders()).accept(MediaType.APPLICATION_JSON).build();
+
+        final ResponseEntity<StatementsWrapper> responseEntity = restTemplate.exchange(requestEntity, StatementsWrapper.class);
+
+        Assert.notNull(responseEntity, "getStatements() ResponseEntity is null");
+
+        final StatementsWrapper body = responseEntity.getBody();
+
+        Assert.notNull(body, "getStatements() body is null");
+
+        return body.getStatements();
+    }
 }
