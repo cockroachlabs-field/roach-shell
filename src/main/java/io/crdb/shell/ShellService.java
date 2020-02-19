@@ -270,4 +270,97 @@ public class ShellService {
 
         return buildTable(treeBasedTable, 6);
     }
+
+    public Table getStatements(StatementOptions options, ShellConnections connections) {
+
+        List<Statement> statements = getAllStatements(connections);
+
+        List<Statement> filtered = new ArrayList<>();
+
+        boolean filterByApp = options.getApplicationName() != null && !options.getApplicationName().isEmpty();
+
+        for (Statement statement : statements) {
+
+            boolean include = true;
+
+            if (filterByApp) {
+                String appName = statement.getKey().getKeyData().getApp().toUpperCase();
+                if (!appName.equals(options.getApplicationName().toUpperCase())) {
+                    include = false;
+                }
+            }
+
+            if (include && options.isExcludeDDL()) {
+                String query = statement.getKey().getKeyData().getQuery().toUpperCase();
+                if (query.startsWith("CREATE") || query.startsWith("ALTER") || query.startsWith("DROP") || query.startsWith("SET")) {
+                    include = false;
+                }
+            }
+
+            if (include && options.isHasSpanAll()) {
+                String plan = statement.getStats().getSensitiveInfo().getMostRecentPlanDescription().toString().toUpperCase();
+
+                if (!plan.contains("\"KEY\":\"SPANS\",\"VALUE\":\"ALL\"")) {
+                    include = false;
+                }
+            }
+
+            if (include) {
+                filtered.add(statement);
+            } else {
+                log.debug("this statement was excluded [{}]", statement.toString());
+            }
+        }
+
+        shellHelper.printSuccess(String.format("Returned %d total statements.  Showing %d after applying filters.", statements.size(), filtered.size()));
+
+        TreeBasedTable<Integer, Integer, String> treeBasedTable = TreeBasedTable.create();
+
+        treeBasedTable.put(0, 0, "Node");
+        treeBasedTable.put(0, 1, "Application Name");
+        treeBasedTable.put(0, 2, "Count");
+        treeBasedTable.put(0, 3, "Last Plan Timestamp");
+        treeBasedTable.put(0, 4, "Statement");
+
+        int rowCount = 1;
+        for (Statement statement : filtered) {
+            String node = Integer.toString(statement.getKey().getNodeId());
+            String appName = statement.getKey().getKeyData().getApp();
+            String count = Integer.toString(statement.getStats().getCount());
+            String timestamp = statement.getStats().getSensitiveInfo().getMostRecentPlanTimestamp();
+            String query = statement.getKey().getKeyData().getQuery();
+
+            treeBasedTable.put(rowCount, 0, node != null ? node : "");
+            treeBasedTable.put(rowCount, 1, appName != null ? appName : "");
+            treeBasedTable.put(rowCount, 2, count != null ? count : "");
+            treeBasedTable.put(rowCount, 3, timestamp != null ? timestamp : "");
+            treeBasedTable.put(rowCount, 4, query != null ? query : "");
+
+            rowCount++;
+        }
+
+
+        return buildTable(treeBasedTable, 5);
+    }
+
+    private List<Statement> getAllStatements(ShellConnections connections) {
+        ConnectionOptions connectionOptions = connections.getConnectionOptions();
+
+        final URI uri = UriComponentsBuilder
+                .fromUriString(String.format("%s://%s:%s/_status/statements", connectionOptions.getHttpScheme(), connectionOptions.getHttpHost(), connectionOptions.getHttpPort()))
+                .build()
+                .toUri();
+
+        final RequestEntity<Void> requestEntity = RequestEntity.get(uri).headers(connections.getHeaders()).accept(MediaType.APPLICATION_JSON).build();
+
+        final ResponseEntity<StatementsWrapper> responseEntity = restTemplate.exchange(requestEntity, StatementsWrapper.class);
+
+        Assert.notNull(responseEntity, "getStatements() ResponseEntity is null");
+
+        final StatementsWrapper body = responseEntity.getBody();
+
+        Assert.notNull(body, "getStatements() body is null");
+
+        return body.getStatements();
+    }
 }

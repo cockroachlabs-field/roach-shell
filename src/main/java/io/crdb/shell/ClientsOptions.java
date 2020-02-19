@@ -4,7 +4,6 @@ public class ClientsOptions extends AbstractOptions {
 
     private final boolean verbose;
 
-
     public ClientsOptions(boolean verbose) {
         this.verbose = verbose;
     }
@@ -12,7 +11,6 @@ public class ClientsOptions extends AbstractOptions {
     public boolean isVerbose() {
         return verbose;
     }
-
 
     public void print(ShellHelper shellHelper) {
         shellHelper.print("");

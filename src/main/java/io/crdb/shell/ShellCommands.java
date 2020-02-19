@@ -49,15 +49,15 @@ public class ShellCommands {
                         @ShellOption(value = {"--port", "-p"}, help = "port of a CRDB node", defaultValue = "26257") int port,
                         @ShellOption(value = {"--database", "-d"}, help = "CRDB database name", defaultValue = "system") String database,
                         @ShellOption(value = {"--username", "-u"}, help = "username used to connect to database", defaultValue = "root") String username,
-                        @ShellOption(help = "password used to connect to database", defaultValue = "") String password,
+                        @ShellOption(help = "password used to connect to database", defaultValue = ShellOption.NULL) String password,
                         @ShellOption(help = "SSL mode for database connection.  disable, allow, prefer, require, verify-ca or verify-full.", defaultValue = "disable") String sslMode,
                         @ShellOption(help = "is SSL enabled? true or false.", defaultValue = "false") boolean sslEnabled,
-                        @ShellOption(help = "path to SSL Cert file when SSL is enabled", defaultValue = "") String sslCrtPath,
-                        @ShellOption(help = "path to SSL Key file when SSL is enabled", defaultValue = "") String sslKeyPath,
+                        @ShellOption(help = "path to SSL Cert file when SSL is enabled", defaultValue = ShellOption.NULL) String sslCrtPath,
+                        @ShellOption(help = "path to SSL Key file when SSL is enabled", defaultValue = ShellOption.NULL) String sslKeyPath,
                         @ShellOption(help = "HTTP scheme for Admin UI REST calls.  http or https.", defaultValue = "http") String httpScheme,
-                        @ShellOption(help = "username used for Admin UI REST calls", defaultValue = "") String httpUsername,
-                        @ShellOption(help = "password used for Admin UI REST calls", defaultValue = "") String httpPassword,
-                        @ShellOption(help = "host used for Admin UI REST calls", defaultValue = "") String httpHost,
+                        @ShellOption(help = "username used for Admin UI REST calls", defaultValue = ShellOption.NULL) String httpUsername,
+                        @ShellOption(help = "password used for Admin UI REST calls", defaultValue = ShellOption.NULL) String httpPassword,
+                        @ShellOption(help = "host used for Admin UI REST calls", defaultValue = ShellOption.NULL) String httpHost,
                         @ShellOption(help = "port used for Admin UI REST calls", defaultValue = "8080") int httpPort)  {
 
 
@@ -108,6 +108,19 @@ public class ShellCommands {
         options.print(shellHelper);
 
         shellHelper.print(service.getClients(options, connections).render(200));
+    }
+
+    @ShellMethod("List recent statements against the CockroachDB cluster.")
+    public void statements(
+            @ShellOption(help = "exclude DDL statements.  true or false.", defaultValue = "true") boolean excludeDDL,
+            @ShellOption(help = "include statements with \"span = ALL\".  true or false.", defaultValue = "false") boolean hasSpanAll,
+            @ShellOption(help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose,
+            @ShellOption(value = {"--app", "-a"}, help = "only include statements from this application", defaultValue = ShellOption.NULL) String applicationName) {
+
+        StatementOptions options = new StatementOptions(verbose, applicationName, excludeDDL, hasSpanAll);
+        options.print(shellHelper);
+
+        shellHelper.print(service.getStatements(options, connections).render(200));
     }
 
     @ShellMethodAvailability({"hotspots", "disconnect", "clients"})
