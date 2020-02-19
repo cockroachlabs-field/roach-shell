@@ -3,6 +3,8 @@ Command line utility for CockroachDB written using [Spring Shell](https://projec
 * `connect` - connects to a CockroachDB cluster
 * `disconnect` - disconnects from a CockroachDB cluster
 * `hotspots` - detects range hot spots in a CockroachDB cluster often caused by poor primary key selection as described [here](https://www.cockroachlabs.com/docs/v19.2/performance-best-practices-overview.html#unique-id-best-practices)
+* `clients` - list of clients currently connected to a CockroachDB cluster
+* `statements` - filtered list of recent Statements run a CockroachDB cluster
 
 ## Prerequisites
 * Java 11 - `brew cask install adoptopenjdk11`.  You may need to run this first `brew tap AdoptOpenJDK/openjdk`.
@@ -140,6 +142,52 @@ OPTIONS
 
 	--verbose	include verbose output.  true or false.
 		[Optional, default = false]
+```
+
+### clients
+To see the following content run `help clients`.
+
+```text
+NAME
+	clients - List active client connections to the CockroachDB cluster.
+
+SYNOPSYS
+	clients [--verbose]  
+
+OPTIONS
+	--verbose	include verbose output.  true or false.
+		[Optional, default = false]
+```
+
+### statements
+To see the following content run `help statements`.
+
+```text
+NAME
+	statements - List recent statements against the CockroachDB cluster.
+
+SYNOPSYS
+	statements [--dist-only]  [--exclude-ddl]  [--exclude-internal]  [--has-span-all]  [--verbose]  [[--app] string]  
+
+OPTIONS
+	--dist-only	include only dist sql statements.  true or false.
+		[Optional, default = <none>]
+
+	--exclude-ddl	exclude DDL statements.  true or false.
+		[Optional, default = <none>]
+
+	--exclude-internal	exclude statements from CockroachDB internals.  true or false.
+		[Optional, default = <none>]
+
+	--has-span-all	include statements with "span = ALL".  true or false.
+		[Optional, default = <none>]
+
+	--verbose	include verbose output.  true or false.
+		[Optional, default = false]
+
+	--app or -a  string
+		only include statements from this application
+		[Optional, default = <none>]
 ```
 
 ## Example Commands and Output
