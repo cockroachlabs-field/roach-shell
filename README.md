@@ -4,7 +4,7 @@ Command line utility for CockroachDB written using [Spring Shell](https://projec
 * `disconnect` - disconnects from a CockroachDB cluster
 * `hotspots` - detects range hot spots in a CockroachDB cluster often caused by poor primary key selection as described [here](https://www.cockroachlabs.com/docs/v19.2/performance-best-practices-overview.html#unique-id-best-practices)
 * `clients` - list of clients currently connected to a CockroachDB cluster
-* `statements` - filtered list of recent Statements run a CockroachDB cluster
+* `statements` - filtered list of recent Statements run against a CockroachDB cluster
 
 ## Prerequisites
 * Java 11 - `brew cask install adoptopenjdk11`.  You may need to run this first `brew tap AdoptOpenJDK/openjdk`.
