@@ -25,10 +25,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.SortedSet;
+import java.util.*;
 
 @Service
 public class ShellService {
@@ -275,29 +272,36 @@ public class ShellService {
 
         List<Statement> statements = getAllStatements(connections);
 
-        List<Statement> filtered = new ArrayList<>();
+        Map<String, Statement> filtered = new HashMap<>();
 
         boolean filterByApp = options.getApplicationName() != null && !options.getApplicationName().isEmpty();
 
         for (Statement statement : statements) {
 
+            StatementKeyData keyData = statement.getKey().getKeyData();
+
+            String query = keyData.getQuery().toUpperCase();
+
+            if (filtered.containsKey(query)) {
+                continue;
+            }
+
             boolean include = true;
 
             if (options.getDistOnly() != null && options.getDistOnly()) {
-                if (!statement.getKey().getKeyData().isDistSQL())  {
+                if (!keyData.isDistSQL())  {
                     include = false;
                 }
             }
 
             if (include && filterByApp) {
-                String appName = statement.getKey().getKeyData().getApp().toUpperCase();
+                String appName = keyData.getApp().toUpperCase();
                 if (!appName.equals(options.getApplicationName().toUpperCase())) {
                     include = false;
                 }
             }
 
             if (include && options.isExcludeDDL()) {
-                String query = statement.getKey().getKeyData().getQuery().toUpperCase();
                 if (query.startsWith("CREATE") || query.startsWith("ALTER") || query.startsWith("DROP") || query.startsWith("SET")) {
                     include = false;
                 }
@@ -312,7 +316,7 @@ public class ShellService {
             }
 
             if (include) {
-                filtered.add(statement);
+                filtered.put(query, statement);
             } else {
                 log.debug("this statement was excluded [{}]", statement.toString());
             }
@@ -329,7 +333,7 @@ public class ShellService {
         treeBasedTable.put(0, 4, "Statement");
 
         int rowCount = 1;
-        for (Statement statement : filtered) {
+        for (Statement statement : filtered.values()) {
             String node = Integer.toString(statement.getKey().getNodeId());
             String appName = statement.getKey().getKeyData().getApp();
             String count = Integer.toString(statement.getStats().getCount());
