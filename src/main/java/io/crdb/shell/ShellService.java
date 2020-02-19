@@ -163,7 +163,6 @@ public class ShellService {
     }
 
 
-
     private List<Store> getHotRangesForNode(int httpPort, String httpScheme, String httpHost, HttpHeaders headers, Node node, boolean verbose) {
 
         try {
@@ -272,62 +271,87 @@ public class ShellService {
 
         List<Statement> statements = getAllStatements(connections);
 
-        Map<String, Statement> filtered = new HashMap<>();
+        Map<String, Statement> deduped = new HashMap<>();
+
+        for (Statement statement : statements) {
+            StatementKeyData keyData = statement.getKey().getKeyData();
+            String key = keyData.getQuery().toUpperCase();
+            if (!deduped.containsKey(key)) {
+                deduped.put(key, statement);
+            }
+        }
+
+        Set<Statement> filtered = new HashSet<>();
 
         boolean filterByApp = options.getApplicationName() != null && !options.getApplicationName().isEmpty();
 
-        for (Statement statement : statements) {
+        for (Statement statement : deduped.values()) {
 
             StatementKeyData keyData = statement.getKey().getKeyData();
 
             String query = keyData.getQuery().toUpperCase();
             String appName = keyData.getApp().toUpperCase();
             String plan = statement.getStats().getSensitiveInfo().getMostRecentPlanDescription().toString().toUpperCase();
-
-            if (filtered.containsKey(query)) {
-                continue;
-            }
+            boolean isVerbose = options.isVerbose();
 
             boolean include = true;
 
             if (options.getDistOnly() != null && options.getDistOnly()) {
-                if (!keyData.isDistSQL())  {
+                if (!keyData.isDistSQL()) {
                     include = false;
+
+                    if (isVerbose) {
+                        shellHelper.print(String.format("statement excluded because of \"--dist-only\": [%s]", keyData.getQuery()));
+                    }
                 }
             }
 
             if (include && filterByApp) {
                 if (!appName.equals(options.getApplicationName().toUpperCase())) {
                     include = false;
+
+                    if (isVerbose) {
+                        shellHelper.print(String.format("statement excluded because of \"--app\": [%s]", keyData.getQuery()));
+                    }
                 }
             }
 
             if (include && (options.getExcludeInternal() != null && options.getExcludeInternal())) {
-                if (appName.contains("INTERNAL" )) {
+                if (appName.contains("INTERNAL")) {
                     include = false;
+
+                    if (isVerbose) {
+                        shellHelper.print(String.format("statement excluded because of \"--exclude-internal\": [%s]", keyData.getQuery()));
+                    }
                 }
             }
 
             if (include && (options.getExcludeDDL() != null && options.getExcludeDDL())) {
                 if (query.startsWith("CREATE") || query.startsWith("ALTER") || query.startsWith("DROP") || query.startsWith("SET")) {
                     include = false;
+
+                    if (isVerbose) {
+                        shellHelper.print(String.format("statement excluded because of \"--exclude-ddl\": [%s]", keyData.getQuery()));
+                    }
                 }
             }
 
             if (include && (options.getHasSpanAll() != null && options.getHasSpanAll())) {
                 if (!plan.contains("\"KEY\":\"SPANS\",\"VALUE\":\"ALL\"")) {
                     include = false;
+
+                    if (isVerbose) {
+                        shellHelper.print(String.format("statement excluded because of \"--has-span-all\": [%s]", keyData.getQuery()));
+                    }
                 }
             }
 
             if (include) {
-                filtered.put(query, statement);
-            } else {
-                log.debug("this statement was excluded [{}]", statement.toString());
+                filtered.add(statement);
             }
         }
 
-        shellHelper.printSuccess(String.format("Returned %d total statements.  Showing %d after applying filters.", statements.size(), filtered.size()));
+        shellHelper.printSuccess(String.format("Returned %d total statements, %d unique.  Showing %d after applying filters.", statements.size(), deduped.size(), filtered.size()));
 
         TreeBasedTable<Integer, Integer, String> treeBasedTable = TreeBasedTable.create();
 
@@ -338,7 +362,7 @@ public class ShellService {
         treeBasedTable.put(0, 4, "Statement");
 
         int rowCount = 1;
-        for (Statement statement : filtered.values()) {
+        for (Statement statement : filtered) {
             String node = Integer.toString(statement.getKey().getNodeId());
             String appName = statement.getKey().getKeyData().getApp();
             String count = Integer.toString(statement.getStats().getCount());

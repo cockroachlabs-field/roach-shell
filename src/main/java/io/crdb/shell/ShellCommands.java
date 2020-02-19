@@ -58,7 +58,7 @@ public class ShellCommands {
                         @ShellOption(help = "username used for Admin UI REST calls", defaultValue = ShellOption.NULL) String httpUsername,
                         @ShellOption(help = "password used for Admin UI REST calls", defaultValue = ShellOption.NULL) String httpPassword,
                         @ShellOption(help = "host used for Admin UI REST calls", defaultValue = ShellOption.NULL) String httpHost,
-                        @ShellOption(help = "port used for Admin UI REST calls", defaultValue = "8080") int httpPort)  {
+                        @ShellOption(help = "port used for Admin UI REST calls", defaultValue = "8080") int httpPort) {
 
 
         ConnectionOptions connectionOptions = new ConnectionOptions(host, port, database, username, password, sslEnabled, sslMode, sslCrtPath, sslKeyPath, httpScheme, httpUsername, httpPassword, httpHost, httpPort);
@@ -92,7 +92,7 @@ public class ShellCommands {
     @ShellMethod("Find range hot spots in the CockroachDB cluster.")
     public void hotspots(
             @ShellOption(value = {"--max-ranges", "-m"}, help = "max number of hot ranges returned", defaultValue = "10") int maxRanges,
-            @ShellOption(help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose) {
+            @ShellOption(value = {"--verbose", "-v"}, help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose) {
 
         HotSpotOptions options = new HotSpotOptions(verbose, maxRanges);
         options.print(shellHelper);
@@ -102,7 +102,7 @@ public class ShellCommands {
 
     @ShellMethod("List active client connections to the CockroachDB cluster.")
     public void clients(
-            @ShellOption(help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose) {
+            @ShellOption(value = {"--verbose", "-v"}, help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose) {
 
         ClientsOptions options = new ClientsOptions(verbose);
         options.print(shellHelper);
@@ -116,7 +116,7 @@ public class ShellCommands {
             @ShellOption(help = "exclude DDL statements.  true or false.", defaultValue = ShellOption.NULL) Boolean excludeDDL,
             @ShellOption(help = "exclude statements from CockroachDB internals.  true or false.", defaultValue = ShellOption.NULL) Boolean excludeInternal,
             @ShellOption(help = "include statements with \"span = ALL\".  true or false.", defaultValue = ShellOption.NULL) Boolean hasSpanAll,
-            @ShellOption(help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose,
+            @ShellOption(value = {"--verbose", "-v"}, help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose,
             @ShellOption(value = {"--app", "-a"}, help = "only include statements from this application", defaultValue = ShellOption.NULL) String applicationName) {
 
 
