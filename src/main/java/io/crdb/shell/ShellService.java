@@ -283,7 +283,13 @@ public class ShellService {
 
             boolean include = true;
 
-            if (filterByApp) {
+            if (options.getDistOnly() != null && options.getDistOnly()) {
+                if (!statement.getKey().getKeyData().isDistSQL())  {
+                    include = false;
+                }
+            }
+
+            if (include && filterByApp) {
                 String appName = statement.getKey().getKeyData().getApp().toUpperCase();
                 if (!appName.equals(options.getApplicationName().toUpperCase())) {
                     include = false;
@@ -297,7 +303,7 @@ public class ShellService {
                 }
             }
 
-            if (include && options.isHasSpanAll()) {
+            if (include && (options.getHasSpanAll() != null && options.getHasSpanAll())) {
                 String plan = statement.getStats().getSensitiveInfo().getMostRecentPlanDescription().toString().toUpperCase();
 
                 if (!plan.contains("\"KEY\":\"SPANS\",\"VALUE\":\"ALL\"")) {

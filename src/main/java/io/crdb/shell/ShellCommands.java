@@ -112,12 +112,13 @@ public class ShellCommands {
 
     @ShellMethod("List recent statements against the CockroachDB cluster.")
     public void statements(
+            @ShellOption(help = "include only dist sql statements.  true or false.", defaultValue = ShellOption.NULL) Boolean distOnly,
             @ShellOption(help = "exclude DDL statements.  true or false.", defaultValue = "true") boolean excludeDDL,
-            @ShellOption(help = "include statements with \"span = ALL\".  true or false.", defaultValue = "false") boolean hasSpanAll,
+            @ShellOption(help = "include statements with \"span = ALL\".  true or false.", defaultValue = ShellOption.NULL) Boolean hasSpanAll,
             @ShellOption(help = "include verbose output.  true or false.", defaultValue = "false") boolean verbose,
             @ShellOption(value = {"--app", "-a"}, help = "only include statements from this application", defaultValue = ShellOption.NULL) String applicationName) {
 
-        StatementOptions options = new StatementOptions(verbose, applicationName, excludeDDL, hasSpanAll);
+        StatementOptions options = new StatementOptions(verbose, applicationName, excludeDDL, hasSpanAll, distOnly);
         options.print(shellHelper);
 
         shellHelper.print(service.getStatements(options, connections).render(200));
