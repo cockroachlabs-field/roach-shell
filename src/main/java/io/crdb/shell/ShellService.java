@@ -25,12 +25,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.*;
 
 @Service
 public class ShellService {
 
     private static final Logger log = LoggerFactory.getLogger(ShellApplication.class);
+
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
+
 
     private final RestTemplate restTemplate;
     private final ShellHelper shellHelper;
@@ -359,29 +363,35 @@ public class ShellService {
 
         treeBasedTable.put(0, 0, "Node");
         treeBasedTable.put(0, 1, "Application Name");
-        treeBasedTable.put(0, 2, "Count");
-        treeBasedTable.put(0, 3, "Last Plan Timestamp");
-        treeBasedTable.put(0, 4, "Statement");
+        treeBasedTable.put(0, 2, "Execution Count");
+        treeBasedTable.put(0, 3, "Mean Latency (ms)");
+        treeBasedTable.put(0, 4, "Mean Row Count");
+        treeBasedTable.put(0, 5, "Last Plan Timestamp");
+        treeBasedTable.put(0, 6, "Statement");
 
         int rowCount = 1;
         for (Statement statement : sorted) {
             String node = Integer.toString(statement.getKey().getNodeId());
             String appName = statement.getKey().getKeyData().getApp();
             String count = Integer.toString(statement.getStats().getCount());
+            String latency = DECIMAL_FORMAT.format(statement.getStats().getMeanOverallLatency() * 1000);
+            String rows = Integer.toString(statement.getStats().getMeanNumRows());
             String timestamp = statement.getStats().getSensitiveInfo().getMostRecentPlanTimestamp();
             String query = statement.getKey().getKeyData().getQuery();
 
             treeBasedTable.put(rowCount, 0, node != null ? node : "");
             treeBasedTable.put(rowCount, 1, appName != null ? appName : "");
             treeBasedTable.put(rowCount, 2, count != null ? count : "");
-            treeBasedTable.put(rowCount, 3, timestamp != null ? timestamp : "");
-            treeBasedTable.put(rowCount, 4, query != null ? query : "");
+            treeBasedTable.put(rowCount, 3, latency != null ? latency : "");
+            treeBasedTable.put(rowCount, 4, rows != null ? rows : "");
+            treeBasedTable.put(rowCount, 5, timestamp != null ? timestamp : "");
+            treeBasedTable.put(rowCount, 6, query != null ? query : "");
 
             rowCount++;
         }
 
 
-        return buildTable(treeBasedTable, 5);
+        return buildTable(treeBasedTable, 7);
     }
 
     private List<Statement> getAllStatements(ShellConnections connections) {

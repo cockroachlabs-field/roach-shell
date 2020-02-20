@@ -2,6 +2,8 @@ package io.crdb.shell;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Map;
+
 public class StatementStats {
 
     @JsonProperty
@@ -15,6 +17,28 @@ public class StatementStats {
 
     @JsonProperty
     private StatementSensitiveInfo sensitiveInfo;
+
+    private double meanOverallLatency;
+
+    private int meanNumRows;
+
+    @JsonProperty("numRows")
+    private void unpackNumRows(Map<String,Object> numRows) {
+        this.meanNumRows = (Integer)numRows.get("mean");
+    }
+
+    @JsonProperty("serviceLat")
+    private void unpackServiceLat(Map<String,Object> serviceLat) {
+        this.meanOverallLatency = (Double)serviceLat.get("mean");
+    }
+
+    public double getMeanOverallLatency() {
+        return meanOverallLatency;
+    }
+
+    public int getMeanNumRows() {
+        return meanNumRows;
+    }
 
     public int getCount() {
         return count;
