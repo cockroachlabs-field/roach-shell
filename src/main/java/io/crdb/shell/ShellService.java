@@ -375,7 +375,7 @@ public class ShellService {
             String appName = statement.getKey().getKeyData().getApp();
             String count = Integer.toString(statement.getStats().getCount());
             String latency = DECIMAL_FORMAT.format(statement.getStats().getMeanOverallLatency() * 1000);
-            String rows = Integer.toString(statement.getStats().getMeanNumRows());
+            String rows = DECIMAL_FORMAT.format(statement.getStats().getMeanNumRows());
             String timestamp = statement.getStats().getSensitiveInfo().getMostRecentPlanTimestamp();
             String query = statement.getKey().getKeyData().getQuery();
 

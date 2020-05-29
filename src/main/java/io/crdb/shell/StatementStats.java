@@ -20,23 +20,23 @@ public class StatementStats {
 
     private double meanOverallLatency;
 
-    private int meanNumRows;
+    private double meanNumRows;
 
     @JsonProperty("numRows")
-    private void unpackNumRows(Map<String,Object> numRows) {
-        this.meanNumRows = (Integer)numRows.get("mean");
+    private void unpackNumRows(Map<String,Double> numRows) {
+        this.meanNumRows = numRows.get("mean");
     }
 
     @JsonProperty("serviceLat")
-    private void unpackServiceLat(Map<String,Object> serviceLat) {
-        this.meanOverallLatency = (Double)serviceLat.get("mean");
+    private void unpackServiceLat(Map<String,Double> serviceLat) {
+        this.meanOverallLatency = serviceLat.get("mean");
     }
 
     public double getMeanOverallLatency() {
         return meanOverallLatency;
     }
 
-    public int getMeanNumRows() {
+    public double getMeanNumRows() {
         return meanNumRows;
     }
 
