@@ -1,6 +1,6 @@
 # Roach Shell
 
-![Java CI](https://github.com/timveil-cockroach/roach-shell/workflows/Java%20CI/badge.svg)
+![Java CI with Maven](https://github.com/timveil-cockroach/roach-shell/workflows/Java%20CI%20with%20Maven/badge.svg)
 
 Command line utility for CockroachDB written using [Spring Shell](https://projects.spring.io/spring-shell/).  Commands include:
 * `connect` - connects to a CockroachDB cluster
