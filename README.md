@@ -19,7 +19,7 @@ Command line utility for CockroachDB written using [Spring Shell](https://projec
 ```shell script
 ./mvnw clean package
 ```
-This command will create an executable `jar` named `roach-shell-0.0.1-SNAPSHOT.jar` in the projects `target` directory.
+This command will create an executable `jar` named `roach-shell-20.0.3-SNAPSHOT.jar` in the projects `target` directory.
 
 ## To Run
 With Maven
@@ -29,7 +29,7 @@ With Maven
 
 With Java using the executable `jar` built above.
 ```shell script
-java -jar roach-shell-0.0.1-SNAPSHOT.jar
+java -jar roach-shell-20.0.3-SNAPSHOT.jar
 ````
 
 To establish a connection to a CockroachDB cluster first run the `connect` command.  For example...
