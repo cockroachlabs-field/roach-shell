@@ -19,7 +19,7 @@
     <properties>
         <java.version>11</java.version>
         <skipTests>true</skipTests>
-        <jline.version>3.16.0</jline.version>
+        <jline.version>3.17.0</jline.version>
     </properties>
 
     <scm>
