@@ -24,9 +24,9 @@
     </properties>
 
     <scm>
-        <connection>scm:git:git@github.com:timveil-cockroach/roach-shell.git</connection>
-        <url>https://github.com/timveil-cockroach/roach-shell</url>
-        <developerConnection>scm:git:git@github.com:timveil-cockroach/roach-shell.git</developerConnection>
+        <connection>scm:git:git@github.com:cockroachlabs-field/roach-shell.git</connection>
+        <url>https://github.com/cockroachlabs-field/roach-shell</url>
+        <developerConnection>scm:git:git@github.com:cockroachlabs-field/roach-shell.git</developerConnection>
         <tag>v20.0.3</tag>
     </scm>
 

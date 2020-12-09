@@ -278,12 +278,6 @@ Returned 71 total statements, 40 unique.  Showing 1 after applying filters.
 ```
 
 ## To Release
-
-1) Prepare the release
 ```
-./mvnw -B clean release:prepare
-```
-2) Perform the release
-```
-./mvnw -B clean release:perform
+./mvnw clean package release:clean release:prepare release:perform
 ```
