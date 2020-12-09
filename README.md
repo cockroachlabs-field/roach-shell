@@ -276,3 +276,14 @@ Returned 71 total statements, 40 unique.  Showing 1 after applying filters.
 ┃3   ┃HotSpotDetector ┃3              ┃5.55             ┃1             ┃2020-10-07T18:58:55.291562100Z┃SELECT * FROM crdb_internal.ranges_no_leases WHERE range_id = $1┃
 ┗━━━━┻━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 ```
+
+## To Release
+
+1) Prepare the release
+```
+./mvnw -B clean release:prepare
+```
+2) Perform the release
+```
+./mvnw -B clean release:perform
+```
