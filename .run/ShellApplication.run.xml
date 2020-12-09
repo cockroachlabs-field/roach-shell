@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ShellApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="roach-shell" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="io.crdb.shell.ShellApplication" />
+    <option name="ENABLE_LAUNCH_OPTIMIZATION" value="false" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
