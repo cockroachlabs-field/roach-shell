@@ -16,4 +16,11 @@ public class StatementsWrapper {
     public void setStatements(List<Statement> statements) {
         this.statements = statements;
     }
+
+    @Override
+    public String toString() {
+        return "StatementsWrapper{" +
+               "statements=" + statements +
+               '}';
+    }
 }

@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Statement {
 
     @JsonProperty
+    private String id;
+
+    @JsonProperty
     private StatementKey key;
 
     @JsonProperty
@@ -26,11 +29,20 @@ public class Statement {
         this.stats = stats;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "Statement{" +
-                "key=" + key +
-                ", stats=" + stats +
-                '}';
+               "id=" + id +
+               ", key=" + key +
+               ", stats=" + stats +
+               '}';
     }
 }

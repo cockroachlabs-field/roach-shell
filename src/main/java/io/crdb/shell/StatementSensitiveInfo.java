@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class StatementSensitiveInfo {
 
     @JsonProperty
+    private String lastErr;
+
+    @JsonProperty
     private JsonNode mostRecentPlanDescription;
 
     @JsonProperty
@@ -27,11 +30,20 @@ public class StatementSensitiveInfo {
         this.mostRecentPlanTimestamp = mostRecentPlanTimestamp;
     }
 
+    public String getLastErr() {
+        return lastErr;
+    }
+
+    public void setLastErr(String lastErr) {
+        this.lastErr = lastErr;
+    }
+
     @Override
     public String toString() {
         return "StatementSensitiveInfo{" +
-                "mostRecentPlanDescription=" + mostRecentPlanDescription +
-                ", mostRecentPlanTimestamp='" + mostRecentPlanTimestamp + '\'' +
-                '}';
+               "lastErr='" + lastErr + '\'' +
+               ", mostRecentPlanDescription=" + mostRecentPlanDescription +
+               ", mostRecentPlanTimestamp='" + mostRecentPlanTimestamp + '\'' +
+               '}';
     }
 }

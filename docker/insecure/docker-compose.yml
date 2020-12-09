@@ -49,3 +49,11 @@ services:
       - DATABASE_NAME=test
     depends_on:
       - lb
+
+  workload-client:
+    container_name: workload-client
+    hostname: workload-client
+    image: cockroachdb/cockroach:latest
+    entrypoint: ["tail", "-f", "/dev/null"]
+    depends_on:
+      - lb

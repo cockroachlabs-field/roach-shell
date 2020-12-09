@@ -10,35 +10,70 @@ public class StatementStats {
     private int count;
 
     @JsonProperty
+    private int firstCountAttempt;
+
+    @JsonProperty
     private int maxRetries;
 
     @JsonProperty
-    private int rowsRead;
+    private String legacyLastErr;
+
+    @JsonProperty
+    private String legacyLastErrRedacted;
 
     @JsonProperty
     private StatementSensitiveInfo sensitiveInfo;
 
-    private double meanOverallLatency;
-
     private double meanNumRows;
+    private double meanParseLat;
+    private double meanPlanLat;
+    private double meanRunLat;
+    private double meanServiceLat;
+    private double meanOverheadLat;
+    private double meanBytesRead;
+    private double meanRowsRead;
+
 
     @JsonProperty("numRows")
     private void unpackNumRows(Map<String,Double> numRows) {
         this.meanNumRows = numRows.get("mean");
     }
 
+    @JsonProperty("parseLat")
+    private void unpackParseLat(Map<String,Double> numRows) {
+        this.meanParseLat = numRows.get("mean");
+    }
+
+    @JsonProperty("planLat")
+    private void unpackPlanLat(Map<String,Double> numRows) {
+        this.meanPlanLat = numRows.get("mean");
+    }
+
+    @JsonProperty("runLat")
+    private void unpackRunLat(Map<String,Double> numRows) {
+        this.meanRunLat = numRows.get("mean");
+    }
+
     @JsonProperty("serviceLat")
-    private void unpackServiceLat(Map<String,Double> serviceLat) {
-        this.meanOverallLatency = serviceLat.get("mean");
+    private void unpackServiceLat(Map<String,Double> numRows) {
+        this.meanServiceLat = numRows.get("mean");
     }
 
-    public double getMeanOverallLatency() {
-        return meanOverallLatency;
+    @JsonProperty("overheadLat")
+   private void unpackOverheadLat(Map<String,Double> numRows) {
+        this.meanOverheadLat = numRows.get("mean");
     }
 
-    public double getMeanNumRows() {
-        return meanNumRows;
+    @JsonProperty("bytesRead")
+    private void unpackBytesRead(Map<String,Double> numRows) {
+        this.meanBytesRead = numRows.get("mean");
     }
+
+    @JsonProperty("rowsRead")
+    private void unpackRowsRead(Map<String,Double> numRows) {
+        this.meanRowsRead = numRows.get("mean");
+    }
+
 
     public int getCount() {
         return count;
@@ -46,6 +81,14 @@ public class StatementStats {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public int getFirstCountAttempt() {
+        return firstCountAttempt;
+    }
+
+    public void setFirstCountAttempt(int firstCountAttempt) {
+        this.firstCountAttempt = firstCountAttempt;
     }
 
     public int getMaxRetries() {
@@ -56,12 +99,20 @@ public class StatementStats {
         this.maxRetries = maxRetries;
     }
 
-    public int getRowsRead() {
-        return rowsRead;
+    public String getLegacyLastErr() {
+        return legacyLastErr;
     }
 
-    public void setRowsRead(int rowsRead) {
-        this.rowsRead = rowsRead;
+    public void setLegacyLastErr(String legacyLastErr) {
+        this.legacyLastErr = legacyLastErr;
+    }
+
+    public String getLegacyLastErrRedacted() {
+        return legacyLastErrRedacted;
+    }
+
+    public void setLegacyLastErrRedacted(String legacyLastErrRedacted) {
+        this.legacyLastErrRedacted = legacyLastErrRedacted;
     }
 
     public StatementSensitiveInfo getSensitiveInfo() {
@@ -72,13 +123,55 @@ public class StatementStats {
         this.sensitiveInfo = sensitiveInfo;
     }
 
+    public double getMeanNumRows() {
+        return meanNumRows;
+    }
+
+    public double getMeanParseLat() {
+        return meanParseLat;
+    }
+
+    public double getMeanPlanLat() {
+        return meanPlanLat;
+    }
+
+    public double getMeanRunLat() {
+        return meanRunLat;
+    }
+
+    public double getMeanServiceLat() {
+        return meanServiceLat;
+    }
+
+    public double getMeanOverheadLat() {
+        return meanOverheadLat;
+    }
+
+    public double getMeanBytesRead() {
+        return meanBytesRead;
+    }
+
+    public double getMeanRowsRead() {
+        return meanRowsRead;
+    }
+
     @Override
     public String toString() {
         return "StatementStats{" +
-                "count=" + count +
-                ", maxRetries=" + maxRetries +
-                ", rowsRead=" + rowsRead +
-                ", sensitiveInfo=" + sensitiveInfo +
-                '}';
+               "count=" + count +
+               ", firstCountAttempt=" + firstCountAttempt +
+               ", maxRetries=" + maxRetries +
+               ", legacyLastErr='" + legacyLastErr + '\'' +
+               ", legacyLastErrRedacted='" + legacyLastErrRedacted + '\'' +
+               ", sensitiveInfo=" + sensitiveInfo +
+               ", meanNumRows=" + meanNumRows +
+               ", meanParseLat=" + meanParseLat +
+               ", meanPlanLat=" + meanPlanLat +
+               ", meanRunLat=" + meanRunLat +
+               ", meanServiceLat=" + meanServiceLat +
+               ", meanOverheadLat=" + meanOverheadLat +
+               ", meanBytesRead=" + meanBytesRead +
+               ", meanRowsRead=" + meanRowsRead +
+               '}';
     }
 }

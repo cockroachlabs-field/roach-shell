@@ -364,34 +364,53 @@ public class ShellService {
         treeBasedTable.put(0, 0, "Node");
         treeBasedTable.put(0, 1, "Application Name");
         treeBasedTable.put(0, 2, "Execution Count");
-        treeBasedTable.put(0, 3, "Mean Latency (ms)");
-        treeBasedTable.put(0, 4, "Mean Row Count");
-        treeBasedTable.put(0, 5, "Last Plan Timestamp");
-        treeBasedTable.put(0, 6, "Statement");
+        treeBasedTable.put(0, 3, "Mean Parse Latency (ms)");
+        treeBasedTable.put(0, 4, "Mean Plan Latency (ms)");
+        treeBasedTable.put(0, 5, "Mean Run Latency (ms)");
+        treeBasedTable.put(0, 6, "Mean Service Latency (ms)");
+        treeBasedTable.put(0, 7, "Mean Overhead Latency (ms)");
+        treeBasedTable.put(0, 8, "Mean Rows Read");
+        treeBasedTable.put(0, 9, "Mean Bytes Read");
+        treeBasedTable.put(0, 10, "Last Plan Timestamp");
+        treeBasedTable.put(0, 11, "Statement");
 
         int rowCount = 1;
         for (Statement statement : sorted) {
-            String node = Integer.toString(statement.getKey().getNodeId());
+            Integer node = statement.getKey().getNodeId();
             String appName = statement.getKey().getKeyData().getApp();
-            String count = Integer.toString(statement.getStats().getCount());
-            String latency = DECIMAL_FORMAT.format(statement.getStats().getMeanOverallLatency() * 1000);
-            String rows = DECIMAL_FORMAT.format(statement.getStats().getMeanNumRows());
+            int count = statement.getStats().getCount();
+            // todo; need to add all latencies
+            String meanParseLat = DECIMAL_FORMAT.format(statement.getStats().getMeanParseLat() * 1000);
+            String meanPlanLat = DECIMAL_FORMAT.format(statement.getStats().getMeanPlanLat() * 1000);
+            String meanRunLat = DECIMAL_FORMAT.format(statement.getStats().getMeanRunLat() * 1000);
+            String meanServiceLat = DECIMAL_FORMAT.format(statement.getStats().getMeanServiceLat() * 1000);
+            String meanOverheadLat = DECIMAL_FORMAT.format(statement.getStats().getMeanOverheadLat() * 1000);
+            String meanRowsRead = DECIMAL_FORMAT.format(statement.getStats().getMeanRowsRead());
+            String meanBytesRead = DECIMAL_FORMAT.format(statement.getStats().getMeanBytesRead());
+
             String timestamp = statement.getStats().getSensitiveInfo().getMostRecentPlanTimestamp();
             String query = statement.getKey().getKeyData().getQuery();
 
-            treeBasedTable.put(rowCount, 0, node != null ? node : "");
+            treeBasedTable.put(rowCount, 0, node != null ? Integer.toString(node) : "");
             treeBasedTable.put(rowCount, 1, appName != null ? appName : "");
-            treeBasedTable.put(rowCount, 2, count != null ? count : "");
-            treeBasedTable.put(rowCount, 3, latency != null ? latency : "");
-            treeBasedTable.put(rowCount, 4, rows != null ? rows : "");
-            treeBasedTable.put(rowCount, 5, timestamp != null ? timestamp : "");
-            treeBasedTable.put(rowCount, 6, query != null ? query : "");
+            treeBasedTable.put(rowCount, 2, Integer.toString(count));
+
+            treeBasedTable.put(rowCount, 3, meanParseLat);
+            treeBasedTable.put(rowCount, 4, meanPlanLat);
+            treeBasedTable.put(rowCount, 5, meanRunLat);
+            treeBasedTable.put(rowCount, 6, meanServiceLat);
+            treeBasedTable.put(rowCount, 7, meanOverheadLat);
+            treeBasedTable.put(rowCount, 8, meanRowsRead);
+            treeBasedTable.put(rowCount, 9, meanBytesRead);
+
+            treeBasedTable.put(rowCount, 10, timestamp != null ? timestamp : "");
+            treeBasedTable.put(rowCount, 11, query != null ? query : "");
 
             rowCount++;
         }
 
 
-        return buildTable(treeBasedTable, 7);
+        return buildTable(treeBasedTable, 12);
     }
 
     private List<Statement> getAllStatements(ShellConnections connections) {

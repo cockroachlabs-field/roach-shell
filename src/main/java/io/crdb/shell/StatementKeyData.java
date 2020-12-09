@@ -22,6 +22,9 @@ public class StatementKeyData {
     @JsonProperty
     private boolean implicitTxn;
 
+    @JsonProperty
+    private boolean vec;
+
     public String getQuery() {
         return query;
     }
@@ -70,15 +73,24 @@ public class StatementKeyData {
         this.implicitTxn = implicitTxn;
     }
 
+    public boolean isVec() {
+        return vec;
+    }
+
+    public void setVec(boolean vec) {
+        this.vec = vec;
+    }
+
     @Override
     public String toString() {
         return "StatementKeyData{" +
-                "query='" + query + '\'' +
-                ", app='" + app + '\'' +
-                ", distSQL=" + distSQL +
-                ", failed=" + failed +
-                ", opt=" + opt +
-                ", implicitTxn=" + implicitTxn +
-                '}';
+               "query='" + query + '\'' +
+               ", app='" + app + '\'' +
+               ", distSQL=" + distSQL +
+               ", failed=" + failed +
+               ", opt=" + opt +
+               ", implicitTxn=" + implicitTxn +
+               ", vec=" + vec +
+               '}';
     }
 }
