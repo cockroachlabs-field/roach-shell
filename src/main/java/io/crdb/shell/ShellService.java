@@ -379,7 +379,7 @@ public class ShellService {
             Integer node = statement.getKey().getNodeId();
             String appName = statement.getKey().getKeyData().getApp();
             int count = statement.getStats().getCount();
-            // todo; need to add all latencies
+
             String meanParseLat = DECIMAL_FORMAT.format(statement.getStats().getMeanParseLat() * 1000);
             String meanPlanLat = DECIMAL_FORMAT.format(statement.getStats().getMeanPlanLat() * 1000);
             String meanRunLat = DECIMAL_FORMAT.format(statement.getStats().getMeanRunLat() * 1000);
