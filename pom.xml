@@ -11,7 +11,7 @@
 
     <groupId>io.crdb.shell</groupId>
     <artifactId>roach-shell</artifactId>
-    <version>21.0.1-SNAPSHOT</version>
+    <version>21.0.1</version>
 
     <name>Roach Shell</name>
     <description>CockroachDB Shell</description>
@@ -27,7 +27,7 @@
         <connection>scm:git:git@github.com:cockroachlabs-field/roach-shell.git</connection>
         <url>https://github.com/cockroachlabs-field/roach-shell</url>
         <developerConnection>scm:git:git@github.com:cockroachlabs-field/roach-shell.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v21.0.1</tag>
     </scm>
 
     <dependencyManagement>
