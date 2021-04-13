@@ -133,7 +133,7 @@ OPTIONS
 To connect to a secure cluster there are a number of security related parameters you can pass including `ssl-enabled`, `ssl-mode` and `ssl-root-crt-path`.  Note that most of the `http-*` parameters will default to their database equivalent.  In other words, if no `http-username` parameter is provided, the `connect` method will use the value set for `username`.
 
 ```shell script
-connect -u test --password password -h localhost --ssl-enabled --ssl-mode verify-full --ssl-root-crt-path /[SOME ABSOLUTE PATH]/ca.crt
+connect -u [SOME USERNAME] --password [SOME PASSWORD] -h localhost --ssl-enabled --ssl-mode verify-full --ssl-root-crt-path /[SOME ABSOLUTE PATH]/ca.crt
 ```
 
 
