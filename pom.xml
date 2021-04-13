@@ -138,6 +138,7 @@
                 <configuration>
                     <useReleaseProfile>false</useReleaseProfile>
                     <tagNameFormat>v@{version}</tagNameFormat>
+                    <pushChanges>false</pushChanges>
                 </configuration>
             </plugin>
             <plugin>
