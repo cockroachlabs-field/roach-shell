@@ -288,5 +288,5 @@ Returned 71 total statements, 40 unique.  Showing 1 after applying filters.
 
 ## To Release
 ```
-./mvnw -B clean package release:clean release:prepare release:perform
+./mvnw -B clean package release:clean release:prepare release:perform -P release
 ```
