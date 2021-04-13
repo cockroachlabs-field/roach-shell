@@ -46,8 +46,9 @@ The following configuration parameters will be used:
 	password: (password is null or blank)
 	ssl-enabled: false
 	ssl-mode: disable
-	ssl-crt-path:
-	ssl-key-path:
+	ssl-root-crt-path:
+	ssl-client-crt-path:
+	ssl-client-key-path:
 	http-scheme: http
 	http-host: localhost
 	http-port: 8080
@@ -67,10 +68,10 @@ To see the following content run `help connnect`.
 
 ```text
 NAME
-	connect - Connect to CockroachDB
+	connect - Connect to a CockroachDB cluster.
 
 SYNOPSYS
-	connect [--host] string  [[--port] int]  [[--database] string]  [[--username] string]  [[--password] string]  [[--ssl-mode] string]  [--ssl-enabled]  [[--ssl-crt-path] string]  [[--ssl-key-path] string]  [[--http-scheme] string]  [[--http-username] string]  [[--http-password] string]  [[--http-host] string]  [[--http-port] int]
+	connect [--host] string  [[--port] int]  [[--database] string]  [[--username] string]  [[--password] string]  [[--ssl-mode] string]  [--ssl-enabled]  [[--ssl-root-crt-path] string]  [[--ssl-client-crt-path] string]  [[--ssl-key-path] string]  [[--http-username] string]  [[--http-password] string]  [[--http-host] string]  [[--http-port] int]  
 
 OPTIONS
 	--host or -h  string
@@ -91,7 +92,7 @@ OPTIONS
 
 	--password  string
 		password used to connect to database
-		[Optional, default = ]
+		[Optional, default = <none>]
 
 	--ssl-mode  string
 		SSL mode for database connection.  disable, allow, prefer, require, verify-ca or verify-full.
@@ -100,34 +101,42 @@ OPTIONS
 	--ssl-enabled	is SSL enabled? true or false.
 		[Optional, default = false]
 
-	--ssl-crt-path  string
-		path to SSL Cert file when SSL is enabled
-		[Optional, default = ]
+	--ssl-root-crt-path  string
+		path to Root Cert file when SSL is enabled
+		[Optional, default = <none>]
+
+	--ssl-client-crt-path  string
+		path to SSL Client Cert file when SSL is enabled
+		[Optional, default = <none>]
 
 	--ssl-key-path  string
-		path to SSL Key file when SSL is enabled
-		[Optional, default = ]
-
-	--http-scheme  string
-		HTTP scheme for Admin UI REST calls.  http or https.
-		[Optional, default = http]
+		path to SSL Client Key file when SSL is enabled
+		[Optional, default = <none>]
 
 	--http-username  string
-		username used for Admin UI REST calls
-		[Optional, default = ]
+		username used for Admin UI REST calls.  will use database username if no value provided.
+		[Optional, default = <none>]
 
 	--http-password  string
-		password used for Admin UI REST calls
-		[Optional, default = ]
+		password used for Admin UI REST calls.  will use database password if no value provided.
+		[Optional, default = <none>]
 
 	--http-host  string
 		host used for Admin UI REST calls
-		[Optional, default = ]
+		[Optional, default = <none>]
 
 	--http-port  int
 		port used for Admin UI REST calls
 		[Optional, default = 8080]
 ```
+#### Secure Connection Example
+To connect to a secure cluster there are a number of security related parameters you can pass including `ssl-enabled`, `ssl-mode` and `ssl-root-crt-path`.  Note that most of the `http-*` parameters will default to their database equivalent.  In other words, if no `http-username` parameter is provided, the `connect` method will use the value set for `username`.
+
+```shell script
+connect -u test --password password -h localhost --ssl-enabled --ssl-mode verify-full --ssl-root-crt-path /[SOME ABSOLUTE PATH]/ca.crt
+```
+
+
 ### hotspots
 To see the following content run `help hotspots`.
 

@@ -1,5 +1,7 @@
 package io.crdb.shell;
 
+import org.springframework.util.StringUtils;
+
 public class ConnectionOptions extends AbstractOptions {
 
     private final String host;
@@ -9,15 +11,16 @@ public class ConnectionOptions extends AbstractOptions {
     private final String password;
     private final boolean sslEnabled;
     private final String sslMode;
-    private final String sslCrtPath;
-    private final String sslKeyPath;
+    private final String sslRootCrtPath;
+    private final String sslClientCrtPath;
+    private final String sslClientKeyPath;
     private final String httpScheme;
     private final String httpUsername;
     private final String httpPassword;
     private final String httpHost;
     private final int httpPort;
 
-    public ConnectionOptions(String host, int port, String database, String username, String password, boolean sslEnabled, String sslMode, String sslCrtPath, String sslKeyPath, String httpScheme, String httpUsername, String httpPassword, String httpHost, int httpPort) {
+    public ConnectionOptions(String host, int port, String database, String username, String password, boolean sslEnabled, String sslMode, String sslRootCrtPath, String sslClientCrtPath, String sslClientKeyPath, String httpUsername, String httpPassword, String httpHost, int httpPort) {
         this.host = host;
         this.port = port;
         this.database = database;
@@ -25,18 +28,36 @@ public class ConnectionOptions extends AbstractOptions {
         this.password = password;
         this.sslEnabled = sslEnabled;
         this.sslMode = sslMode;
-        this.sslCrtPath = sslCrtPath;
-        this.sslKeyPath = sslKeyPath;
-        this.httpScheme = httpScheme;
-        this.httpUsername = httpUsername;
-        this.httpPassword = httpPassword;
+        this.sslRootCrtPath = sslRootCrtPath;
+        this.sslClientCrtPath = sslClientCrtPath;
+        this.sslClientKeyPath = sslClientKeyPath;
+
         this.httpPort = httpPort;
 
-        if (httpHost == null || httpHost.isBlank()) {
+        if (!StringUtils.hasText(httpHost)) {
             this.httpHost = host;
         } else {
             this.httpHost = httpHost;
         }
+
+        if (sslEnabled) {
+            this.httpScheme = "https";
+        } else {
+            this.httpScheme = "http";
+        }
+
+        if (!StringUtils.hasText(httpUsername)) {
+            this.httpUsername = username;
+        } else {
+            this.httpUsername = httpUsername;
+        }
+
+        if (!StringUtils.hasText(httpPassword)) {
+            this.httpPassword = password;
+        } else {
+            this.httpPassword = httpPassword;
+        }
+
     }
 
     public String getHost() {
@@ -67,12 +88,16 @@ public class ConnectionOptions extends AbstractOptions {
         return sslMode;
     }
 
-    public String getSslCrtPath() {
-        return sslCrtPath;
+    public String getSslClientCrtPath() {
+        return sslClientCrtPath;
     }
 
-    public String getSslKeyPath() {
-        return sslKeyPath;
+    public String getSslClientKeyPath() {
+        return sslClientKeyPath;
+    }
+
+    public String getSslRootCrtPath() {
+        return sslRootCrtPath;
     }
 
     public String getHttpScheme() {
@@ -112,8 +137,9 @@ public class ConnectionOptions extends AbstractOptions {
 
         shellHelper.print("\t" + "ssl-enabled" + ": " + sslEnabled);
         shellHelper.print("\t" + "ssl-mode" + ": " + sslMode);
-        shellHelper.print("\t" + "ssl-crt-path" + ": " + sslCrtPath);
-        shellHelper.print("\t" + "ssl-key-path" + ": " + sslKeyPath);
+        shellHelper.print("\t" + "ssl-root-crt-path" + ": " + sslRootCrtPath);
+        shellHelper.print("\t" + "ssl-client-crt-path" + ": " + sslClientCrtPath);
+        shellHelper.print("\t" + "ssl-client-key-path" + ": " + sslClientKeyPath);
         shellHelper.print("\t" + "http-scheme" + ": " + httpScheme);
         shellHelper.print("\t" + "http-host" + ": " + httpHost);
         shellHelper.print("\t" + "http-port" + ": " + httpPort);
@@ -136,16 +162,6 @@ public class ConnectionOptions extends AbstractOptions {
 
             if (sslMode == null || sslMode.equals("disable")) {
                 shellHelper.printError("SSL is enabled but \"ssl-mode\" is set to \"disable\".  Please provide a valid \"ssl-mode\" or set \"ssl-enabled\" to \"false\".");
-                return false;
-            }
-
-            if (sslCrtPath == null || sslCrtPath.isBlank()) {
-                shellHelper.printError("SSL is enabled but \"ssl-crt-path\" is empty.  Please provide a valid \"ssl-crt-path\".");
-                return false;
-            }
-
-            if (sslKeyPath == null || sslKeyPath.isBlank()) {
-                shellHelper.printError("SSL is enabled but \"ssl-key-path\" is empty.  Please provide a valid \"ssl-key-path\".");
                 return false;
             }
 

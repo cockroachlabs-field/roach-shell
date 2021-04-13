@@ -13,6 +13,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -52,16 +53,16 @@ public class ShellCommands {
                         @ShellOption(help = "password used to connect to database", defaultValue = ShellOption.NULL) String password,
                         @ShellOption(help = "SSL mode for database connection.  disable, allow, prefer, require, verify-ca or verify-full.", defaultValue = "disable") String sslMode,
                         @ShellOption(help = "is SSL enabled? true or false.", defaultValue = "false") boolean sslEnabled,
-                        @ShellOption(help = "path to SSL Cert file when SSL is enabled", defaultValue = ShellOption.NULL) String sslCrtPath,
-                        @ShellOption(help = "path to SSL Key file when SSL is enabled", defaultValue = ShellOption.NULL) String sslKeyPath,
-                        @ShellOption(help = "HTTP scheme for Admin UI REST calls.  http or https.", defaultValue = "http") String httpScheme,
-                        @ShellOption(help = "username used for Admin UI REST calls", defaultValue = ShellOption.NULL) String httpUsername,
-                        @ShellOption(help = "password used for Admin UI REST calls", defaultValue = ShellOption.NULL) String httpPassword,
+                        @ShellOption(help = "path to Root Cert file when SSL is enabled", defaultValue = ShellOption.NULL) String sslRootCrtPath,
+                        @ShellOption(help = "path to SSL Client Cert file when SSL is enabled", defaultValue = ShellOption.NULL) String sslClientCrtPath,
+                        @ShellOption(help = "path to SSL Client Key file when SSL is enabled", defaultValue = ShellOption.NULL) String sslKeyPath,
+                        @ShellOption(help = "username used for Admin UI REST calls.  will use database username if no value provided.", defaultValue = ShellOption.NULL) String httpUsername,
+                        @ShellOption(help = "password used for Admin UI REST calls.  will use database password if no value provided.", defaultValue = ShellOption.NULL) String httpPassword,
                         @ShellOption(help = "host used for Admin UI REST calls", defaultValue = ShellOption.NULL) String httpHost,
                         @ShellOption(help = "port used for Admin UI REST calls", defaultValue = "8080") int httpPort) {
 
 
-        ConnectionOptions connectionOptions = new ConnectionOptions(host, port, database, username, password, sslEnabled, sslMode, sslCrtPath, sslKeyPath, httpScheme, httpUsername, httpPassword, httpHost, httpPort);
+        ConnectionOptions connectionOptions = new ConnectionOptions(host, port, database, username, password, sslEnabled, sslMode, sslRootCrtPath, sslClientCrtPath, sslKeyPath, httpUsername, httpPassword, httpHost, httpPort);
 
         if (!connectionOptions.validate(shellHelper)) {
             return;
@@ -169,8 +170,17 @@ public class ShellCommands {
         ds.setSsl(connectionOptions.isSslEnabled());
 
         if (connectionOptions.isSslEnabled()) {
-            ds.setSslCert(connectionOptions.getSslCrtPath());
-            ds.setSslKey(connectionOptions.getSslKeyPath());
+            if (StringUtils.hasText(connectionOptions.getSslRootCrtPath())) {
+                ds.setSslRootCert(connectionOptions.getSslRootCrtPath());
+            }
+
+            if (StringUtils.hasText(connectionOptions.getSslClientCrtPath())) {
+                ds.setSslCert(connectionOptions.getSslClientCrtPath());
+            }
+
+            if (StringUtils.hasText(connectionOptions.getSslClientKeyPath())) {
+                ds.setSslKey(connectionOptions.getSslClientKeyPath());
+            }
         }
 
         ds.setReWriteBatchedInserts(true);
