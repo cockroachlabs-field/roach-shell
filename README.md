@@ -10,7 +10,7 @@ Command line utility for CockroachDB written using [Spring Shell](https://projec
 * `statements` - filtered list of recent Statements run against a CockroachDB cluster
 
 ## Prerequisites
-* Java 11 - `brew cask install adoptopenjdk11`.  You may need to run this first `brew tap AdoptOpenJDK/openjdk`.
+* Java 11 - I use [Homebrew](https://brew.sh/) to install.  See [here](https://github.com/AdoptOpenJDK/homebrew-openjdk) for additional details.
 * CockroachDB with the following:
     * a database `user` with the `admin` role assigned
     * `--listen-addr` and `--http-addr` accessible from machine running `roach-shell`
