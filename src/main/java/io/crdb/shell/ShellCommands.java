@@ -13,6 +13,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -212,6 +213,8 @@ public class ShellCommands {
             final ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
 
             String cookie = responseEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
+
+            Assert.hasText(cookie, "Secure Cookie is NULL.  This is likely a problem with the Login call.");
 
             shellHelper.printSuccess("Login successful for secure HTTP connection.");
 
