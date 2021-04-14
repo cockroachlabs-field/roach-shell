@@ -21,7 +21,6 @@
         <java.version>11</java.version>
         <skipTests>true</skipTests>
         <jline.version>3.19.0</jline.version>
-        <git-commit-id-plugin.skip>true</git-commit-id-plugin.skip>
     </properties>
 
     <scm>
@@ -30,15 +29,6 @@
         <developerConnection>scm:git:git@github.com:cockroachlabs-field/roach-shell.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
-
-    <profiles>
-        <profile>
-            <id>release</id>
-            <properties>
-                <git-commit-id-plugin.skip>false</git-commit-id-plugin.skip>
-            </properties>
-        </profile>
-    </profiles>
 
     <dependencyManagement>
         <dependencies>
@@ -163,27 +153,6 @@
                             </includes>
                         </fileset>
                     </filesets>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <version>4.0.4</version>
-                <executions>
-                    <execution>
-                        <id>get-the-git-infos</id>
-                        <goals>
-                            <goal>revision</goal>
-                        </goals>
-                        <phase>initialize</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
-                    <commitIdGenerationMode>full</commitIdGenerationMode>
-                    <useNativeGit>true</useNativeGit>
-                    <skip>${git-commit-id-plugin.skip}</skip>
                 </configuration>
             </plugin>
         </plugins>
