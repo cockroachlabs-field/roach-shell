@@ -2,7 +2,7 @@
 
 ![Java CI with Maven](https://github.com/timveil-cockroach/roach-shell/workflows/Java%20CI%20with%20Maven/badge.svg)
 
-Command line utility for CockroachDB written using [Spring Shell](https://projects.spring.io/spring-shell/).  Commands include:
+Command line utility for CockroachDB written using [Spring Shell](https://projects.spring.io/spring-shell/).  RoachShell supports both Secure and Insecure clusters.  Commands include:
 * `connect` - connects to a CockroachDB cluster
 * `disconnect` - disconnects from a CockroachDB cluster
 * `hotspots` - detects range hot spots in a CockroachDB cluster often caused by poor schema design as described [here](https://www.cockroachlabs.com/docs/stable/make-queries-fast.html#schema-design)
@@ -32,7 +32,7 @@ With Java using the executable `jar` built above.
 java -jar roach-shell-*.jar
 ````
 
-To establish a connection to a CockroachDB cluster first run the `connect` command.  For example...
+To establish a connection to a CockroachDB cluster first run the `connect` command.  For example, to connect to the provided insecure Docker example run the following...
 
 ```shell script
 roach-shell:>connect -h localhost
@@ -64,7 +64,7 @@ Once you are connected you can run other commands like `hotspots`.
 ## Command Help
 
 ### connect
-To see the following content run `help connnect`.
+To see the following content run `help connnect`.  The `connect` command supports both Secure and Insecure clusters.  At this time, Roach Shell does not support connecting to CockroachCloud Free Tier clusters.
 
 ```text
 NAME
@@ -289,5 +289,5 @@ Returned 71 total statements, 40 unique.  Showing 1 after applying filters.
 
 ## To Release
 ```
-./mvnw -B clean package release:clean release:prepare release:perform -P release
+./mvnw -B clean package release:clean release:prepare release:perform
 ```
