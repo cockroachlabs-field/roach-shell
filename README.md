@@ -73,7 +73,7 @@ NAME
 	connect - Connect to a CockroachDB cluster.
 
 SYNOPSYS
-	connect [--host] string  [[--port] int]  [[--database] string]  [[--username] string]  [[--password] string]  [[--ssl-mode] string]  [--ssl-enabled]  [[--ssl-root-crt-path] string]  [[--ssl-client-crt-path] string]  [[--ssl-key-path] string]  [[--http-username] string]  [[--http-password] string]  [[--http-host] string]  [[--http-port] int]  
+	connect [--host] string  [[--port] int]  [[--database] string]  [[--username] string]  [[--password] string]  [[--ssl-mode] string]  [--ssl-enabled]  [[--ssl-root-crt-path] string]  [[--ssl-client-crt-path] string]  [[--ssl-client-key-path] string]  [[--http-username] string]  [[--http-password] string]  [[--http-host] string]  [[--http-port] int]  
 
 OPTIONS
 	--host or -h  string
@@ -111,7 +111,7 @@ OPTIONS
 		path to SSL Client Cert file when SSL is enabled
 		[Optional, default = <none>]
 
-	--ssl-key-path  string
+	--ssl-client-key-path  string
 		path to SSL Client Key file when SSL is enabled
 		[Optional, default = <none>]
 

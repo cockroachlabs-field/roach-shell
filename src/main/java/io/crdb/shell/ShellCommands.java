@@ -56,14 +56,14 @@ public class ShellCommands {
                         @ShellOption(help = "is SSL enabled? true or false.", defaultValue = "false") boolean sslEnabled,
                         @ShellOption(help = "path to Root Cert file when SSL is enabled", defaultValue = ShellOption.NULL) String sslRootCrtPath,
                         @ShellOption(help = "path to SSL Client Cert file when SSL is enabled", defaultValue = ShellOption.NULL) String sslClientCrtPath,
-                        @ShellOption(help = "path to SSL Client Key file when SSL is enabled", defaultValue = ShellOption.NULL) String sslKeyPath,
+                        @ShellOption(help = "path to SSL Client Key file when SSL is enabled", defaultValue = ShellOption.NULL) String sslClientKeyPath,
                         @ShellOption(help = "username used for Admin UI REST calls.  will use database username if no value provided.", defaultValue = ShellOption.NULL) String httpUsername,
                         @ShellOption(help = "password used for Admin UI REST calls.  will use database password if no value provided.", defaultValue = ShellOption.NULL) String httpPassword,
                         @ShellOption(help = "host used for Admin UI REST calls", defaultValue = ShellOption.NULL) String httpHost,
                         @ShellOption(help = "port used for Admin UI REST calls", defaultValue = "8080") int httpPort) {
 
 
-        ConnectionOptions connectionOptions = new ConnectionOptions(host, port, database, username, password, sslEnabled, sslMode, sslRootCrtPath, sslClientCrtPath, sslKeyPath, httpUsername, httpPassword, httpHost, httpPort);
+        ConnectionOptions connectionOptions = new ConnectionOptions(host, port, database, username, password, sslEnabled, sslMode, sslRootCrtPath, sslClientCrtPath, sslClientKeyPath, httpUsername, httpPassword, httpHost, httpPort);
 
         if (!connectionOptions.validate(shellHelper)) {
             return;
