@@ -5,7 +5,7 @@
 Command line utility for CockroachDB written using [Spring Shell](https://projects.spring.io/spring-shell/).  Commands include:
 * `connect` - connects to a CockroachDB cluster
 * `disconnect` - disconnects from a CockroachDB cluster
-* `hotspots` - detects range hot spots in a CockroachDB cluster often caused by poor primary key selection as described [here](https://www.cockroachlabs.com/docs/v19.2/performance-best-practices-overview.html#unique-id-best-practices)
+* `hotspots` - detects range hot spots in a CockroachDB cluster often caused by poor schema design as described [here](https://www.cockroachlabs.com/docs/stable/make-queries-fast.html#schema-design)
 * `clients` - list of clients currently connected to a CockroachDB cluster
 * `statements` - filtered list of recent Statements run against a CockroachDB cluster
 
@@ -135,7 +135,8 @@ To connect to a secure cluster there are a number of security related parameters
 ```shell script
 connect -u [SOME USERNAME] --password [SOME PASSWORD] -h localhost --ssl-enabled --ssl-mode verify-full --ssl-root-crt-path /[SOME ABSOLUTE PATH]/ca.crt
 ```
-
+### CockroachCloud Free Tier Example
+Unfortunately RoachShell does not work against the CockroachCloud Free Tier as the required endpoints are not yet exposed.
 
 ### hotspots
 To see the following content run `help hotspots`.
