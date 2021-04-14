@@ -21,8 +21,4 @@ jobs:
       with:
         java-version: 11
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
-    - uses: actions/upload-artifact@v2
-      with:
-        name: roach-shell.jar
-        path: target/*.jar
+      run: mvn -B compile --file pom.xml
