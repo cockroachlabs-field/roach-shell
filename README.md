@@ -64,7 +64,9 @@ Once you are connected you can run other commands like `hotspots`.
 ## Command Help
 
 ### connect
-To see the following content run `help connnect`.  The `connect` command supports both Secure and Insecure clusters.  At this time, Roach Shell does not support connecting to CockroachCloud Free Tier clusters.
+The `connect` command supports both Secure and Insecure clusters.  At this time, Roach Shell does not support connecting to CockroachCloud Free Tier clusters.
+
+To see the following content run `help connnect`.
 
 ```text
 NAME
