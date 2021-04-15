@@ -9,19 +9,6 @@ Simple 3 node CockroachDB cluster with HAProxy acting as load balancer
 * `lb` - HAProxy acting as load balancer
 
 ## Helpful Commands
-
-### Run the TPC-C Workload
-
-First `init` the workload
-```bash
-docker-compose exec workload-client /cockroach/cockroach workload init --warehouses=3 tpcc "postgresql://root@lb:26257?sslmode=disable"
-```
-
-then 'run' the workload
-```bash
-docker-compose exec workload-client /cockroach/cockroach workload run tpcc --tolerate-errors --warehouses=3 --duration=10m "postgresql://root@lb:26257?sslmode=disable"
-```
-
 ### Open Interactive Shells
 ```bash
 docker-compose exec crdb-0 /bin/bash

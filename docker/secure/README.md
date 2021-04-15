@@ -8,6 +8,7 @@ Simple 3 node *secure* CockroachDB cluster with HAProxy acting as load balancer
 * `lb` - HAProxy acting as load balancer
 * `roach-cert` - Holds certificates as volume mounts
 * `roach-init` - Executes some commands against CockroachDB and shuts down. See [here](https://github.com/timveil-cockroach/cockroachdb-remote-client).
+* `workload-client` - CockroachDB node serving as the `workload` client
 
 ## Getting started
 >If you are using Google Chrome as your browser, you may want to navigate here `chrome://flags/#allow-insecure-localhost` and set this flag to `Enabled`. 
@@ -26,6 +27,7 @@ docker-compose exec roach-1 /bin/bash
 docker-compose exec roach-2 /bin/bash
 docker-compose exec lb /bin/sh
 docker-compose exec roach-cert /bin/sh
+docker-compose exec workload-client /bin/sh
 ```
 ### Copy CA Certificate
 ```bash
