@@ -17,3 +17,9 @@ docker-compose start lb
 sleep 5
 
 docker-compose start roach-init
+
+sleep 10
+
+docker-compose start workload-client
+docker-compose exec workload-client /cockroach/cockroach workload init --warehouses=3 tpcc "postgresql://root@lb.crdb.io:26257?sslmode=verify-full&sslrootcert=/certs/ca.crt&sslcert=/certs/client.root.crt&sslkey=/certs/client.root.key"
+docker-compose exec workload-client /cockroach/cockroach workload run --warehouses=3 tpcc --tolerate-errors --duration=30m "postgresql://root@lb.crdb.io:26257?sslmode=verify-full&sslrootcert=/certs/ca.crt&sslcert=/certs/client.root.crt&sslkey=/certs/client.root.key"

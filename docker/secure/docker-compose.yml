@@ -48,7 +48,7 @@ services:
 
   lb:
     container_name: lb
-    hostname: lb
+    hostname: lb.crdb.io
     image: timveil/dynamic-haproxy:latest
     ports:
       - "26257:26257"
@@ -70,7 +70,7 @@ services:
       - COCKROACH_INSECURE=false
       - COCKROACH_INIT=true
       - COCKROACH_CERTS_DIR=/certs
-      - DATABASE_NAME=test
+      - DATABASE_NAME=tpcc
       - DATABASE_USER=test
       - DATABASE_PASSWORD=password
     volumes:
@@ -78,3 +78,13 @@ services:
     depends_on:
       - lb
       - roach-cert
+
+  workload-client:
+    container_name: workload-client
+    hostname: workload-client
+    image: cockroachdb/cockroach:latest
+    entrypoint: ["tail", "-f", "/dev/null"]
+    volumes:
+      - certs:/certs:ro
+    depends_on:
+      - roach-init
