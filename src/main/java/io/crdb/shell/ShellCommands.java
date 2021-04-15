@@ -141,7 +141,13 @@ public class ShellCommands {
     private void closeConnections() {
 
         if (connections != null) {
-            logoutRest(connections);
+            try {
+                logoutRest(connections);
+            } catch (Exception e) {
+                log.warn("unable to logout", e);
+                shellHelper.printWarning("Unable to logout from CockroachDB.");
+            }
+
             connections = null;
 
             shellHelper.printSuccess("Existing connections have been closed!");
