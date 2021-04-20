@@ -32,17 +32,15 @@ public class ShellCommands {
 
     private final ShellService service;
     private final ShellHelper shellHelper;
-    private final ApplicationEventPublisher eventPublisher;
     private final RestTemplate restTemplate;
 
 
     private ShellConnections connections = null;
 
 
-    public ShellCommands(ShellService service, ShellHelper shellHelper, ApplicationEventPublisher eventPublisher, RestTemplate restTemplate) {
+    public ShellCommands(ShellService service, ShellHelper shellHelper, RestTemplate restTemplate) {
         this.service = service;
         this.shellHelper = shellHelper;
-        this.eventPublisher = eventPublisher;
         this.restTemplate = restTemplate;
     }
 
