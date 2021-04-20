@@ -142,13 +142,12 @@ public class ShellCommands {
             try {
                 logoutRest(connections);
             } catch (Exception e) {
-                log.warn("unable to logout", e);
-                shellHelper.printWarning("Unable to logout from CockroachDB.");
+                log.error("unable to logout", e);
             }
 
             connections = null;
 
-            shellHelper.printSuccess("Existing connections have been closed!");
+            log.info("Existing connections have been closed!");
         }
 
     }
