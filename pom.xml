@@ -20,7 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>19</java.version>
         <skipTests>true</skipTests>
-        <jline.version>3.21.0</jline.version>
+        <jline.version>3.22.0</jline.version>
     </properties>
 
     <scm>
